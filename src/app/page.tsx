@@ -157,35 +157,75 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
 
       {/* HERO */}
-      <section className="relative min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-[var(--color-rhone-dark)] via-[var(--color-rhone)] to-[var(--color-alpilles-dark)] pt-20" aria-labelledby="hero-heading">
-        <div className="absolute inset-0 opacity-10" aria-hidden="true">
-          <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, white 1px, transparent 1px), radial-gradient(circle at 75% 75%, white 1px, transparent 1px)`, backgroundSize: "60px 60px" }} />
-        </div>
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white/90 text-sm font-medium mb-6 backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-[var(--color-or)] animate-pulse" aria-hidden="true" />
-            Conciergerie Premium en Provence
+      <section
+        className="relative min-h-screen flex flex-col items-center justify-center pt-20"
+        style={{ background: "linear-gradient(160deg, #19180D 0%, #1E2012 55%, #191B0E 100%)" }}
+        aria-labelledby="hero-heading"
+      >
+        <div className="relative w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* Eyebrow */}
+          <p
+            className="text-[var(--color-or)] text-xs uppercase mb-8 font-light tracking-[0.5em]"
+            style={{ fontFamily: "var(--font-lato, Lato, sans-serif)", opacity: 0.85 }}
+          >
+            Provence &nbsp;·&nbsp; Alpilles &nbsp;·&nbsp; Rhône
           </p>
-          <h1 id="hero-heading" className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-            Conciergerie Airbnb<br />
-            <span className="text-[var(--color-or)]">entre Rhône et Alpilles</span>
+
+          {/* Thin gold divider */}
+          <div className="w-10 h-px bg-[var(--color-or)] mx-auto mb-10" style={{ opacity: 0.5 }} aria-hidden="true" />
+
+          {/* Heading */}
+          <h1
+            id="hero-heading"
+            className="font-serif text-5xl sm:text-6xl lg:text-7xl font-normal text-white leading-[1.12] mb-8"
+          >
+            La conciergerie<br />
+            <span className="text-white/80 italic">de référence</span><br />
+            <span className="text-[var(--color-or)]" style={{ opacity: 0.9 }}>en Provence</span>
           </h1>
-          <p className="text-lg sm:text-xl text-white/85 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Délégation totale de la gestion locative avec maximisation des revenus et zéro stress — ou séjournez dans nos hébergements d'exception en Provence.
+
+          {/* Description */}
+          <p
+            className="text-base sm:text-lg text-white/65 max-w-lg mx-auto mb-12 leading-relaxed"
+            style={{ fontWeight: 300 }}
+          >
+            Délégation totale de votre gestion locative — ou séjournez dans nos hébergements d&apos;exception entre le Rhône et les Alpilles.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white font-semibold rounded-full hover:bg-[var(--color-or-light)] transition-colors text-base shadow-lg">
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
+            <Link
+              href="/conciergerie/estimer-mes-revenus"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white rounded-full hover:bg-[var(--color-or-light)] transition-colors text-sm"
+              style={{ fontFamily: "var(--font-lato, Lato, sans-serif)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 400 }}
+            >
               Confier mon bien <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
-            <Link href="/locations" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/15 text-white font-semibold rounded-full hover:bg-white/25 transition-colors text-base backdrop-blur-sm border border-white/20">
-              Trouver un hébergement <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            <Link
+              href="/locations"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white/75 rounded-full hover:text-white border border-white/20 hover:border-white/40 transition-colors text-sm"
+              style={{ fontFamily: "var(--font-lato, Lato, sans-serif)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 400 }}
+            >
+              Nos hébergements
             </Link>
           </div>
-          <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {stats.map((s) => (
-              <div key={s.label} className="text-center">
-                <p className="font-serif text-3xl font-bold text-[var(--color-or)]">{s.value}</p>
-                <p className="text-white/75 text-sm mt-1">{s.label}</p>
+
+          {/* Stats */}
+          <div className="border-t border-white/10 pt-10 grid grid-cols-2 sm:grid-cols-4">
+            {stats.map((s, i) => (
+              <div
+                key={s.label}
+                className={`text-center py-2 ${i > 0 ? "border-l border-white/10" : ""}`}
+              >
+                <p className="font-serif text-3xl font-normal text-[var(--color-or)]" style={{ opacity: 0.9 }}>
+                  {s.value}
+                </p>
+                <p
+                  className="text-white/45 text-xs mt-2 uppercase"
+                  style={{ fontFamily: "var(--font-lato, Lato, sans-serif)", letterSpacing: "0.12em" }}
+                >
+                  {s.label}
+                </p>
               </div>
             ))}
           </div>
@@ -324,10 +364,14 @@ export default function HomePage() {
       </section>
 
       {/* CTA FINAL */}
-      <section className="py-20 bg-gradient-to-br from-[var(--color-rhone)] to-[var(--color-alpilles-dark)]">
+      <section
+        className="py-24"
+        style={{ background: "linear-gradient(160deg, #19180D 0%, #1E2012 100%)" }}
+      >
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-6">Prêt à déléguer la gestion de votre bien ?</h2>
-          <p className="text-white/80 text-lg mb-8">Estimation gratuite en 2 minutes. Nos experts locaux vous répondent sous 24h.</p>
+          <div className="w-10 h-px bg-[var(--color-or)] mx-auto mb-10" style={{ opacity: 0.5 }} aria-hidden="true" />
+          <h2 className="font-serif text-3xl sm:text-4xl font-normal text-white mb-6 leading-snug">Prêt à déléguer la gestion<br className="hidden sm:block" /> de votre bien ?</h2>
+          <p className="text-white/60 text-base mb-10" style={{ fontWeight: 300 }}>Estimation gratuite en 2 minutes. Nos experts locaux vous répondent sous 24h.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white font-bold rounded-full hover:bg-[var(--color-or-light)] transition-colors text-base">
               Estimer mes revenus gratuitement <ArrowRight className="w-4 h-4" aria-hidden="true" />
