@@ -12,6 +12,11 @@ export const metadata: Metadata = {
     "Locations de vacances avec piscine privée en Provence : mas, villas et bastides entre le Rhône et les Alpilles. Piscine chauffée, vue Alpilles. Réservation directe.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/locations/avec-piscine" },
   keywords: ["location avec piscine provence", "villa piscine alpilles", "mas piscine saint-rémy", "location piscine privée provence"],
+  openGraph: {
+    title: "Location avec Piscine en Provence — Mas, Villas & Bastides",
+    description: "Locations de vacances avec piscine privée en Provence : mas, villas et bastides entre le Rhône et les Alpilles. Piscine chauffée disponible.",
+    url: "https://entre-rhone-alpilles.fr/locations/avec-piscine",
+  },
 };
 
 const schemaOrg = {
@@ -24,12 +29,12 @@ const schemaOrg = {
 };
 
 const featuredWithPiscine = [
-  { title: "Mas des Oliviers — Piscine & Vue Alpilles", location: "Saint-Rémy-de-Provence", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, slug: "mas-des-oliviers-saint-remy", featured: true },
-  { title: "Villa Baux — Piscine Panoramique", location: "Les Baux-de-Provence", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, slug: "villa-baux-terrasse" },
-  { title: "Mas Maussane — Piscine & Oliveraie", location: "Maussane-les-Alpilles", type: "Mas", guests: 10, price: 390, rating: 5.0, reviewCount: 22, hasPiscine: true, slug: "mas-maussane-alpilles" },
-  { title: "Bastide Eygalières — Piscine Luxe", location: "Eygalières", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, slug: "bastide-eygalieres-luxe" },
-  { title: "Villa Graveson — Piscine Chauffée", location: "Graveson", type: "Villa", guests: 8, price: 270, rating: 4.8, reviewCount: 25, hasPiscine: true, slug: "villa-graveson-piscine" },
-  { title: "Mas Arles — Grande Piscine & Jardin", location: "Arles", type: "Mas", guests: 10, price: 310, rating: 4.7, reviewCount: 19, hasPiscine: true, slug: "mas-arles-piscine" },
+  { title: "Mas des Oliviers — Piscine & Vue Alpilles", location: "Saint-Rémy-de-Provence", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, slug: "mas-des-oliviers-saint-remy", href: "/locations/saint-remy-de-provence", featured: true },
+  { title: "Villa Baux — Piscine Panoramique", location: "Les Baux-de-Provence", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, slug: "villa-baux-terrasse", href: "/locations/les-baux-de-provence" },
+  { title: "Mas Maussane — Piscine & Oliveraie", location: "Maussane-les-Alpilles", type: "Mas", guests: 10, price: 390, rating: 5.0, reviewCount: 22, hasPiscine: true, slug: "mas-maussane-alpilles", href: "/locations/maussane-les-alpilles" },
+  { title: "Bastide Eygalières — Piscine Luxe", location: "Eygalières", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, slug: "bastide-eygalieres-luxe", href: "/locations/eygalieres" },
+  { title: "Villa Graveson — Piscine Chauffée", location: "Graveson", type: "Villa", guests: 8, price: 270, rating: 4.8, reviewCount: 25, hasPiscine: true, slug: "villa-graveson-piscine", href: "/locations/graveson" },
+  { title: "Mas Arles — Grande Piscine & Jardin", location: "Arles", type: "Mas", guests: 10, price: 310, rating: 4.7, reviewCount: 19, hasPiscine: true, slug: "mas-arles-piscine", href: "/locations/arles" },
 ];
 
 const faqItems = [

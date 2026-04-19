@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   description:
     "Guides complets de 20 communes entre le Rhône et les Alpilles : Saint-Rémy-de-Provence, Arles, Les Baux, Eygalières, Maussane et bien d'autres.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/destinations" },
+  openGraph: {
+    title: "Destinations Provence — 20 Communes entre Rhône et Alpilles",
+    description: "Guides complets de 20 communes en Provence : Saint-Rémy-de-Provence, Arles, Les Baux-de-Provence, Eygalières, Maussane et bien d'autres.",
+    url: "https://entre-rhone-alpilles.fr/destinations",
+  },
 };
 
 export default function DestinationsPage() {

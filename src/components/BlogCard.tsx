@@ -13,6 +13,7 @@ export default function BlogCard({ post }: BlogCardProps) {
       <Link href={`/blog/${post.slug}`} className="block relative aspect-[16/9] overflow-hidden">
         <div
           className="w-full h-full bg-gradient-to-br from-[var(--color-cream)] to-[var(--color-alpilles)]/30 group-hover:scale-105 transition-transform duration-500"
+          style={post.image ? { backgroundImage: `url(${post.image})`, backgroundSize: "cover", backgroundPosition: "center" } : {}}
           role="img"
           aria-label={`Illustration pour "${post.title}"`}
         />

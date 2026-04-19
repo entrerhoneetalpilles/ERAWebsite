@@ -16,12 +16,12 @@ export const metadata: Metadata = {
 };
 
 const featuredProperties = [
-  { title: "Mas des Oliviers — Vue Alpilles", location: "Saint-Rémy-de-Provence", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, slug: "mas-des-oliviers-saint-remy" },
-  { title: "Villa Baux — Terrasse panoramique", location: "Les Baux-de-Provence", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, slug: "villa-baux-terrasse" },
-  { title: "Mas Maussane — Cœur des Alpilles", location: "Maussane-les-Alpilles", type: "Mas", guests: 10, price: 390, rating: 5.0, reviewCount: 22, hasPiscine: true, slug: "mas-maussane-alpilles" },
-  { title: "Appartement du Théâtre — Arles", location: "Arles", type: "Appartement", guests: 4, price: 140, rating: 4.9, reviewCount: 58, hasPiscine: false, slug: "appartement-theatre-arles" },
-  { title: "Bastide Eygalières — Luxe absolu", location: "Eygalières", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, slug: "bastide-eygalieres-luxe" },
-  { title: "Gîte Paradou — Oliviers centenaires", location: "Paradou", type: "Gîte", guests: 4, price: 165, rating: 4.8, reviewCount: 36, hasPiscine: false, slug: "gite-paradou-oliviers" },
+  { title: "Mas des Oliviers — Vue Alpilles", location: "Saint-Rémy-de-Provence", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, slug: "mas-des-oliviers-saint-remy", href: "/locations/saint-remy-de-provence" },
+  { title: "Villa Baux — Terrasse panoramique", location: "Les Baux-de-Provence", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, slug: "villa-baux-terrasse", href: "/locations/les-baux-de-provence" },
+  { title: "Mas Maussane — Cœur des Alpilles", location: "Maussane-les-Alpilles", type: "Mas", guests: 10, price: 390, rating: 5.0, reviewCount: 22, hasPiscine: true, slug: "mas-maussane-alpilles", href: "/locations/maussane-les-alpilles" },
+  { title: "Appartement du Théâtre — Arles", location: "Arles", type: "Appartement", guests: 4, price: 140, rating: 4.9, reviewCount: 58, hasPiscine: false, slug: "appartement-theatre-arles", href: "/locations/arles" },
+  { title: "Bastide Eygalières — Luxe absolu", location: "Eygalières", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, slug: "bastide-eygalieres-luxe", href: "/locations/eygalieres" },
+  { title: "Gîte Paradou — Oliviers centenaires", location: "Paradou", type: "Gîte", guests: 4, price: 165, rating: 4.8, reviewCount: 36, hasPiscine: false, slug: "gite-paradou-oliviers", href: "/locations/paradou" },
 ];
 
 const schemaOrg = {

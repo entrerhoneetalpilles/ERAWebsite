@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   description:
     "Plus de 200 avis vérifiés de propriétaires et voyageurs. Note moyenne 4,9/5. Découvrez les témoignages de nos clients en Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/avis" },
+  openGraph: {
+    title: "Avis Clients — Entre Rhône et Alpilles Conciergerie",
+    description: "Plus de 200 avis vérifiés de propriétaires et voyageurs. Note moyenne 4,9/5.",
+    url: "https://entre-rhone-alpilles.fr/avis",
+  },
 };
 
 const stats = [

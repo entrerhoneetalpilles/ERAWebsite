@@ -3,6 +3,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "Mentions légales — Entre Rhône et Alpilles",
+  description: "Mentions légales de la conciergerie Entre Rhône et Alpilles : éditeur, hébergeur, propriété intellectuelle.",
   robots: { index: false, follow: false },
 };
 

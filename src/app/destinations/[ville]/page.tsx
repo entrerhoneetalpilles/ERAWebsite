@@ -176,7 +176,7 @@ export default async function DestinationVillePage({ params }: Props) {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 not-prose">
                 {mockProperties.map((p) => (
-                  <PropertyCard key={p.slug} {...p} />
+                  <PropertyCard key={p.slug} {...p} href={`/locations/${commune.slug}`} />
                 ))}
               </div>
               <Link href={`/locations/${commune.slug}`}

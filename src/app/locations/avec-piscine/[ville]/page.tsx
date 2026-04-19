@@ -77,7 +77,7 @@ export default async function AvecPiscineVillePage({ params }: Props) {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {mockProperties.map((p) => <PropertyCard key={p.slug} {...p} />)}
+            {mockProperties.map((p) => <PropertyCard key={p.slug} {...p} href={`/locations/${commune.slug}`} />)}
           </div>
           <div className="flex flex-wrap gap-4">
             <Link href={`/locations/${commune.slug}`} className="inline-flex items-center gap-1.5 text-[var(--color-rhone)] font-semibold hover:opacity-80 transition-opacity">

@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   description:
     "Contactez notre équipe de conciergerie en Provence. Propriétaires : devis gratuit sous 24h. Voyageurs : aide à la réservation. Saint-Rémy-de-Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/contact" },
+  openGraph: {
+    title: "Contact — Conciergerie Entre Rhône et Alpilles",
+    description: "Contactez notre équipe de conciergerie en Provence. Propriétaires : devis gratuit sous 24h. Voyageurs : aide à la réservation.",
+    url: "https://entre-rhone-alpilles.fr/contact",
+  },
 };
 
 export default function ContactPage() {

@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   description:
     "Réponses à toutes vos questions : tarifs conciergerie, gestion Airbnb, réservations voyageurs, assurances, fiscalité location courte durée en Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/faq" },
+  openGraph: {
+    title: "FAQ Conciergerie & Locations — Entre Rhône et Alpilles",
+    description: "Réponses à toutes vos questions : tarifs, gestion Airbnb, réservations, assurances et fiscalité location courte durée en Provence.",
+    url: "https://entre-rhone-alpilles.fr/faq",
+  },
 };
 
 const faqProprietaires = [

@@ -36,6 +36,8 @@ export default function EstimerForm() {
   const [result, setResult] = useState<{ min: number; max: number } | null>(null);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
 
   function calculate() {
     const base = (baseRevenues[form.commune] ?? baseRevenues["Saint-Rémy-de-Provence"])[form.type] ?? 20000;
@@ -135,11 +137,33 @@ export default function EstimerForm() {
                     <div className="flex gap-2">
                       <input type="email" placeholder="votre@email.fr" value={email} onChange={(e) => setEmail(e.target.value)}
                         className="flex-1 px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-rhone)]" />
-                      <button onClick={() => setSubmitted(true)} disabled={!email}
+                      <button onClick={async () => {
+                        if (!email) return;
+                        setEmailLoading(true);
+                        setEmailError("");
+                        try {
+                          const res = await fetch("/api/estimateur", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email, commune: form.commune, type: form.type, surface: form.bedrooms, estimatedRevenue: result }),
+                          });
+                          if (!res.ok) {
+                            const data = await res.json();
+                            setEmailError(data.error || "Erreur. Veuillez réessayer.");
+                          } else {
+                            setSubmitted(true);
+                          }
+                        } catch {
+                          setEmailError("Erreur. Veuillez réessayer.");
+                        } finally {
+                          setEmailLoading(false);
+                        }
+                      }} disabled={!email || emailLoading}
                         className="px-4 py-2.5 bg-[var(--color-or)] text-white font-semibold rounded-lg hover:bg-[var(--color-or-light)] transition-colors disabled:opacity-50">
-                        <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                        {emailLoading ? "…" : <ArrowRight className="w-4 h-4" aria-hidden="true" />}
                       </button>
                     </div>
+                    {emailError && <p className="text-red-500 text-xs mt-2">{emailError}</p>}
                   </div>
                 ) : (
                   <p className="text-[var(--color-alpilles)] font-semibold">✓ Votre étude personnalisée vous sera envoyée sous 24h !</p>

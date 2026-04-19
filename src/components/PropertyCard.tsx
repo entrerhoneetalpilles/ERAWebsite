@@ -11,6 +11,7 @@ interface PropertyCardProps {
   reviewCount: number;
   hasPiscine?: boolean;
   slug: string;
+  href?: string;
   image?: string;
   featured?: boolean;
 }
@@ -25,9 +26,11 @@ export default function PropertyCard({
   reviewCount,
   hasPiscine,
   slug,
+  href,
   image,
   featured,
 }: PropertyCardProps) {
+  const cardHref = href ?? `/locations/${slug}`;
   return (
     <article
       className={`group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 ${
@@ -35,7 +38,7 @@ export default function PropertyCard({
       }`}
     >
       {/* Image */}
-      <Link href={`/locations/${slug}`} className="block relative overflow-hidden aspect-[4/3]">
+      <Link href={cardHref} className="block relative overflow-hidden aspect-[4/3]">
         <div
           className="w-full h-full bg-gradient-to-br from-[var(--color-cream)] to-[var(--color-alpilles)]/20 group-hover:scale-105 transition-transform duration-500"
           style={
@@ -67,7 +70,7 @@ export default function PropertyCard({
           <span>{type}</span>
         </div>
 
-        <Link href={`/locations/${slug}`}>
+        <Link href={cardHref}>
           <h3 className="font-serif text-base font-semibold text-gray-900 group-hover:text-[var(--color-rhone)] transition-colors line-clamp-2 leading-snug mb-2">
             {title}
           </h3>
@@ -91,7 +94,7 @@ export default function PropertyCard({
             <span className="text-xs text-gray-500"> / nuit</span>
           </div>
           <Link
-            href={`/locations/${slug}`}
+            href={cardHref}
             className="px-3 py-1.5 bg-[var(--color-rhone)] text-white text-xs font-medium rounded-lg hover:bg-[var(--color-rhone-light)] transition-colors"
           >
             Voir le bien
