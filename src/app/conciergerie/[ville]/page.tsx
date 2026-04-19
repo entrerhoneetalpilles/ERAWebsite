@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Conciergerie Airbnb ${commune.name} — Gestion Locative`,
     description: `Conciergerie de location saisonnière à ${commune.name}. Gestion complète, tarification dynamique, maximisation des revenus. Devis gratuit.`,
+    alternates: { canonical: `https://entre-rhone-alpilles.fr/conciergerie/${commune.slug}` },
   };
 }
 

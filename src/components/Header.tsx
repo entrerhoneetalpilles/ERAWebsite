@@ -40,6 +40,7 @@ const navLinks = [
   },
   { href: "/blog", label: "Blog" },
   { href: "/avis", label: "Avis" },
+  { href: "/faq", label: "FAQ" },
 ];
 
 export default function Header() {

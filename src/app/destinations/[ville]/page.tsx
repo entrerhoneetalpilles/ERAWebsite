@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${commune.name} : que faire, voir et où loger ? Guide complet`,
     description: `Guide complet de ${commune.name} en Provence : incontournables, restaurants, activités et hébergements de caractère. ${commune.atout}.`,
+    alternates: { canonical: `https://entre-rhone-alpilles.fr/destinations/${commune.slug}` },
     openGraph: {
       title: `Guide ${commune.name} — Entre Rhône et Alpilles`,
       description: commune.description,
