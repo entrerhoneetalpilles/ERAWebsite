@@ -289,7 +289,7 @@ export default async function LocationsSlugPage({ params }: Props) {
               Nos {pt.plural.toLowerCase()} disponibles
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {properties.map((p) => <PropertyCard key={p.slug} {...p} />)}
+              {properties.map((p) => <PropertyCard key={p.slug} {...p} href={`/locations/${slug}`} />)}
             </div>
           </div>
         </section>
@@ -352,7 +352,7 @@ export default async function LocationsSlugPage({ params }: Props) {
               Hébergements sélectionnés pour {at.name.toLowerCase()}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {properties.map((p) => <PropertyCard key={p.slug} {...p} />)}
+              {properties.map((p) => <PropertyCard key={p.slug} {...p} href="/locations" />)}
             </div>
             <div className="text-center">
               <Link href="/locations"
