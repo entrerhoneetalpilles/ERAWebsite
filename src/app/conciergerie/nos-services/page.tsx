@@ -93,7 +93,7 @@ export default function NosServicesPage() {
           <div className="mt-16 bg-[var(--color-rhone)] rounded-2xl p-8 text-white text-center">
             <h2 className="font-serif text-2xl font-bold mb-4">Tout cela pour seulement 20 à 25% de commission</h2>
             <p className="text-white/80 mb-8 max-w-xl mx-auto">Pas de frais cachés, pas d&apos;engagement minimum. Vous ne payez que sur vos revenus réels.</p>
-            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white font-bold rounded-xl hover:bg-[var(--color-or-light)] transition-colors">
+            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white font-bold rounded-full hover:bg-[var(--color-or-light)] transition-colors">
               Estimer mes revenus <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>

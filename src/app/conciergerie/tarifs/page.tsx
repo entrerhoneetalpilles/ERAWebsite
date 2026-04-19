@@ -265,7 +265,7 @@ export default function TarifsPage() {
 
                 <Link
                   href="/conciergerie/estimer-mes-revenus"
-                  className={`block text-center px-6 py-3 font-semibold rounded-xl transition-colors mt-auto ${f.highlighted ? "bg-[var(--color-rhone)] text-white hover:bg-[var(--color-rhone-light)]" : "border-2 border-[var(--color-rhone)] text-[var(--color-rhone)] hover:bg-[var(--color-rhone)]/5"}`}>
+                  className={`block text-center px-6 py-3 font-semibold rounded-full transition-colors mt-auto ${f.highlighted ? "bg-[var(--color-rhone)] text-white hover:bg-[var(--color-rhone-light)]" : "border-2 border-[var(--color-rhone)] text-[var(--color-rhone)] hover:bg-[var(--color-rhone)]/5"}`}>
                   Estimer mes revenus
                 </Link>
               </div>
@@ -337,7 +337,7 @@ export default function TarifsPage() {
           <FAQAccordion items={faqItems} />
           <div className="mt-12 text-center">
             <Link href="/conciergerie/estimer-mes-revenus"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-rhone)] text-white font-bold rounded-xl hover:bg-[var(--color-rhone-light)] transition-colors text-lg">
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-rhone)] text-white font-bold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors text-lg">
               Simuler mes revenus gratuitement <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </Link>
           </div>

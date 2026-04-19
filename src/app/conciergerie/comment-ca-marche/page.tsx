@@ -78,7 +78,7 @@ export default function CommentCaMarchePage() {
             ))}
           </div>
           <div className="mt-16 text-center">
-            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-rhone)] text-white font-bold rounded-xl hover:bg-[var(--color-rhone-light)] transition-colors text-lg">
+            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-rhone)] text-white font-bold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors text-lg">
               Démarrer gratuitement <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </Link>
           </div>

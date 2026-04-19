@@ -23,10 +23,7 @@ export default function FAQAccordion({ items, schema = true }: FAQAccordionProps
         mainEntity: items.map((item) => ({
           "@type": "Question",
           name: item.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: item.answer,
-          },
+          acceptedAnswer: { "@type": "Answer", text: item.answer },
         })),
       }
     : null;
@@ -34,28 +31,22 @@ export default function FAQAccordion({ items, schema = true }: FAQAccordionProps
   return (
     <>
       {schemaData && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
       )}
-      <dl className="space-y-3">
+      <dl className="divide-y divide-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
         {items.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm"
-          >
+          <div key={index} className="bg-white">
             <dt>
               <button
-                className="w-full flex items-center justify-between px-5 py-4 text-left gap-4"
+                className="w-full flex items-center justify-between px-6 py-5 text-left gap-4 hover:bg-[var(--color-cream)] transition-colors"
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 aria-expanded={openIndex === index}
               >
-                <span className="font-serif text-base font-semibold text-gray-900 leading-snug">
+                <span className="font-serif text-base font-normal text-gray-900 leading-snug">
                   {item.question}
                 </span>
                 <ChevronDown
-                  className={`w-5 h-5 text-[var(--color-rhone)] flex-shrink-0 transition-transform duration-200 ${
+                  className={`w-4 h-4 text-[var(--color-rhone)] flex-shrink-0 transition-transform duration-200 ${
                     openIndex === index ? "rotate-180" : ""
                   }`}
                   aria-hidden="true"
@@ -63,8 +54,8 @@ export default function FAQAccordion({ items, schema = true }: FAQAccordionProps
               </button>
             </dt>
             {openIndex === index && (
-              <dd className="px-5 pb-4">
-                <p className="text-sm text-gray-600 leading-relaxed">
+              <dd className="px-6 pb-5">
+                <p className="text-sm text-gray-500 leading-relaxed border-t border-gray-100 pt-4">
                   {item.answer}
                 </p>
               </dd>

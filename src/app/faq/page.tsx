@@ -112,7 +112,7 @@ export default function FAQPage() {
           <FAQAccordion items={faqProprietaires} schema={false} />
           <div className="mt-8">
             <Link href="/conciergerie/estimer-mes-revenus"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-xl hover:bg-[var(--color-rhone-light)] transition-colors">
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
               Estimer mes revenus gratuitement <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -126,7 +126,7 @@ export default function FAQPage() {
           <FAQAccordion items={faqVoyageurs} schema={false} />
           <div className="mt-8">
             <Link href="/locations"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-alpilles)] text-white font-semibold rounded-xl hover:bg-[var(--color-alpilles-light)] transition-colors">
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-alpilles)] text-white font-semibold rounded-full hover:bg-[var(--color-alpilles-light)] transition-colors">
               Voir nos hébergements <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -140,7 +140,7 @@ export default function FAQPage() {
           <FAQAccordion items={faqDestinations} schema={false} />
           <div className="mt-8">
             <Link href="/destinations"
-              className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-xl hover:bg-[var(--color-rhone)]/5 transition-colors">
+              className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-full hover:bg-[var(--color-rhone)]/5 transition-colors">
               Explorer les destinations <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -150,7 +150,7 @@ export default function FAQPage() {
           <p className="font-serif text-xl font-bold text-gray-900 mb-3">Vous n'avez pas trouvé votre réponse ?</p>
           <p className="text-gray-600 mb-6">Notre équipe vous répond sous 24h.</p>
           <Link href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-xl hover:bg-[var(--color-rhone-light)] transition-colors">
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
             Nous contacter <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>

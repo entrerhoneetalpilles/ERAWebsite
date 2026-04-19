@@ -226,7 +226,7 @@ export default async function BlogPostPage({ params }: Props) {
           <p className="font-serif text-xl font-bold mb-3">Vous êtes propriétaire en Provence ?</p>
           <p className="text-white/80 text-sm mb-6">Confiez la gestion de votre bien et maximisez vos revenus locatifs.</p>
           <Link href="/conciergerie/estimer-mes-revenus"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-or)] text-white font-semibold rounded-xl hover:bg-[var(--color-or-light)] transition-colors">
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-or)] text-white font-semibold rounded-full hover:bg-[var(--color-or-light)] transition-colors">
             Estimation gratuite <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>

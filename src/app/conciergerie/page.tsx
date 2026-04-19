@@ -106,10 +106,10 @@ export default function ConciergerieHubPage() {
               Vous êtes propriétaire d&apos;un mas, d&apos;une villa ou d&apos;un appartement entre le Rhône et les Alpilles ? Déléguez la gestion à notre équipe locale et profitez de vos revenus locatifs sans les contraintes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-xl hover:bg-[var(--color-rhone-light)] transition-colors">
+              <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
                 Estimer mes revenus <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
-              <Link href="/conciergerie/nos-services" className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-xl hover:bg-[var(--color-rhone)]/5 transition-colors">
+              <Link href="/conciergerie/nos-services" className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-full hover:bg-[var(--color-rhone)]/5 transition-colors">
                 Voir nos services
               </Link>
             </div>
@@ -151,7 +151,7 @@ export default function ConciergerieHubPage() {
                   </div>
                 ))}
               </div>
-              <Link href="/conciergerie/nos-services" className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-xl hover:bg-[var(--color-rhone-light)] transition-colors">
+              <Link href="/conciergerie/nos-services" className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
                 Voir tous nos services <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </div>
@@ -174,7 +174,7 @@ export default function ConciergerieHubPage() {
                   <span className="text-white/80 text-sm">Vous percevez vos revenus directement — ERA facture séparément</span>
                 </div>
               </div>
-              <Link href="/conciergerie/tarifs" className="block text-center px-6 py-3 bg-[var(--color-or)] text-white font-semibold rounded-xl hover:bg-[var(--color-or-light)] transition-colors">
+              <Link href="/conciergerie/tarifs" className="block text-center px-6 py-3 bg-[var(--color-or)] text-white font-semibold rounded-full hover:bg-[var(--color-or-light)] transition-colors">
                 Voir le détail des tarifs
               </Link>
             </div>
