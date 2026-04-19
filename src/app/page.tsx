@@ -158,71 +158,83 @@ export default function HomePage() {
 
       {/* HERO */}
       <section
-        className="relative min-h-screen flex flex-col items-center justify-center pt-20"
-        style={{ background: "linear-gradient(160deg, #19180D 0%, #1E2012 55%, #191B0E 100%)" }}
+        className="relative bg-[var(--color-cream)] pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden"
         aria-labelledby="hero-heading"
       >
+        {/* Subtle background texture */}
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{ background: "radial-gradient(ellipse 80% 60% at 50% 100%, var(--color-gres-clair), transparent)" }}
+          aria-hidden="true"
+        />
+
         <div className="relative w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Eyebrow */}
           <p
-            className="text-[var(--color-or)] text-xs uppercase mb-8 font-light tracking-[0.5em]"
-            style={{ fontFamily: "var(--font-lato, Lato, sans-serif)", opacity: 0.85 }}
+            className="text-[var(--color-sable)] text-xs uppercase tracking-[0.45em] mb-6 font-medium"
           >
             Provence &nbsp;·&nbsp; Alpilles &nbsp;·&nbsp; Rhône
           </p>
 
           {/* Thin gold divider */}
-          <div className="w-10 h-px bg-[var(--color-or)] mx-auto mb-10" style={{ opacity: 0.5 }} aria-hidden="true" />
+          <div
+            className="w-12 h-px mx-auto mb-8"
+            style={{ background: "var(--color-gres-moyen)", opacity: 0.7 }}
+            aria-hidden="true"
+          />
 
           {/* Heading */}
           <h1
             id="hero-heading"
-            className="font-serif text-5xl sm:text-6xl lg:text-7xl font-normal text-white leading-[1.12] mb-8"
+            className="font-serif font-light text-5xl sm:text-6xl lg:text-7xl text-[var(--color-encre)] leading-[1.1] mb-6"
           >
             La conciergerie<br />
-            <span className="text-white/80 italic">de référence</span><br />
-            <span className="text-[var(--color-or)]" style={{ opacity: 0.9 }}>en Provence</span>
+            <em className="not-italic text-[var(--color-rhone-dark)] italic">de référence</em><br />
+            en Provence
           </h1>
 
           {/* Description */}
           <p
-            className="text-base sm:text-lg text-white/65 max-w-lg mx-auto mb-12 leading-relaxed"
-            style={{ fontWeight: 300 }}
+            className="text-base sm:text-lg max-w-lg mx-auto mb-12 leading-relaxed"
+            style={{ color: "var(--texte-leger)", fontWeight: 300 }}
           >
             Délégation totale de votre gestion locative — ou séjournez dans nos hébergements d&apos;exception entre le Rhône et les Alpilles.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-24">
             <Link
               href="/conciergerie/estimer-mes-revenus"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white rounded-full hover:bg-[var(--color-or-light)] transition-colors text-sm"
-              style={{ fontFamily: "var(--font-lato, Lato, sans-serif)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 400 }}
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[var(--color-rhone)] text-white rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors text-sm"
             >
               Confier mon bien <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
             <Link
               href="/locations"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white/75 rounded-full hover:text-white border border-white/20 hover:border-white/40 transition-colors text-sm"
-              style={{ fontFamily: "var(--font-lato, Lato, sans-serif)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 400 }}
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-md border text-sm tracking-[0.1em] uppercase font-medium transition-colors hover:bg-[var(--color-lin)]"
+              style={{ borderColor: "var(--color-gres-moyen)", color: "var(--texte-corps)" }}
             >
               Nos hébergements
             </Link>
           </div>
 
           {/* Stats */}
-          <div className="border-t border-white/10 pt-10 grid grid-cols-2 sm:grid-cols-4">
+          <div
+            className="border-t pt-10 grid grid-cols-2 sm:grid-cols-4"
+            style={{ borderColor: "var(--color-gres-clair)" }}
+          >
             {stats.map((s, i) => (
               <div
                 key={s.label}
-                className={`text-center py-2 ${i > 0 ? "border-l border-white/10" : ""}`}
+                className="text-center py-2"
+                style={i > 0 ? { borderLeft: "1px solid var(--gres-clair)" } : {}}
               >
-                <p className="font-serif text-3xl font-normal text-[var(--color-or)]" style={{ opacity: 0.9 }}>
+                <p className="font-serif font-light text-3xl text-[var(--color-rhone-dark)]">
                   {s.value}
                 </p>
                 <p
-                  className="text-white/45 text-xs mt-2 uppercase"
-                  style={{ fontFamily: "var(--font-lato, Lato, sans-serif)", letterSpacing: "0.12em" }}
+                  className="text-xs mt-2 uppercase tracking-[0.12em]"
+                  style={{ color: "var(--texte-discret)" }}
                 >
                   {s.label}
                 </p>
@@ -233,27 +245,51 @@ export default function HomePage() {
       </section>
 
       {/* PROPRIÉTAIRES */}
-      <section className="py-20 bg-[var(--color-cream)]" aria-labelledby="owners-heading">
+      <section className="py-24 bg-white" aria-labelledby="owners-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
-            <p className="text-[var(--color-rhone)] text-sm font-semibold uppercase tracking-wider mb-3">Pour les propriétaires</p>
-            <h2 id="owners-heading" className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Votre bien en de bonnes mains</h2>
-            <p className="text-gray-600 leading-relaxed">Confiez la gestion de votre mas, villa ou appartement à notre équipe locale. Nous optimisons vos revenus tout en préservant votre tranquillité et votre bien.</p>
+            <p
+              className="text-xs font-medium uppercase tracking-[0.2em] mb-4"
+              style={{ color: "var(--color-rhone)" }}
+            >
+              Pour les propriétaires
+            </p>
+            <h2 id="owners-heading" className="font-serif font-normal text-3xl sm:text-4xl text-[var(--color-encre)] mb-4">
+              Votre bien en de bonnes mains
+            </h2>
+            <p className="leading-relaxed" style={{ color: "var(--texte-leger)" }}>
+              Confiez la gestion de votre mas, villa ou appartement à notre équipe locale. Nous optimisons vos revenus tout en préservant votre tranquillité et votre bien.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             {ownerBenefits.map((b) => (
-              <div key={b.title} className="bg-white rounded-2xl p-7 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
-                <div className="w-12 h-12 rounded-xl bg-[var(--color-rhone)]/10 text-[var(--color-rhone)] flex items-center justify-center mb-4">{b.icon}</div>
-                <h3 className="font-serif text-lg font-semibold text-gray-900 mb-2">{b.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{b.desc}</p>
+              <div
+                key={b.title}
+                className="bg-[var(--color-cream)] rounded-xl p-7 border hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+                style={{ borderColor: "var(--color-gres-clair)" }}
+              >
+                <div
+                  className="w-11 h-11 rounded-lg flex items-center justify-center mb-5"
+                  style={{ background: "rgba(140,158,110,0.12)", color: "var(--color-rhone-dark)" }}
+                >
+                  {b.icon}
+                </div>
+                <h3 className="font-serif font-normal text-lg text-[var(--color-encre)] mb-2">{b.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--texte-leger)" }}>{b.desc}</p>
               </div>
             ))}
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
+            <Link
+              href="/conciergerie/estimer-mes-revenus"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
+            >
               Estimer mes revenus <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
-            <Link href="/conciergerie/nos-services" className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-full hover:bg-[var(--color-rhone)]/5 transition-colors">
+            <Link
+              href="/conciergerie/nos-services"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] rounded-md hover:bg-[var(--color-cream)] transition-colors"
+            >
               Découvrir nos services
             </Link>
           </div>
@@ -261,14 +297,25 @@ export default function HomePage() {
       </section>
 
       {/* BIENS À LA UNE */}
-      <section className="py-20 bg-white" aria-labelledby="featured-heading">
+      <section className="py-24 bg-[var(--color-cream)]" aria-labelledby="featured-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-[var(--color-alpilles)] text-sm font-semibold uppercase tracking-wider mb-3">Pour les voyageurs</p>
-              <h2 id="featured-heading" className="font-serif text-3xl sm:text-4xl font-bold text-gray-900">Nos hébergements d'exception</h2>
+              <p
+                className="text-xs font-medium uppercase tracking-[0.2em] mb-4"
+                style={{ color: "var(--color-alpilles-dark)" }}
+              >
+                Pour les voyageurs
+              </p>
+              <h2 id="featured-heading" className="font-serif font-normal text-3xl sm:text-4xl text-[var(--color-encre)]">
+                Nos hébergements d&apos;exception
+              </h2>
             </div>
-            <Link href="/locations" className="hidden sm:flex items-center gap-1.5 text-[var(--color-rhone)] font-semibold text-sm hover:text-[var(--color-rhone-light)] transition-colors">
+            <Link
+              href="/locations"
+              className="hidden sm:flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-[var(--color-rhone)]"
+              style={{ color: "var(--color-rhone-dark)" }}
+            >
               Voir tout <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -281,20 +328,32 @@ export default function HomePage() {
       </section>
 
       {/* DESTINATIONS */}
-      <section className="py-20 bg-[var(--color-cream)]" aria-labelledby="destinations-heading">
+      <section className="py-24 bg-[var(--color-lin)]" aria-labelledby="destinations-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-[var(--color-rhone)] text-sm font-semibold uppercase tracking-wider mb-3">Notre territoire</p>
-            <h2 id="destinations-heading" className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Destinations populaires</h2>
-            <p className="text-gray-600 max-w-xl mx-auto">20 communes entre le Rhône et les Alpilles — de Villeneuve-lès-Avignon à Eygalières.</p>
+            <p
+              className="text-xs font-medium uppercase tracking-[0.2em] mb-4"
+              style={{ color: "var(--color-rhone)" }}
+            >
+              Notre territoire
+            </p>
+            <h2 id="destinations-heading" className="font-serif font-normal text-3xl sm:text-4xl text-[var(--color-encre)] mb-4">
+              Destinations populaires
+            </h2>
+            <p className="max-w-xl mx-auto" style={{ color: "var(--texte-leger)" }}>
+              20 communes entre le Rhône et les Alpilles — de Villeneuve-lès-Avignon à Eygalières.
+            </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
             {topCommunes.map((c) => (
               <CommuneCard key={c.slug} commune={c} />
             ))}
           </div>
           <div className="text-center">
-            <Link href="/destinations" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
+            <Link
+              href="/destinations"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
+            >
               Toutes les destinations <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -302,16 +361,18 @@ export default function HomePage() {
       </section>
 
       {/* TÉMOIGNAGES */}
-      <section className="py-20 bg-white" aria-labelledby="testimonials-heading">
+      <section className="py-24 bg-white" aria-labelledby="testimonials-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-1 mb-4" role="img" aria-label="5 étoiles">
+            <div className="flex items-center justify-center gap-1 mb-5" role="img" aria-label="5 étoiles">
               {[1,2,3,4,5].map((i) => (
-                <Star key={i} className="w-5 h-5 fill-[var(--color-or)] text-[var(--color-or)]" aria-hidden="true" />
+                <Star key={i} className="w-4 h-4 fill-[var(--color-or)] text-[var(--color-or)]" aria-hidden="true" />
               ))}
             </div>
-            <h2 id="testimonials-heading" className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Ils nous font confiance</h2>
-            <p className="text-gray-600">4,9/5 · Plus de 200 avis vérifiés</p>
+            <h2 id="testimonials-heading" className="font-serif font-normal text-3xl sm:text-4xl text-[var(--color-encre)] mb-3">
+              Ils nous font confiance
+            </h2>
+            <p style={{ color: "var(--texte-discret)" }}>4,9/5 · Plus de 200 avis vérifiés</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {testimonials.map((t) => (
@@ -319,7 +380,11 @@ export default function HomePage() {
             ))}
           </div>
           <div className="mt-8 text-center">
-            <Link href="/avis" className="inline-flex items-center gap-1.5 text-[var(--color-rhone)] font-semibold hover:text-[var(--color-rhone-light)] transition-colors">
+            <Link
+              href="/avis"
+              className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
+              style={{ color: "var(--color-rhone-dark)" }}
+            >
               Lire tous les avis <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -327,14 +392,25 @@ export default function HomePage() {
       </section>
 
       {/* BLOG */}
-      <section className="py-20 bg-[var(--color-cream)]" aria-labelledby="blog-heading">
+      <section className="py-24 bg-[var(--color-cream)]" aria-labelledby="blog-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-[var(--color-rhone)] text-sm font-semibold uppercase tracking-wider mb-3">Blog & Conseils</p>
-              <h2 id="blog-heading" className="font-serif text-3xl sm:text-4xl font-bold text-gray-900">Derniers articles</h2>
+              <p
+                className="text-xs font-medium uppercase tracking-[0.2em] mb-4"
+                style={{ color: "var(--color-rhone)" }}
+              >
+                Blog & Conseils
+              </p>
+              <h2 id="blog-heading" className="font-serif font-normal text-3xl sm:text-4xl text-[var(--color-encre)]">
+                Derniers articles
+              </h2>
             </div>
-            <Link href="/blog" className="hidden sm:flex items-center gap-1.5 text-[var(--color-rhone)] font-semibold text-sm hover:text-[var(--color-rhone-light)] transition-colors">
+            <Link
+              href="/blog"
+              className="hidden sm:flex items-center gap-1.5 text-sm font-medium transition-colors"
+              style={{ color: "var(--color-rhone-dark)" }}
+            >
               Voir tout <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -347,16 +423,21 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 bg-white" aria-labelledby="faq-heading">
+      <section className="py-24 bg-white" aria-labelledby="faq-heading">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 id="faq-heading" className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Questions fréquentes</h2>
-            <p className="text-gray-600">Tout ce que vous devez savoir sur notre service de conciergerie.</p>
+            <h2 id="faq-heading" className="font-serif font-normal text-3xl sm:text-4xl text-[var(--color-encre)] mb-4">
+              Questions fréquentes
+            </h2>
+            <p style={{ color: "var(--texte-leger)" }}>Tout ce que vous devez savoir sur notre service de conciergerie.</p>
           </div>
           <FAQAccordion items={faqItems} />
           <div className="mt-10 text-center">
-            <p className="text-gray-600 mb-4">Vous avez d'autres questions ?</p>
-            <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
+            <p className="mb-4" style={{ color: "var(--texte-leger)" }}>Vous avez d&apos;autres questions ?</p>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
+            >
               Nous contacter <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -364,19 +445,34 @@ export default function HomePage() {
       </section>
 
       {/* CTA FINAL */}
-      <section
-        className="py-24"
-        style={{ background: "linear-gradient(160deg, #19180D 0%, #1E2012 100%)" }}
-      >
+      <section className="py-24 bg-[#2A2520]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="w-10 h-px bg-[var(--color-or)] mx-auto mb-10" style={{ opacity: 0.5 }} aria-hidden="true" />
-          <h2 className="font-serif text-3xl sm:text-4xl font-normal text-white mb-6 leading-snug">Prêt à déléguer la gestion<br className="hidden sm:block" /> de votre bien ?</h2>
-          <p className="text-white/60 text-base mb-10" style={{ fontWeight: 300 }}>Estimation gratuite en 2 minutes. Nos experts locaux vous répondent sous 24h.</p>
+          <div
+            className="w-12 h-px mx-auto mb-10"
+            style={{ background: "var(--color-gres-moyen)", opacity: 0.5 }}
+            aria-hidden="true"
+          />
+          <h2 className="font-serif font-light text-3xl sm:text-4xl text-white mb-6 leading-snug">
+            Prêt à déléguer la gestion<br className="hidden sm:block" /> de votre bien ?
+          </h2>
+          <p
+            className="text-base mb-10 font-light"
+            style={{ color: "rgba(255,255,255,0.55)" }}
+          >
+            Estimation gratuite en 2 minutes. Nos experts locaux vous répondent sous 24h.
+          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white font-bold rounded-full hover:bg-[var(--color-or-light)] transition-colors text-base">
+            <Link
+              href="/conciergerie/estimer-mes-revenus"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-rhone)] text-white rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
+            >
               Estimer mes revenus gratuitement <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
-            <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/15 text-white font-semibold rounded-full hover:bg-white/25 transition-colors border border-white/20">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-md border font-medium transition-colors hover:bg-white/10"
+              style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.75)" }}
+            >
               Parler à un expert
             </Link>
           </div>

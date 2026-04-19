@@ -1,26 +1,21 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Cormorant_Garamond, Lato } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant-var",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-const lato = Lato({
-  variable: "--font-lato",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "700"],
+  weight: ["300", "400", "500"],
   display: "swap",
 });
 
@@ -85,7 +80,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${playfair.variable} ${cormorant.variable} ${lato.variable} h-full`}
+      className={`${cormorant.variable} ${dmSans.variable} h-full`}
     >
       <body className="min-h-full flex flex-col antialiased">
         <a href="#main-content" className="skip-link">

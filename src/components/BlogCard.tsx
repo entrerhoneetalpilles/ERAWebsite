@@ -9,7 +9,10 @@ interface BlogCardProps {
 
 export default function BlogCard({ post }: BlogCardProps) {
   return (
-    <article className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
+    <article
+      className="group bg-white rounded-xl overflow-hidden border shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+      style={{ borderColor: "var(--color-gres-clair)" }}
+    >
       <Link href={`/blog/${post.slug}`} className="block relative aspect-[16/9] overflow-hidden">
         <div
           className="w-full h-full bg-gradient-to-br from-[var(--color-cream)] to-[var(--color-alpilles)]/30 group-hover:scale-105 transition-transform duration-500"
@@ -17,14 +20,17 @@ export default function BlogCard({ post }: BlogCardProps) {
           role="img"
           aria-label={`Illustration pour "${post.title}"`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        <span className="absolute bottom-3 left-3 inline-flex items-center px-2.5 py-1 bg-white/90 text-[var(--color-rhone)] text-xs font-medium rounded-full backdrop-blur-sm">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+        <span
+          className="absolute bottom-3 left-3 inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full backdrop-blur-sm"
+          style={{ background: "rgba(255,255,255,0.92)", color: "var(--color-rhone-dark)" }}
+        >
           {post.category}
         </span>
       </Link>
 
       <div className="p-5">
-        <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
+        <div className="flex items-center gap-3 text-xs mb-3" style={{ color: "var(--texte-discret)" }}>
           <time dateTime={post.date}>{formatDate(post.date)}</time>
           <span className="flex items-center gap-1">
             <Clock className="w-3 h-3" aria-hidden="true" />
@@ -33,19 +39,21 @@ export default function BlogCard({ post }: BlogCardProps) {
         </div>
 
         <Link href={`/blog/${post.slug}`}>
-          <h3 className="font-serif text-base font-semibold text-gray-900 group-hover:text-[var(--color-rhone)] transition-colors leading-snug mb-2">
+          <h3
+            className="font-serif font-normal text-base text-[var(--color-encre)] group-hover:text-[var(--color-rhone-dark)] transition-colors leading-snug mb-2"
+          >
             {post.title}
           </h3>
         </Link>
 
-        <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-2">
+        <p className="text-sm leading-relaxed mb-4 line-clamp-2" style={{ color: "var(--texte-leger)" }}>
           {post.excerpt}
         </p>
 
         <Link
           href={`/blog/${post.slug}`}
-          className="text-xs font-medium text-[var(--color-rhone)] hover:text-[var(--color-rhone-light)] transition-colors inline-flex items-center gap-1 uppercase"
-          style={{ letterSpacing: "0.06em" }}
+          className="text-xs font-medium transition-colors inline-flex items-center gap-1 uppercase"
+          style={{ color: "var(--color-rhone-dark)", letterSpacing: "0.06em" }}
         >
           Lire l&apos;article
           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

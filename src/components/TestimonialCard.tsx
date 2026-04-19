@@ -8,21 +8,27 @@ interface TestimonialCardProps {
 
 export default function TestimonialCard({ testimonial }: TestimonialCardProps) {
   return (
-    <article className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col">
+    <article
+      className="bg-white rounded-xl p-6 border shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col"
+      style={{ borderColor: "var(--color-gres-clair)" }}
+    >
       <Quote
-        className="w-6 h-6 text-[var(--color-or)] mb-4 flex-shrink-0 opacity-70"
+        className="w-5 h-5 mb-4 flex-shrink-0 opacity-50 text-[var(--color-or)]"
         aria-hidden="true"
       />
 
-      <p className="text-gray-600 leading-relaxed text-sm flex-1 mb-6 italic">
+      <p className="leading-relaxed text-sm flex-1 mb-6 italic" style={{ color: "var(--texte-leger)" }}>
         &ldquo;{testimonial.text}&rdquo;
       </p>
 
-      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+      <div
+        className="flex items-center justify-between pt-4 border-t"
+        style={{ borderColor: "var(--color-gres-clair)" }}
+      >
         <div>
-          <p className="font-semibold text-gray-900 text-sm">{testimonial.name}</p>
-          <p className="text-xs text-gray-400 mt-0.5">{testimonial.location}</p>
-          <p className="text-xs text-gray-300 mt-0.5">{formatDate(testimonial.date)}</p>
+          <p className="font-medium text-sm text-[var(--color-encre)]">{testimonial.name}</p>
+          <p className="text-xs mt-0.5" style={{ color: "var(--texte-discret)" }}>{testimonial.location}</p>
+          <p className="text-xs mt-0.5" style={{ color: "var(--color-gres-moyen)" }}>{formatDate(testimonial.date)}</p>
         </div>
         <div className="flex flex-col items-end gap-2">
           <div className="flex gap-0.5" role="img" aria-label={`${testimonial.rating} étoiles sur 5`}>
@@ -35,11 +41,12 @@ export default function TestimonialCard({ testimonial }: TestimonialCardProps) {
             ))}
           </div>
           <span
-            className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${
+            className="text-xs px-2.5 py-0.5 rounded-full font-medium"
+            style={
               testimonial.role === "proprietaire"
-                ? "bg-[var(--color-cream)] text-[var(--color-rhone)]"
-                : "bg-[#FBF6EE] text-[var(--color-or-dark)]"
-            }`}
+                ? { background: "var(--color-cream)", color: "var(--color-rhone-dark)" }
+                : { background: "var(--color-lin)", color: "var(--color-sable)" }
+            }
           >
             {testimonial.role === "proprietaire" ? "Propriétaire" : "Voyageur"}
           </span>

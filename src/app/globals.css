@@ -2,28 +2,37 @@
 
 @theme inline {
   --color-background: #FFFFFF;
-  --color-foreground: #1C1A17;
-  --color-cream: #F4F1EC;
+  --color-foreground: #1A1A1A;
 
-  /* Accent vert sauge profond — utilisé avec parcimonie */
-  --color-rhone: #4B6043;
-  --color-rhone-light: #5E7655;
-  --color-rhone-dark: #374830;
+  /* Fonds — blanc pur → crème → lin */
+  --color-cream: #F5F0E8;
+  --color-lin: #EDE5D4;
+  --color-gres-clair: #D9C9B0;
+  --color-gres-moyen: #C2A882;
+  --color-sable: #B89A70;
+
+  /* Sauge provençale — accent CTA */
+  --color-rhone: #8C9E6E;
+  --color-rhone-light: #9DB07C;
+  --color-rhone-dark: #6E8052;
 
   /* Vert sauge secondaire */
-  --color-alpilles: #8FA870;
-  --color-alpilles-light: #A8C086;
-  --color-alpilles-dark: #6B8050;
+  --color-alpilles: #A8B890;
+  --color-alpilles-light: #BCCCA2;
+  --color-alpilles-dark: #8C9E6E;
 
-  /* Or chaud */
-  --color-or: #B5843C;
-  --color-or-light: #C89A50;
-  --color-or-dark: #8E6528;
+  /* Or / sable */
+  --color-or: #B89A70;
+  --color-or-light: #C2A882;
+  --color-or-dark: #8E7052;
 
-  /* Typography */
+  /* Encre — texte fort */
+  --color-encre: #1A1A1A;
+
+  /* Typographie */
   --font-cormorant: var(--font-cormorant-var);
-  --font-serif: var(--font-playfair);
-  --font-sans: var(--font-lato);
+  --font-serif: var(--font-cormorant-var);
+  --font-sans: var(--font-dm-sans);
 
   /* Radius */
   --radius-sm: 4px;
@@ -35,18 +44,24 @@
 
 :root {
   --blanc-pur: #FFFFFF;
-  --blanc-casse: #FAF9F6;
-  --creme-subtile: #F4F1EC;
-  --creme-profonde: #EDE8DE;
-  --texte: #1C1A17;
-  --texte-leger: #5A5650;
+  --blanc-casse: #F5F0E8;
+  --lin: #EDE5D4;
+  --gres-clair: #D9C9B0;
+  --gres-moyen: #C2A882;
+  --sable: #B89A70;
+
+  --texte: #1A1A1A;
+  --texte-corps: #3A3228;
+  --texte-leger: #7A6E65;
+  --texte-discret: #9A8A78;
   --texte-inverse: #FFFFFF;
-  --texte-desactive: #9C9890;
-  --ombre-xs: 0 1px 3px rgba(28,26,23,0.06);
-  --ombre-sm: 0 2px 8px rgba(28,26,23,0.08);
-  --ombre-md: 0 4px 16px rgba(75,96,67,0.10);
-  --ombre-lg: 0 8px 28px rgba(75,96,67,0.12);
-  --ombre-xl: 0 16px 48px rgba(75,96,67,0.15);
+
+  /* Ombres grès tintées */
+  --ombre-xs: 0 1px 3px rgba(194, 168, 130, 0.12);
+  --ombre-sm: 0 2px 8px rgba(194, 168, 130, 0.14);
+  --ombre-md: 0 4px 16px rgba(194, 168, 130, 0.18);
+  --ombre-lg: 0 8px 28px rgba(194, 168, 130, 0.20);
+  --ombre-xl: 0 16px 48px rgba(194, 168, 130, 0.22);
 }
 
 html {
@@ -55,29 +70,29 @@ html {
 
 body {
   background-color: var(--blanc-pur);
-  color: var(--texte);
-  font-family: var(--font-lato, 'Lato', system-ui, sans-serif);
+  color: var(--texte-corps);
+  font-family: var(--font-dm-sans, 'DM Sans', system-ui, sans-serif);
   font-weight: 400;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-playfair, 'Playfair Display', Georgia, serif);
-  font-weight: 400;
+  font-family: var(--font-cormorant-var, 'Cormorant Garamond', Georgia, serif);
+  font-weight: 300;
   color: var(--texte);
   letter-spacing: 0.01em;
 }
 
-/* CTA buttons — pill shape, restrained */
+/* CTA buttons — rounded-md (8px), restrained */
 a[class*="bg-[var(--color-rhone"],
 button[class*="bg-[var(--color-rhone"] {
-  border-radius: 50px;
-  letter-spacing: 0.06em;
+  border-radius: 8px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-family: var(--font-lato, 'Lato', sans-serif);
+  font-family: var(--font-dm-sans, 'DM Sans', sans-serif);
   font-size: 0.8rem;
-  font-weight: 400;
+  font-weight: 500;
   transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -88,21 +103,22 @@ button[class*="bg-[var(--color-rhone"]:hover {
 
 a[class*="bg-[var(--color-or"],
 button[class*="bg-[var(--color-or"] {
-  border-radius: 50px;
-  letter-spacing: 0.06em;
+  border-radius: 8px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-family: var(--font-lato, 'Lato', sans-serif);
+  font-family: var(--font-dm-sans, 'DM Sans', sans-serif);
   font-size: 0.8rem;
-  font-weight: 400;
+  font-weight: 500;
   transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
 a[class*="border-[var(--color-rhone"],
 button[class*="border-[var(--color-rhone"] {
-  border-radius: 50px;
-  letter-spacing: 0.06em;
+  border-radius: 8px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-size: 0.8rem;
+  font-weight: 500;
   transition: background 0.2s ease, color 0.2s ease;
 }
 
