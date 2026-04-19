@@ -174,10 +174,10 @@ export default function HomePage() {
             Délégation totale de la gestion locative avec maximisation des revenus et zéro stress — ou séjournez dans nos hébergements d'exception en Provence.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white font-semibold rounded-xl hover:bg-[var(--color-or-light)] transition-colors text-base shadow-lg">
+            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white font-semibold rounded-full hover:bg-[var(--color-or-light)] transition-colors text-base shadow-lg">
               Confier mon bien <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
-            <Link href="/locations" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/15 text-white font-semibold rounded-xl hover:bg-white/25 transition-colors text-base backdrop-blur-sm border border-white/20">
+            <Link href="/locations" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/15 text-white font-semibold rounded-full hover:bg-white/25 transition-colors text-base backdrop-blur-sm border border-white/20">
               Trouver un hébergement <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -202,7 +202,7 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {ownerBenefits.map((b) => (
-              <div key={b.title} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <div key={b.title} className="bg-white rounded-2xl p-7 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                 <div className="w-12 h-12 rounded-xl bg-[var(--color-rhone)]/10 text-[var(--color-rhone)] flex items-center justify-center mb-4">{b.icon}</div>
                 <h3 className="font-serif text-lg font-semibold text-gray-900 mb-2">{b.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">{b.desc}</p>
@@ -210,10 +210,10 @@ export default function HomePage() {
             ))}
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-xl hover:bg-[var(--color-rhone-light)] transition-colors">
+            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
               Estimer mes revenus <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
-            <Link href="/conciergerie/nos-services" className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-xl hover:bg-[var(--color-rhone)]/5 transition-colors">
+            <Link href="/conciergerie/nos-services" className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-full hover:bg-[var(--color-rhone)]/5 transition-colors">
               Découvrir nos services
             </Link>
           </div>
@@ -254,7 +254,7 @@ export default function HomePage() {
             ))}
           </div>
           <div className="text-center">
-            <Link href="/destinations" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-xl hover:bg-[var(--color-rhone-light)] transition-colors">
+            <Link href="/destinations" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
               Toutes les destinations <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -316,7 +316,7 @@ export default function HomePage() {
           <FAQAccordion items={faqItems} />
           <div className="mt-10 text-center">
             <p className="text-gray-600 mb-4">Vous avez d'autres questions ?</p>
-            <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-xl hover:bg-[var(--color-rhone-light)] transition-colors">
+            <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
               Nous contacter <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -329,10 +329,10 @@ export default function HomePage() {
           <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-6">Prêt à déléguer la gestion de votre bien ?</h2>
           <p className="text-white/80 text-lg mb-8">Estimation gratuite en 2 minutes. Nos experts locaux vous répondent sous 24h.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white font-bold rounded-xl hover:bg-[var(--color-or-light)] transition-colors text-base">
+            <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white font-bold rounded-full hover:bg-[var(--color-or-light)] transition-colors text-base">
               Estimer mes revenus gratuitement <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
-            <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/15 text-white font-semibold rounded-xl hover:bg-white/25 transition-colors border border-white/20">
+            <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/15 text-white font-semibold rounded-full hover:bg-white/25 transition-colors border border-white/20">
               Parler à un expert
             </Link>
           </div>

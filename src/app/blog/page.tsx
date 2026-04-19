@@ -58,7 +58,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      <section className="py-16 bg-[var(--color-rhone)]">
+      <section className="py-16 bg-[var(--color-rhone-dark)]">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-serif text-2xl font-bold text-white mb-4">Recevez nos conseils chaque mois</h2>
           <p className="text-white/80 mb-8">Newsletter mensuelle : astuces conciergerie, tendances du marché, guides exclusifs.</p>

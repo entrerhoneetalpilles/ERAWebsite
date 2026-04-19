@@ -8,9 +8,9 @@ interface CommuneCardProps {
 }
 
 const circleColors = {
-  1: "bg-amber-50 text-amber-700 border-amber-200",
-  2: "bg-blue-50 text-blue-700 border-blue-200",
-  3: "bg-green-50 text-green-700 border-green-200",
+  1: "bg-[#FBF6EE] text-[var(--color-or-dark)] border-[var(--color-or)]",
+  2: "bg-[var(--color-cream)] text-[var(--color-rhone)] border-[var(--color-alpilles)]",
+  3: "bg-gray-50 text-gray-500 border-gray-200",
 };
 
 const circleLabels = {
@@ -21,7 +21,7 @@ const circleLabels = {
 
 export default function CommuneCard({ commune, showCircle }: CommuneCardProps) {
   return (
-    <article className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+    <article className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 border border-gray-100">
       {/* Color band top */}
       <div
         className={`h-2 ${
@@ -80,13 +80,13 @@ export default function CommuneCard({ commune, showCircle }: CommuneCardProps) {
         <div className="flex gap-2 pt-3 border-t border-gray-100">
           <Link
             href={`/locations/${commune.slug}`}
-            className="flex-1 text-center px-3 py-2 bg-[var(--color-rhone)] text-white text-xs font-medium rounded-lg hover:bg-[var(--color-rhone-light)] transition-colors"
+            className="flex-1 text-center px-3 py-2 bg-[var(--color-rhone)] text-white text-xs font-medium rounded-full hover:bg-[var(--color-rhone-light)] transition-colors"
           >
             Hébergements
           </Link>
           <Link
             href={`/destinations/${commune.slug}`}
-            className="flex items-center gap-1 px-3 py-2 border border-gray-200 text-gray-600 text-xs font-medium rounded-lg hover:border-[var(--color-rhone)] hover:text-[var(--color-rhone)] transition-colors"
+            className="flex items-center gap-1 px-3 py-2 border border-gray-200 text-gray-500 text-xs font-medium rounded-full hover:border-[var(--color-rhone)] hover:text-[var(--color-rhone)] transition-colors"
           >
             Guide
             <ArrowRight className="w-3 h-3" aria-hidden="true" />
