@@ -106,7 +106,7 @@ export default function FAQPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         <section id="proprietaires" aria-labelledby="faq-prop-heading">
           <h2 id="faq-prop-heading" className="font-serif text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-            🏡 Questions propriétaires
+            Questions propriétaires
             <span className="text-sm font-normal text-gray-400 font-sans">{faqProprietaires.length} questions</span>
           </h2>
           <FAQAccordion items={faqProprietaires} schema={false} />
@@ -120,7 +120,7 @@ export default function FAQPage() {
 
         <section id="voyageurs" aria-labelledby="faq-voy-heading">
           <h2 id="faq-voy-heading" className="font-serif text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-            ✈️ Questions voyageurs
+            Questions voyageurs
             <span className="text-sm font-normal text-gray-400 font-sans">{faqVoyageurs.length} questions</span>
           </h2>
           <FAQAccordion items={faqVoyageurs} schema={false} />
@@ -134,7 +134,7 @@ export default function FAQPage() {
 
         <section id="destinations" aria-labelledby="faq-dest-heading">
           <h2 id="faq-dest-heading" className="font-serif text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-            📍 Questions destinations
+            Questions destinations
             <span className="text-sm font-normal text-gray-400 font-sans">{faqDestinations.length} questions</span>
           </h2>
           <FAQAccordion items={faqDestinations} schema={false} />

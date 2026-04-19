@@ -134,7 +134,7 @@ export default async function DestinationVillePage({ params }: Props) {
                 Le village offre une harmonie rare entre authenticité provençale et confort moderne.
               </p>
               <div className="mt-6 p-4 bg-[var(--color-cream)] rounded-xl">
-                <p className="text-sm font-semibold text-gray-700">⭐ Point fort : <span className="font-normal">{commune.atout}</span></p>
+                <p className="text-sm font-semibold text-gray-700">Point fort : <span className="font-normal">{commune.atout}</span></p>
               </div>
             </section>
 
@@ -143,7 +143,7 @@ export default async function DestinationVillePage({ params }: Props) {
               <ul className="space-y-3">
                 {localInfo.highlights.map((h) => (
                   <li key={h} className="flex items-start gap-3 text-gray-700">
-                    <span className="text-[var(--color-or)] mt-0.5 flex-shrink-0">✦</span>
+                    <span className="text-[var(--color-or)] mt-0.5 flex-shrink-0">—</span>
                     {h}
                   </li>
                 ))}
@@ -163,7 +163,7 @@ export default async function DestinationVillePage({ params }: Props) {
               <div className="space-y-3">
                 {localInfo.events.map((e) => (
                   <div key={e} className="flex items-center gap-3 p-4 bg-white border border-gray-100 rounded-xl shadow-sm">
-                    <span className="text-[var(--color-rhone)] text-xl">📅</span>
+                    <Calendar className="w-5 h-5 text-[var(--color-rhone)] flex-shrink-0" aria-hidden="true" />
                     <p className="text-gray-700 font-medium">{e}</p>
                   </div>
                 ))}

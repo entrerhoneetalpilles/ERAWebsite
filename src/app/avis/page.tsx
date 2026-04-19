@@ -20,7 +20,7 @@ const stats = [
   { value: "4,9/5", label: "Note moyenne", sub: "208 avis" },
   { value: "98%", label: "Recommandent ERA", sub: "Propriétaires" },
   { value: "4,8/5", label: "Satisfaction voyageurs", sub: "Toutes plateformes" },
-  { value: "5★", label: "Niveau Superhost", sub: "Airbnb France" },
+  { value: "Superhost", label: "Niveau Superhost", sub: "Airbnb France" },
 ];
 
 const schemaOrg = {

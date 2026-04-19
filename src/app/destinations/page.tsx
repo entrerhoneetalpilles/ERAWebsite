@@ -41,12 +41,9 @@ export default function DestinationsPage() {
 
       <section className="py-20 bg-white" aria-labelledby="c1-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 mb-8">
-            <span className="text-2xl">⭐</span>
-            <div>
-              <h2 id="c1-heading" className="font-serif text-2xl font-bold text-gray-900">Cœur de marché — Alpilles</h2>
-              <p className="text-sm text-gray-500">Priorité absolue · Clientèle premium · Triangle d'or</p>
-            </div>
+          <div className="mb-8">
+            <h2 id="c1-heading" className="font-serif text-2xl font-bold text-gray-900">Cœur de marché — Alpilles</h2>
+            <p className="text-sm text-gray-500">Priorité absolue · Clientèle premium · Triangle d'or</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {c1.map((c) => <CommuneCard key={c.slug} commune={c} showCircle />)}
@@ -56,12 +53,9 @@ export default function DestinationsPage() {
 
       <section className="py-20 bg-[var(--color-cream)]" aria-labelledby="c2-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 mb-8">
-            <span className="text-2xl">🔵</span>
-            <div>
-              <h2 id="c2-heading" className="font-serif text-2xl font-bold text-gray-900">Zone de développement</h2>
-              <p className="text-sm text-gray-500">Fort potentiel · Biens de caractère</p>
-            </div>
+          <div className="mb-8">
+            <h2 id="c2-heading" className="font-serif text-2xl font-bold text-gray-900">Zone de développement</h2>
+            <p className="text-sm text-gray-500">Fort potentiel · Biens de caractère</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {c2.map((c) => <CommuneCard key={c.slug} commune={c} showCircle />)}
@@ -71,12 +65,9 @@ export default function DestinationsPage() {
 
       <section className="py-20 bg-white" aria-labelledby="c3-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 mb-8">
-            <span className="text-2xl">🟢</span>
-            <div>
-              <h2 id="c3-heading" className="font-serif text-2xl font-bold text-gray-900">Frontière stratégique</h2>
-              <p className="text-sm text-gray-500">SEO longue traîne · Opportuniste</p>
-            </div>
+          <div className="mb-8">
+            <h2 id="c3-heading" className="font-serif text-2xl font-bold text-gray-900">Frontière stratégique</h2>
+            <p className="text-sm text-gray-500">SEO longue traîne · Opportuniste</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {c3.map((c) => <CommuneCard key={c.slug} commune={c} showCircle />)}

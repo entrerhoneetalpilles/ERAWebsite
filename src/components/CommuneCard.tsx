@@ -14,9 +14,9 @@ const circleColors = {
 };
 
 const circleLabels = {
-  1: "⭐ Priorité absolue",
-  2: "🔵 Fort potentiel",
-  3: "🟢 Longue traîne",
+  1: "Priorité absolue",
+  2: "Fort potentiel",
+  3: "Longue traîne",
 };
 
 export default function CommuneCard({ commune, showCircle }: CommuneCardProps) {

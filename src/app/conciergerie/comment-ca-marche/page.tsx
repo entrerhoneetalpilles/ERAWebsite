@@ -68,7 +68,7 @@ export default function CommentCaMarchePage() {
                   <ul className="space-y-3">
                     {step.items.map((item) => (
                       <li key={item} className="flex items-center gap-3 text-gray-600">
-                        <span className="w-5 h-5 rounded-full bg-[var(--color-alpilles)]/20 text-[var(--color-alpilles)] flex items-center justify-center text-xs font-bold flex-shrink-0">✓</span>
+                        <span className="w-5 h-5 rounded-full bg-[var(--color-alpilles)]/20 text-[var(--color-alpilles)] flex items-center justify-center flex-shrink-0" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3"><polyline points="2,6 5,9 10,3" /></svg></span>
                         {item}
                       </li>
                     ))}

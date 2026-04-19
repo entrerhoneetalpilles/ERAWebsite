@@ -69,11 +69,11 @@ export default function LocationsHubPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-3">
             <Link href="/locations/avec-piscine" className="px-4 py-2 rounded-full border border-gray-200 text-sm text-gray-700 hover:border-[var(--color-rhone)] hover:text-[var(--color-rhone)] transition-colors">
-              🏊 Avec piscine
+              Avec piscine
             </Link>
             {propertyTypes.slice(0, 5).map((t) => (
               <Link key={t.slug} href={`/locations/${t.slug}`} className="px-4 py-2 rounded-full border border-gray-200 text-sm text-gray-700 hover:border-[var(--color-rhone)] hover:text-[var(--color-rhone)] transition-colors">
-                {t.icon} {t.name}
+                {t.name}
               </Link>
             ))}
           </div>
@@ -102,7 +102,7 @@ export default function LocationsHubPage() {
                 className="p-4 bg-white rounded-xl border border-gray-100 hover:border-[var(--color-rhone)] hover:shadow-sm transition-all text-center group">
                 <p className="text-sm font-semibold text-gray-800 group-hover:text-[var(--color-rhone)] transition-colors leading-snug">{c.name}</p>
                 <p className="text-xs text-gray-400 mt-1">
-                  {c.circle === 1 ? "⭐" : c.circle === 2 ? "🔵" : "🟢"}
+                  {c.circle === 1 ? "C1" : c.circle === 2 ? "C2" : "C3"}
                 </p>
               </Link>
             ))}
@@ -118,7 +118,6 @@ export default function LocationsHubPage() {
             {propertyTypes.map((t) => (
               <Link key={t.slug} href={`/locations/${t.slug}`}
                 className="p-5 bg-[var(--color-cream)] rounded-xl hover:shadow-sm transition-all group border border-transparent hover:border-[var(--color-rhone)]">
-                <p className="text-3xl mb-2">{t.icon}</p>
                 <p className="font-semibold text-gray-900 group-hover:text-[var(--color-rhone)] transition-colors">{t.plural}</p>
                 <p className="text-xs text-gray-500 mt-1 leading-snug">{t.description}</p>
               </Link>
@@ -135,10 +134,7 @@ export default function LocationsHubPage() {
             {activityTags.map((tag) => (
               <Link key={tag.slug} href={`/locations/${tag.slug}`}
                 className="flex items-center gap-3 p-4 bg-white rounded-xl hover:shadow-sm transition-all group border border-transparent hover:border-[var(--color-alpilles)]">
-                <span className="text-2xl">{tag.icon}</span>
-                <div>
-                  <p className="text-sm font-semibold text-gray-800 group-hover:text-[var(--color-alpilles)] transition-colors">{tag.name}</p>
-                </div>
+                <p className="text-sm font-semibold text-gray-800 group-hover:text-[var(--color-alpilles)] transition-colors">{tag.name}</p>
               </Link>
             ))}
           </div>

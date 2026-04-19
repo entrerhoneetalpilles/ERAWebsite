@@ -208,7 +208,7 @@ export default async function LocationsSlugPage({ params }: Props) {
                   return (
                     <Link key={type} href={`/locations/${commune.slug}/${type}`}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-cream)] rounded-full text-sm font-medium text-gray-700 hover:bg-[var(--color-rhone)] hover:text-white transition-colors">
-                      {pt?.icon} {pt?.plural ?? type}
+                      {pt?.plural ?? type}
                     </Link>
                   );
                 })}
@@ -274,7 +274,6 @@ export default async function LocationsSlugPage({ params }: Props) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Breadcrumb items={[{ label: "Locations", href: "/locations" }, { label: pt.plural }]} />
             <div className="mt-8 max-w-3xl">
-              <div className="text-4xl mb-4" aria-hidden="true">{pt.icon}</div>
               <h1 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
                 {pt.plural} en Provence
               </h1>
@@ -337,7 +336,6 @@ export default async function LocationsSlugPage({ params }: Props) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Breadcrumb items={[{ label: "Locations", href: "/locations" }, { label: at.name }]} />
             <div className="mt-8 max-w-3xl">
-              <div className="text-4xl mb-4" aria-hidden="true">{at.icon}</div>
               <h1 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
                 Hébergements {at.name} en Provence
               </h1>

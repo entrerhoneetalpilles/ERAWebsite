@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const formulas = [
   {
     id: "essentiel",
-    label: "🔵 Essentiel",
+    label: "Essentiel",
     rate: "18%",
     unit: "HT",
     pitch: "Gestion locative essentielle",
@@ -49,7 +49,7 @@ const formulas = [
   },
   {
     id: "premium",
-    label: "🟢 Premium",
+    label: "Premium",
     rate: "22%",
     unit: "HT",
     pitch: "Full service sans contrainte",
@@ -87,7 +87,7 @@ const formulas = [
   },
   {
     id: "prestige",
-    label: "⭐ Prestige",
+    label: "Prestige",
     rate: "28%",
     unit: "HT",
     pitch: "Expérience haut de gamme",

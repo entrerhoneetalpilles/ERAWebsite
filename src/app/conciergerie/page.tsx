@@ -159,15 +159,15 @@ export default function ConciergerieHubPage() {
               <h3 className="font-serif text-2xl font-bold mb-6">Nos tarifs</h3>
               <div className="space-y-4 mb-8">
                 <div className="flex justify-between items-center py-3 border-b border-white/20">
-                  <span>🔵 Essentiel</span>
+                  <span>Essentiel</span>
                   <span className="font-bold text-[var(--color-or)]">18% HT</span>
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-white/20">
-                  <span>🟢 Premium</span>
+                  <span>Premium</span>
                   <span className="font-bold text-[var(--color-or)]">22% HT</span>
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-white/20">
-                  <span>⭐ Prestige</span>
+                  <span>Prestige</span>
                   <span className="font-bold text-[var(--color-or)]">28% HT</span>
                 </div>
                 <div className="flex justify-between items-center py-3">

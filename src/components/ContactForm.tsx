@@ -92,7 +92,6 @@ export default function ContactForm() {
             <div className="lg:col-span-2">
               {submitted ? (
                 <div className="text-center py-16">
-                  <p className="text-5xl mb-6">✉️</p>
                   <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">Message envoyé !</h2>
                   <p className="text-gray-600">Nous vous répondrons sous 24 heures ouvrées.</p>
                 </div>
@@ -121,8 +120,8 @@ export default function ContactForm() {
                     <p className="block text-sm font-semibold text-gray-700 mb-3">Je suis… *</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[
-                        { val: "proprietaire", label: "🏡 Propriétaire" },
-                        { val: "voyageur", label: "✈️ Voyageur" },
+                        { val: "proprietaire", label: "Propriétaire" },
+                        { val: "voyageur", label: "Voyageur" },
                       ].map((opt) => (
                         <button key={opt.val} type="button" onClick={() => setForm({ ...form, sujet: opt.val })}
                           className={`py-3 px-4 rounded-xl border-2 text-sm font-semibold transition-colors ${form.sujet === opt.val ? "border-[var(--color-rhone)] bg-[var(--color-rhone)] text-white" : "border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}>

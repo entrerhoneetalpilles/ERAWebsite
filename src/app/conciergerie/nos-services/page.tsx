@@ -81,7 +81,7 @@ export default function NosServicesPage() {
                 <ul className="space-y-3">
                   {group.services.map((s) => (
                     <li key={s} className="flex items-start gap-3 text-gray-700 text-sm leading-relaxed">
-                      <span className="text-[var(--color-alpilles)] font-bold mt-0.5 flex-shrink-0">✓</span>
+                      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 text-[var(--color-alpilles)] mt-0.5 flex-shrink-0" aria-hidden="true"><polyline points="2,6 5,9 10,3" /></svg>
                       {s}
                     </li>
                   ))}

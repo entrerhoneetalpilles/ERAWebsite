@@ -166,7 +166,7 @@ export default function EstimerForm() {
                     {emailError && <p className="text-red-500 text-xs mt-2">{emailError}</p>}
                   </div>
                 ) : (
-                  <p className="text-[var(--color-alpilles)] font-semibold">✓ Votre étude personnalisée vous sera envoyée sous 24h !</p>
+                  <p className="text-[var(--color-alpilles)] font-semibold">Votre étude personnalisée vous sera envoyée sous 24h !</p>
                 )}
               </div>
             )}

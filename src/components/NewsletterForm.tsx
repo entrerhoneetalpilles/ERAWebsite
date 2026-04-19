@@ -32,7 +32,7 @@ export default function NewsletterForm() {
   }
 
   if (submitted) {
-    return <p className="text-white font-semibold py-3">✓ Vous êtes inscrit(e) ! À bientôt.</p>;
+    return <p className="text-white font-semibold py-3">Inscription confirmée ! À bientôt.</p>;
   }
 
   return (

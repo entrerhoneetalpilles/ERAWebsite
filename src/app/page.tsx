@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 const stats = [
   { value: "30+", label: "Biens gérés" },
-  { value: "4,9★", label: "Note moyenne" },
+  { value: "4,9/5", label: "Note moyenne" },
   { value: "20", label: "Communes couvertes" },
   { value: "85%", label: "Taux d'occupation" },
 ];
