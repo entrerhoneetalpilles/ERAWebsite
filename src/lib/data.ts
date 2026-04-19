@@ -432,6 +432,56 @@ export const blogPosts: BlogPost[] = [
     image: "/images/blog/blog-3.jpg",
     readTime: 5,
   },
+  {
+    slug: "fiscalite-location-courte-duree-provence",
+    title: "Fiscalité de la location courte durée : guide complet 2025",
+    excerpt:
+      "Déclaration des revenus Airbnb, régimes micro-BIC et réel, taxe de séjour, CFE — tout ce que le propriétaire doit savoir.",
+    date: "2025-03-10",
+    category: "Conseils propriétaires",
+    image: "/images/blog/blog-4.jpg",
+    readTime: 10,
+  },
+  {
+    slug: "saint-remy-de-provence-guide-complet",
+    title: "Saint-Rémy-de-Provence : le guide complet du voyageur",
+    excerpt:
+      "Marché provençal, Glanum, Van Gogh, restaurants étoilés — tout ce qu'il faut savoir pour séjourner à Saint-Rémy.",
+    date: "2025-02-20",
+    category: "Guides de voyage",
+    image: "/images/blog/blog-5.jpg",
+    readTime: 9,
+  },
+  {
+    slug: "optimiser-annonce-airbnb-provence",
+    title: "Comment optimiser son annonce Airbnb pour la Provence",
+    excerpt:
+      "Photos, titre, description, tarification — les 7 leviers qui font passer une annonce de la page 3 à la page 1.",
+    date: "2025-02-05",
+    category: "Conseils propriétaires",
+    image: "/images/blog/blog-6.jpg",
+    readTime: 7,
+  },
+  {
+    slug: "marches-provencaux-alpilles",
+    title: "Les marchés provençaux des Alpilles : notre sélection",
+    excerpt:
+      "Saint-Rémy, Maussane, Eygalières, Arles… Chaque marché a son âme. Notre guide pour ne rater aucun incontournable.",
+    date: "2025-01-15",
+    category: "Guides de voyage",
+    image: "/images/blog/blog-7.jpg",
+    readTime: 6,
+  },
+  {
+    slug: "investir-location-saisonniere-alpilles",
+    title: "Investir dans la location saisonnière aux Alpilles : rentabilité 2025",
+    excerpt:
+      "Rendements attendus, communes à privilégier, fiscalité avantageuse — le guide de l'investisseur en location courte durée en Provence.",
+    date: "2024-12-10",
+    category: "Actualités région",
+    image: "/images/blog/blog-8.jpg",
+    readTime: 11,
+  },
 ];
 
 export const testimonials: Testimonial[] = [

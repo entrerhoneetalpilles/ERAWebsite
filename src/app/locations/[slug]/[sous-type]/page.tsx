@@ -82,7 +82,7 @@ export default async function LocationsVilleTypePage({ params }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {mockProperties.map((p) => (
-              <PropertyCard key={p.slug} {...p} />
+              <PropertyCard key={p.slug} {...p} href={`/locations/${slug}`} />
             ))}
           </div>
         </div>

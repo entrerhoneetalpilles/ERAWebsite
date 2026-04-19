@@ -195,7 +195,7 @@ export default async function LocationsSlugPage({ params }: Props) {
               <span className="text-sm text-gray-500">{properties.length} biens disponibles</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {properties.map((p) => <PropertyCard key={p.slug} {...p} />)}
+              {properties.map((p) => <PropertyCard key={p.slug} {...p} href={`/locations/${commune.slug}`} />)}
             </div>
 
             <div className="border-t border-gray-100 pt-12">
