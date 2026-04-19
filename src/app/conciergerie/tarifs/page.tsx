@@ -7,6 +7,7 @@ import FAQAccordion from "@/components/FAQAccordion";
 export const metadata: Metadata = {
   title: "Tarifs Conciergerie Provence — Entre Rhône et Alpilles",
   description: "Nos tarifs de conciergerie : 20 à 25% de commission sur revenus, sans frais fixes. Transparent, sans engagement. Devis gratuit.",
+  alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie/tarifs" },
 };
 
 const comparison = [
@@ -27,22 +28,47 @@ const faqItems = [
   { question: "Les frais de ménage sont-ils à ma charge ?", answer: "Les frais de ménage sont refacturés aux voyageurs (frais de nettoyage visibles sur l'annonce). Vous n'avancez rien." },
 ];
 
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: { "@type": "Answer", text: item.answer },
+      })),
+    },
+    {
+      "@type": "PriceSpecification",
+      name: "Tarifs de conciergerie Entre Rhône et Alpilles",
+      description: "Commission sur revenus locatifs, sans frais fixes ni engagement minimum.",
+      priceCurrency: "EUR",
+      minPrice: "20",
+      maxPrice: "25",
+      unitText: "% des revenus locatifs",
+      eligibleQuantity: { "@type": "QuantitativeValue", unitText: "par mois" },
+    },
+  ],
+};
+
 export default function TarifsPage() {
   return (
     <div className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
+
       <div className="bg-[var(--color-cream)] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[{ label: "Conciergerie", href: "/conciergerie" }, { label: "Tarifs" }]} />
           <div className="mt-8 max-w-3xl">
             <h1 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-6">Tarifs clairs, sans surprise</h1>
-            <p className="text-xl text-gray-600 leading-relaxed">Une commission simple sur vos revenus réels. Pas de frais fixes, pas d'engagement. On gagne quand vous gagnez.</p>
+            <p className="text-xl text-gray-600 leading-relaxed">Une commission simple sur vos revenus réels. Pas de frais fixes, pas d&apos;engagement. On gagne quand vous gagnez.</p>
           </div>
         </div>
       </div>
 
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Pricing cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
             <div className="rounded-2xl border-2 border-gray-200 p-8">
               <h2 className="font-serif text-2xl font-bold text-gray-900 mb-2">Essentiel</h2>
@@ -84,7 +110,6 @@ export default function TarifsPage() {
             </div>
           </div>
 
-          {/* Comparison */}
           <h2 className="font-serif text-2xl font-bold text-gray-900 mb-8 text-center">Gérer seul vs. Avec Entre Rhône et Alpilles</h2>
           <div className="rounded-2xl overflow-hidden border border-gray-100 mb-16">
             <div className="grid grid-cols-3 bg-gray-50 p-4 text-sm font-semibold text-gray-500">
@@ -101,7 +126,6 @@ export default function TarifsPage() {
             ))}
           </div>
 
-          {/* FAQ */}
           <h2 className="font-serif text-2xl font-bold text-gray-900 mb-8 text-center">Questions sur nos tarifs</h2>
           <FAQAccordion items={faqItems} />
 

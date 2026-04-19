@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import PropertyCard from "@/components/PropertyCard";
 import Breadcrumb from "@/components/Breadcrumb";
 import { communes, propertyTypes, activityTags } from "@/lib/data";
@@ -9,22 +8,47 @@ export const metadata: Metadata = {
   title: "Locations de Vacances en Provence — Alpilles & Rhône",
   description:
     "Découvrez nos hébergements de caractère entre le Rhône et les Alpilles : mas provençaux, villas avec piscine, bastides, appartements. 20 communes en Provence.",
+  alternates: { canonical: "https://entre-rhone-alpilles.fr/locations" },
+  openGraph: {
+    title: "Locations de Vacances en Provence — Mas, Villas, Bastides",
+    description: "Hébergements d'exception sélectionnés dans 20 communes entre le Rhône et les Alpilles.",
+  },
 };
 
 const featuredProperties = [
-  { title: "Mas des Oliviers — Vue Alpilles", location: "Saint-Rémy-de-Provence", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, slug: "mas-des-oliviers-saint-remy", featured: true },
-  { title: "Villa Baux — Terrasse panoramique", location: "Les Baux-de-Provence", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, slug: "villa-baux-terrasse", featured: false },
-  { title: "Mas Maussane — Cœur des Alpilles", location: "Maussane-les-Alpilles", type: "Mas", guests: 10, price: 390, rating: 5.0, reviewCount: 22, hasPiscine: true, slug: "mas-maussane-alpilles", featured: false },
-  { title: "Appartement du Théâtre — Arles", location: "Arles", type: "Appartement", guests: 4, price: 140, rating: 4.9, reviewCount: 58, hasPiscine: false, slug: "appartement-theatre-arles", featured: false },
-  { title: "Bastide Eygalières — Luxe absolu", location: "Eygalières", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, slug: "bastide-eygalieres-luxe", featured: false },
-  { title: "Gîte Paradou — Oliviers centenaires", location: "Paradou", type: "Gîte", guests: 4, price: 165, rating: 4.8, reviewCount: 36, hasPiscine: false, slug: "gite-paradou-oliviers", featured: false },
+  { title: "Mas des Oliviers — Vue Alpilles", location: "Saint-Rémy-de-Provence", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, slug: "mas-des-oliviers-saint-remy" },
+  { title: "Villa Baux — Terrasse panoramique", location: "Les Baux-de-Provence", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, slug: "villa-baux-terrasse" },
+  { title: "Mas Maussane — Cœur des Alpilles", location: "Maussane-les-Alpilles", type: "Mas", guests: 10, price: 390, rating: 5.0, reviewCount: 22, hasPiscine: true, slug: "mas-maussane-alpilles" },
+  { title: "Appartement du Théâtre — Arles", location: "Arles", type: "Appartement", guests: 4, price: 140, rating: 4.9, reviewCount: 58, hasPiscine: false, slug: "appartement-theatre-arles" },
+  { title: "Bastide Eygalières — Luxe absolu", location: "Eygalières", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, slug: "bastide-eygalieres-luxe" },
+  { title: "Gîte Paradou — Oliviers centenaires", location: "Paradou", type: "Gîte", guests: 4, price: 165, rating: 4.8, reviewCount: 36, hasPiscine: false, slug: "gite-paradou-oliviers" },
 ];
 
-const topCommunes = communes.filter((c) => c.circle === 1);
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Locations de vacances en Provence — Entre Rhône et Alpilles",
+  description: "Mas provençaux, villas avec piscine, bastides et appartements de caractère dans 20 communes entre le Rhône et les Alpilles.",
+  url: "https://entre-rhone-alpilles.fr/locations",
+  numberOfItems: featuredProperties.length,
+  itemListElement: featuredProperties.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "LodgingBusiness",
+      name: p.title,
+      address: { "@type": "PostalAddress", addressLocality: p.location, addressCountry: "FR" },
+      aggregateRating: { "@type": "AggregateRating", ratingValue: p.rating, reviewCount: p.reviewCount, bestRating: 5 },
+      priceRange: `${p.price}€/nuit`,
+    },
+  })),
+};
 
 export default function LocationsHubPage() {
   return (
     <div className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
+
       <div className="bg-[var(--color-cream)] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[{ label: "Locations de vacances" }]} />
@@ -34,7 +58,7 @@ export default function LocationsHubPage() {
               <span className="text-[var(--color-rhone)]">entre Rhône et Alpilles</span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
-              Mas provençaux, villas avec piscine, bastides et appartements de caractère. Des hébergements d'exception sélectionnés dans 20 communes de Provence.
+              Mas provençaux, villas avec piscine, bastides et appartements de caractère. Des hébergements d&apos;exception sélectionnés dans 20 communes de Provence.
             </p>
           </div>
         </div>

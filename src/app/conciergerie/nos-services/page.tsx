@@ -6,6 +6,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 export const metadata: Metadata = {
   title: "Nos Services de Conciergerie — Entre Rhône et Alpilles",
   description: "Check-in/out, ménage, tarification dynamique, communication voyageurs, maintenance. Découvrez tous les services inclus dans notre conciergerie Provence.",
+  alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie/nos-services" },
 };
 
 const serviceGroups = [
@@ -27,15 +28,46 @@ const serviceGroups = [
   },
 ];
 
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Conciergerie de locations saisonnières en Provence",
+  description: "Service complet de gestion locative courte durée pour propriétaires. Check-in/out, ménage, tarification dynamique, communication voyageurs, maintenance.",
+  serviceType: "Property Management / Conciergerie Airbnb",
+  provider: {
+    "@type": "Organization",
+    name: "Entre Rhône et Alpilles",
+    url: "https://entre-rhone-alpilles.fr",
+  },
+  areaServed: { "@type": "Place", name: "Provence — Alpilles & Rhône" },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Services de conciergerie inclus",
+    itemListElement: serviceGroups.flatMap((g, gi) =>
+      g.services.map((s, si) => ({
+        "@type": "Offer",
+        position: gi * 10 + si + 1,
+        itemOffered: {
+          "@type": "Service",
+          name: s,
+          serviceType: g.title,
+        },
+      }))
+    ),
+  },
+};
+
 export default function NosServicesPage() {
   return (
     <div className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
+
       <div className="bg-[var(--color-cream)] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[{ label: "Conciergerie", href: "/conciergerie" }, { label: "Nos services" }]} />
           <div className="mt-8 max-w-3xl">
             <h1 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-6">Nos services de conciergerie</h1>
-            <p className="text-xl text-gray-600 leading-relaxed">Une gestion complète de A à Z pour que vous n'ayez plus à vous soucier de rien. Tout est inclus dans notre commission.</p>
+            <p className="text-xl text-gray-600 leading-relaxed">Une gestion complète de A à Z pour que vous n&apos;ayez plus à vous soucier de rien. Tout est inclus dans notre commission.</p>
           </div>
         </div>
       </div>
@@ -60,7 +92,7 @@ export default function NosServicesPage() {
 
           <div className="mt-16 bg-[var(--color-rhone)] rounded-2xl p-8 text-white text-center">
             <h2 className="font-serif text-2xl font-bold mb-4">Tout cela pour seulement 20 à 25% de commission</h2>
-            <p className="text-white/80 mb-8 max-w-xl mx-auto">Pas de frais cachés, pas d'engagement minimum. Vous ne payez que sur vos revenus réels.</p>
+            <p className="text-white/80 mb-8 max-w-xl mx-auto">Pas de frais cachés, pas d&apos;engagement minimum. Vous ne payez que sur vos revenus réels.</p>
             <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-or)] text-white font-bold rounded-xl hover:bg-[var(--color-or-light)] transition-colors">
               Estimer mes revenus <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>

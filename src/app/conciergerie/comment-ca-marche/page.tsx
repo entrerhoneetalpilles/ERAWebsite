@@ -6,6 +6,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 export const metadata: Metadata = {
   title: "Comment ça marche — Conciergerie Entre Rhône et Alpilles",
   description: "Découvrez notre processus de gestion locative en Provence. Estimation, onboarding, gestion complète — tout en 3 étapes simples.",
+  alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie/comment-ca-marche" },
 };
 
 const steps = [
@@ -23,9 +24,29 @@ const steps = [
   },
 ];
 
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "Comment confier son bien à une conciergerie de location saisonnière en Provence",
+  description: "Notre processus en 3 étapes pour déléguer sereinement la gestion de votre bien entre le Rhône et les Alpilles.",
+  totalTime: "PT30M",
+  supply: [
+    { "@type": "HowToSupply", name: "Titre de propriété ou mandat du bien" },
+    { "@type": "HowToSupply", name: "Coordonnées du propriétaire" },
+  ],
+  step: steps.map((s) => ({
+    "@type": "HowToStep",
+    name: s.title,
+    text: s.items.join(". "),
+    url: `https://entre-rhone-alpilles.fr/conciergerie/comment-ca-marche#step-${s.num}`,
+  })),
+};
+
 export default function CommentCaMarchePage() {
   return (
     <div className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
+
       <div className="bg-[var(--color-cream)] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[{ label: "Conciergerie", href: "/conciergerie" }, { label: "Comment ça marche" }]} />
@@ -40,7 +61,7 @@ export default function CommentCaMarchePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-16">
             {steps.map((step) => (
-              <div key={step.num} className="flex gap-8">
+              <div key={step.num} id={`step-${step.num}`} className="flex gap-8">
                 <div className="flex-shrink-0 w-16 h-16 rounded-full bg-[var(--color-rhone)] text-white flex items-center justify-center font-serif text-2xl font-bold">{step.num}</div>
                 <div>
                   <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">{step.title}</h2>

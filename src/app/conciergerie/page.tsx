@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   title: "Conciergerie Airbnb Provence — Services pour Propriétaires",
   description:
     "Déléguez la gestion de votre location saisonnière en Provence. Check-in/out, ménage, communication voyageurs, tarification dynamique. Devis gratuit.",
+  alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie" },
+  openGraph: {
+    title: "Conciergerie Airbnb Provence — Gestion locative complète",
+    description: "Commission 20–25%, sans frais fixes, sans engagement. Notre équipe locale gère tout.",
+  },
 };
 
 const steps = [
@@ -24,9 +29,60 @@ const services = [
   { icon: <Star className="w-5 h-5" />, label: "Optimisation des avis" },
 ];
 
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Entre Rhône et Alpilles — Conciergerie",
+  description: "Service de conciergerie de locations saisonnières haut de gamme en Provence. Gestion complète : check-in/out, ménage, tarification dynamique, communication voyageurs.",
+  url: "https://entre-rhone-alpilles.fr/conciergerie",
+  telephone: "+33600000000",
+  email: "contact@entre-rhone-alpilles.fr",
+  serviceType: "Conciergerie de locations saisonnières",
+  areaServed: [
+    { "@type": "Place", name: "Alpilles, Provence-Alpes-Côte d'Azur" },
+    { "@type": "Place", name: "Rhône, Provence" },
+  ],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Formules de conciergerie",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        name: "Formule Essentielle",
+        description: "Gestion des réservations, check-in/out, ménage professionnel, communication voyageurs, rapport mensuel.",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "20",
+          priceCurrency: "EUR",
+          unitText: "% des revenus locatifs",
+        },
+      },
+      {
+        "@type": "Offer",
+        name: "Formule Premium",
+        description: "Tout Essentiel + tarification dynamique PriceLabs, optimisation annonces, linge hôtelier premium, gestionnaire dédié.",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "25",
+          priceCurrency: "EUR",
+          unitText: "% des revenus locatifs",
+        },
+      },
+    ],
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.9",
+    reviewCount: "208",
+    bestRating: "5",
+  },
+};
+
 export default function ConciergerieHubPage() {
   return (
     <div className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
+
       <div className="bg-[var(--color-cream)] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[{ label: "Propriétaires & Conciergerie" }]} />
@@ -36,7 +92,7 @@ export default function ConciergerieHubPage() {
               <span className="text-[var(--color-rhone)]">saisonnières en Provence</span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed mb-8">
-              Vous êtes propriétaire d'un mas, d'une villa ou d'un appartement entre le Rhône et les Alpilles ? Déléguez la gestion à notre équipe locale et profitez de vos revenus locatifs sans les contraintes.
+              Vous êtes propriétaire d&apos;un mas, d&apos;une villa ou d&apos;un appartement entre le Rhône et les Alpilles ? Déléguez la gestion à notre équipe locale et profitez de vos revenus locatifs sans les contraintes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/conciergerie/estimer-mes-revenus" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-xl hover:bg-[var(--color-rhone-light)] transition-colors">
@@ -50,7 +106,6 @@ export default function ConciergerieHubPage() {
         </div>
       </div>
 
-      {/* Comment ça marche */}
       <section className="py-20 bg-white" aria-labelledby="steps-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 id="steps-heading" className="font-serif text-3xl font-bold text-gray-900 mb-12 text-center">Comment ça marche ?</h2>
@@ -71,7 +126,6 @@ export default function ConciergerieHubPage() {
         </div>
       </section>
 
-      {/* Services inclus */}
       <section className="py-20 bg-[var(--color-cream)]" aria-labelledby="services-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -98,7 +152,7 @@ export default function ConciergerieHubPage() {
                   <span className="font-bold text-[var(--color-or)]">20–25%</span>
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-white/20">
-                  <span>Frais d'installation</span>
+                  <span>Frais d&apos;installation</span>
                   <span className="font-bold text-[var(--color-or)]">Offerts</span>
                 </div>
                 <div className="flex justify-between items-center py-3">
@@ -114,7 +168,6 @@ export default function ConciergerieHubPage() {
         </div>
       </section>
 
-      {/* Liens rapides */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

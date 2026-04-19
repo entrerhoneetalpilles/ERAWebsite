@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Blog — Conseils Conciergerie & Guides Provence",
   description:
     "Conseils pour propriétaires, guides de voyage Provence, actualités du marché locatif. Le blog d'Entre Rhône et Alpilles.",
+  alternates: { canonical: "https://entre-rhone-alpilles.fr/blog" },
 };
 
 const categories = ["Tous", "Conseils propriétaires", "Guides de voyage", "Actualités région"];
