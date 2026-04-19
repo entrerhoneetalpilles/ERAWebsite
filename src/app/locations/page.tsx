@@ -1,0 +1,125 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import PropertyCard from "@/components/PropertyCard";
+import Breadcrumb from "@/components/Breadcrumb";
+import { communes, propertyTypes, activityTags } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "Locations de Vacances en Provence — Alpilles & Rhône",
+  description:
+    "Découvrez nos hébergements de caractère entre le Rhône et les Alpilles : mas provençaux, villas avec piscine, bastides, appartements. 20 communes en Provence.",
+};
+
+const featuredProperties = [
+  { title: "Mas des Oliviers — Vue Alpilles", location: "Saint-Rémy-de-Provence", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, slug: "mas-des-oliviers-saint-remy", featured: true },
+  { title: "Villa Baux — Terrasse panoramique", location: "Les Baux-de-Provence", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, slug: "villa-baux-terrasse", featured: false },
+  { title: "Mas Maussane — Cœur des Alpilles", location: "Maussane-les-Alpilles", type: "Mas", guests: 10, price: 390, rating: 5.0, reviewCount: 22, hasPiscine: true, slug: "mas-maussane-alpilles", featured: false },
+  { title: "Appartement du Théâtre — Arles", location: "Arles", type: "Appartement", guests: 4, price: 140, rating: 4.9, reviewCount: 58, hasPiscine: false, slug: "appartement-theatre-arles", featured: false },
+  { title: "Bastide Eygalières — Luxe absolu", location: "Eygalières", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, slug: "bastide-eygalieres-luxe", featured: false },
+  { title: "Gîte Paradou — Oliviers centenaires", location: "Paradou", type: "Gîte", guests: 4, price: 165, rating: 4.8, reviewCount: 36, hasPiscine: false, slug: "gite-paradou-oliviers", featured: false },
+];
+
+const topCommunes = communes.filter((c) => c.circle === 1);
+
+export default function LocationsHubPage() {
+  return (
+    <div className="pt-20">
+      <div className="bg-[var(--color-cream)] py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumb items={[{ label: "Locations de vacances" }]} />
+          <div className="mt-8 max-w-3xl">
+            <h1 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+              Locations de vacances<br />
+              <span className="text-[var(--color-rhone)]">entre Rhône et Alpilles</span>
+            </h1>
+            <p className="text-xl text-gray-600 leading-relaxed">
+              Mas provençaux, villas avec piscine, bastides et appartements de caractère. Des hébergements d'exception sélectionnés dans 20 communes de Provence.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Filtres rapides */}
+      <section className="py-8 bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap gap-3">
+            <Link href="/locations/avec-piscine" className="px-4 py-2 rounded-full border border-gray-200 text-sm text-gray-700 hover:border-[var(--color-rhone)] hover:text-[var(--color-rhone)] transition-colors">
+              🏊 Avec piscine
+            </Link>
+            {propertyTypes.slice(0, 5).map((t) => (
+              <Link key={t.slug} href={`/locations/${t.slug}`} className="px-4 py-2 rounded-full border border-gray-200 text-sm text-gray-700 hover:border-[var(--color-rhone)] hover:text-[var(--color-rhone)] transition-colors">
+                {t.icon} {t.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Hébergements */}
+      <section className="py-20 bg-white" aria-labelledby="properties-heading">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 id="properties-heading" className="font-serif text-2xl font-bold text-gray-900 mb-8">Nos hébergements à la une</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredProperties.map((p) => (
+              <PropertyCard key={p.slug} {...p} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Par commune */}
+      <section className="py-20 bg-[var(--color-cream)]" aria-labelledby="by-commune">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 id="by-commune" className="font-serif text-2xl font-bold text-gray-900 mb-8">Par commune</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {communes.slice(0, 15).map((c) => (
+              <Link key={c.slug} href={`/locations/${c.slug}`}
+                className="p-4 bg-white rounded-xl border border-gray-100 hover:border-[var(--color-rhone)] hover:shadow-sm transition-all text-center group">
+                <p className="text-sm font-semibold text-gray-800 group-hover:text-[var(--color-rhone)] transition-colors leading-snug">{c.name}</p>
+                <p className="text-xs text-gray-400 mt-1">
+                  {c.circle === 1 ? "⭐" : c.circle === 2 ? "🔵" : "🟢"}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Par type */}
+      <section className="py-20 bg-white" aria-labelledby="by-type">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 id="by-type" className="font-serif text-2xl font-bold text-gray-900 mb-8">Par type de bien</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {propertyTypes.map((t) => (
+              <Link key={t.slug} href={`/locations/${t.slug}`}
+                className="p-5 bg-[var(--color-cream)] rounded-xl hover:shadow-sm transition-all group border border-transparent hover:border-[var(--color-rhone)]">
+                <p className="text-3xl mb-2">{t.icon}</p>
+                <p className="font-semibold text-gray-900 group-hover:text-[var(--color-rhone)] transition-colors">{t.plural}</p>
+                <p className="text-xs text-gray-500 mt-1 leading-snug">{t.description}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Par activité */}
+      <section className="py-20 bg-[var(--color-cream)]" aria-labelledby="by-activity">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 id="by-activity" className="font-serif text-2xl font-bold text-gray-900 mb-8">Par séjour thématique</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {activityTags.map((tag) => (
+              <Link key={tag.slug} href={`/locations/${tag.slug}`}
+                className="flex items-center gap-3 p-4 bg-white rounded-xl hover:shadow-sm transition-all group border border-transparent hover:border-[var(--color-alpilles)]">
+                <span className="text-2xl">{tag.icon}</span>
+                <div>
+                  <p className="text-sm font-semibold text-gray-800 group-hover:text-[var(--color-alpilles)] transition-colors">{tag.name}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
