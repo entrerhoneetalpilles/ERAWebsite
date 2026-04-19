@@ -119,7 +119,7 @@ const schemaOrg = {
       sameAs: [
         "https://www.airbnb.fr",
         "https://www.facebook.com/entrerhonealpilles",
-        "https://www.instagram.com/entrerhonealpilles",
+        "https://www.instagram.com/entrerhoneetalpilles",
       ],
     },
     {
