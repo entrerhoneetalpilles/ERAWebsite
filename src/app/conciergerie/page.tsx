@@ -6,11 +6,11 @@ import Breadcrumb from "@/components/Breadcrumb";
 export const metadata: Metadata = {
   title: "Conciergerie Airbnb Provence — Services pour Propriétaires",
   description:
-    "Déléguez la gestion de votre location saisonnière en Provence. Check-in/out, ménage, communication voyageurs, tarification dynamique. Devis gratuit.",
+    "Déléguez la gestion de votre location saisonnière en Provence. 3 formules : Essentiel 18%, Premium 22%, Prestige 28% HT. Vous percevez vos revenus directement.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie" },
   openGraph: {
     title: "Conciergerie Airbnb Provence — Gestion locative complète",
-    description: "Commission 20–25%, sans frais fixes, sans engagement. Notre équipe locale gère tout.",
+    description: "3 formules : Essentiel 18% HT, Premium 22% HT, Prestige 28% HT. Vous percevez vos revenus directement — ERA facture séparément.",
   },
 };
 
@@ -48,24 +48,35 @@ const schemaOrg = {
     itemListElement: [
       {
         "@type": "Offer",
-        name: "Formule Essentielle",
-        description: "Gestion des réservations, check-in/out, ménage professionnel, communication voyageurs, rapport mensuel.",
+        name: "Formule Essentiel",
+        description: "Gestion des réservations, check-in/out autonome, coordination ménage, communication voyageurs 7j/7, tableau de bord en ligne.",
         priceSpecification: {
           "@type": "UnitPriceSpecification",
-          price: "20",
+          price: "18",
           priceCurrency: "EUR",
-          unitText: "% des revenus locatifs",
+          unitText: "% HT des revenus nets",
         },
       },
       {
         "@type": "Offer",
         name: "Formule Premium",
-        description: "Tout Essentiel + tarification dynamique PriceLabs, optimisation annonces, linge hôtelier premium, gestionnaire dédié.",
+        description: "Tout Essentiel + photos pro, pricing dynamique PriceLabs, check-in présentiel, ménage inclus, linge hôtelier, assistance 24h/24.",
         priceSpecification: {
           "@type": "UnitPriceSpecification",
-          price: "25",
+          price: "22",
           priceCurrency: "EUR",
-          unitText: "% des revenus locatifs",
+          unitText: "% HT des revenus nets",
+        },
+      },
+      {
+        "@type": "Offer",
+        name: "Formule Prestige",
+        description: "Tout Premium + gestionnaire dédié, traductions EN/NL, conciergerie voyageurs complète, gardiennage hors saison, panier bienvenue.",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "28",
+          priceCurrency: "EUR",
+          unitText: "% HT des revenus nets",
         },
       },
     ],
@@ -148,16 +159,19 @@ export default function ConciergerieHubPage() {
               <h3 className="font-serif text-2xl font-bold mb-6">Nos tarifs</h3>
               <div className="space-y-4 mb-8">
                 <div className="flex justify-between items-center py-3 border-b border-white/20">
-                  <span>Commission sur revenus</span>
-                  <span className="font-bold text-[var(--color-or)]">20–25%</span>
+                  <span>🔵 Essentiel</span>
+                  <span className="font-bold text-[var(--color-or)]">18% HT</span>
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-white/20">
-                  <span>Frais d&apos;installation</span>
-                  <span className="font-bold text-[var(--color-or)]">Offerts</span>
+                  <span>🟢 Premium</span>
+                  <span className="font-bold text-[var(--color-or)]">22% HT</span>
+                </div>
+                <div className="flex justify-between items-center py-3 border-b border-white/20">
+                  <span>⭐ Prestige</span>
+                  <span className="font-bold text-[var(--color-or)]">28% HT</span>
                 </div>
                 <div className="flex justify-between items-center py-3">
-                  <span>Engagement minimum</span>
-                  <span className="font-bold text-[var(--color-or)]">Aucun</span>
+                  <span className="text-white/80 text-sm">Vous percevez vos revenus directement — ERA facture séparément</span>
                 </div>
               </div>
               <Link href="/conciergerie/tarifs" className="block text-center px-6 py-3 bg-[var(--color-or)] text-white font-semibold rounded-xl hover:bg-[var(--color-or-light)] transition-colors">

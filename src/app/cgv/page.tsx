@@ -33,8 +33,14 @@ export default function CGVPage() {
 
           <div>
             <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">3. Tarification — Propriétaires</h2>
-            <p className="mb-3">La commission ERA est de <strong>20 à 25% HT</strong> des revenus locatifs nets générés, selon la formule choisie (Essentiel ou Premium). Elle est prélevée sur les reversements mensuels.</p>
-            <p>Aucun frais d'installation. Aucun engagement de durée. Préavis de résiliation : 30 jours calendaires.</p>
+            <p className="mb-3">ERA propose trois formules de conciergerie :</p>
+            <ul className="list-disc pl-6 mb-3 space-y-1">
+              <li><strong>Essentiel : 18% HT</strong> — engagement 6 mois minimum, préavis 2 mois, onboarding 150 € HT</li>
+              <li><strong>Premium : 22% HT</strong> — engagement 12 mois recommandé, préavis 2 mois, onboarding offert</li>
+              <li><strong>Prestige : 28% HT</strong> — engagement 12 mois minimum, préavis 3 mois, onboarding offert</li>
+            </ul>
+            <p className="mb-3">La commission se calcule sur les revenus locatifs nets après déduction des frais de plateforme (Airbnb, Booking, etc.). TVA 20% applicable selon le régime fiscal du propriétaire.</p>
+            <p><strong>Modèle de facturation :</strong> le propriétaire perçoit ses revenus locatifs directement depuis les plateformes. ERA adresse une facture mensuelle correspondant à sa commission (J+10 pour Essentiel, J+5 pour Premium et Prestige).</p>
           </div>
 
           <div>
