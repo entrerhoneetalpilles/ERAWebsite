@@ -1,20 +1,24 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #F7F5EF;
-  --color-foreground: #3A3830;
-  --color-cream: #E8E3D3;
+  --color-background: #FFFFFF;
+  --color-foreground: #1C1A17;
+  --color-cream: #F4F1EC;
 
-  /* Brand colors — palette Provence */
-  --color-rhone: #8FA15A;
-  --color-rhone-light: #A3B86B;
-  --color-rhone-dark: #6E7C3A;
-  --color-alpilles: #B7C48A;
-  --color-alpilles-light: #C8D4A4;
-  --color-alpilles-dark: #8FA15A;
-  --color-or: #C4894A;
-  --color-or-light: #D4A96A;
-  --color-or-dark: #9E6B2A;
+  /* Accent vert sauge profond — utilisé avec parcimonie */
+  --color-rhone: #4B6043;
+  --color-rhone-light: #5E7655;
+  --color-rhone-dark: #374830;
+
+  /* Vert sauge secondaire */
+  --color-alpilles: #8FA870;
+  --color-alpilles-light: #A8C086;
+  --color-alpilles-dark: #6B8050;
+
+  /* Or chaud */
+  --color-or: #B5843C;
+  --color-or-light: #C89A50;
+  --color-or-dark: #8E6528;
 
   /* Typography */
   --font-cormorant: var(--font-cormorant-var);
@@ -22,33 +26,27 @@
   --font-sans: var(--font-lato);
 
   /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
   --radius-pill: 50px;
 }
 
 :root {
-  --vert-profond: #6E7C3A;
-  --vert-moyen: #8FA15A;
-  --vert-clair: #B7C48A;
-  --beige-chaud: #E8E3D3;
-  --beige-grise: #D6D1C4;
-  --blanc-casse: #F7F5EF;
-  --texte: #3A3830;
-  --texte-leger: #6B6555;
-  --texte-inverse: #F7F5EF;
-  --texte-desactive: #A8A399;
-  --succes: #5A8A4A;
-  --erreur: #B85450;
-  --attention: #C4894A;
-  --info: #5A7A9A;
-  --ombre-xs: 0 1px 4px rgba(58,56,48,0.06);
-  --ombre-sm: 0 2px 12px rgba(58,56,48,0.08);
-  --ombre-md: 0 4px 20px rgba(110,124,58,0.10);
-  --ombre-lg: 0 8px 32px rgba(110,124,58,0.14);
-  --ombre-xl: 0 16px 48px rgba(110,124,58,0.18);
+  --blanc-pur: #FFFFFF;
+  --blanc-casse: #FAF9F6;
+  --creme-subtile: #F4F1EC;
+  --creme-profonde: #EDE8DE;
+  --texte: #1C1A17;
+  --texte-leger: #5A5650;
+  --texte-inverse: #FFFFFF;
+  --texte-desactive: #9C9890;
+  --ombre-xs: 0 1px 3px rgba(28,26,23,0.06);
+  --ombre-sm: 0 2px 8px rgba(28,26,23,0.08);
+  --ombre-md: 0 4px 16px rgba(75,96,67,0.10);
+  --ombre-lg: 0 8px 28px rgba(75,96,67,0.12);
+  --ombre-xl: 0 16px 48px rgba(75,96,67,0.15);
 }
 
 html {
@@ -56,11 +54,11 @@ html {
 }
 
 body {
-  background-color: var(--blanc-casse);
+  background-color: var(--blanc-pur);
   color: var(--texte);
   font-family: var(--font-lato, 'Lato', system-ui, sans-serif);
   font-weight: 300;
-  line-height: 1.75;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -70,52 +68,44 @@ h1, h2, h3, h4 {
   color: var(--texte);
 }
 
-/* Global pill CTA button overrides */
+/* CTA buttons — pill shape, restrained */
 a[class*="bg-[var(--color-rhone"],
 button[class*="bg-[var(--color-rhone"] {
   border-radius: 50px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   font-family: var(--font-lato, 'Lato', sans-serif);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 400;
-  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
 a[class*="bg-[var(--color-rhone"]:hover,
 button[class*="bg-[var(--color-rhone"]:hover {
   box-shadow: var(--ombre-md);
-  transform: translateY(-1px);
 }
 
 a[class*="bg-[var(--color-or"],
 button[class*="bg-[var(--color-or"] {
   border-radius: 50px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   font-family: var(--font-lato, 'Lato', sans-serif);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 400;
-  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
-a[class*="bg-[var(--color-or"]:hover,
-button[class*="bg-[var(--color-or"]:hover {
-  box-shadow: var(--ombre-md);
-  transform: translateY(-1px);
-}
-
-/* Outline button pill override */
 a[class*="border-[var(--color-rhone"],
 button[class*="border-[var(--color-rhone"] {
   border-radius: 50px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: 0.82rem;
-  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  font-size: 0.8rem;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-/* Skip link for accessibility */
+/* Skip link */
 .skip-link {
   position: absolute;
   top: -40px;
