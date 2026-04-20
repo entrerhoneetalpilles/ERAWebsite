@@ -32,6 +32,7 @@ export default function ContactForm() {
         setError(data.error || "Une erreur est survenue. Veuillez réessayer.");
       } else {
         setSubmitted(true);
+        window.dataLayer?.push({ event: "contact_form_submit", contact_type: form.sujet });
       }
     } catch {
       setError("Une erreur est survenue. Veuillez réessayer.");

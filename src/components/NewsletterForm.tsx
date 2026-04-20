@@ -23,6 +23,7 @@ export default function NewsletterForm() {
         setError(data.error || "Une erreur est survenue.");
       } else {
         setSubmitted(true);
+        window.dataLayer?.push({ event: "newsletter_subscribe" });
       }
     } catch {
       setError("Une erreur est survenue. Veuillez réessayer.");

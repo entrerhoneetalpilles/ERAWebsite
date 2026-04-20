@@ -152,6 +152,7 @@ export default function EstimerForm() {
                             setEmailError(data.error || "Erreur. Veuillez réessayer.");
                           } else {
                             setSubmitted(true);
+                            window.dataLayer?.push({ event: "estimateur_submit", commune: form.commune, property_type: form.type, standing: form.standing, revenue_min: result?.min, revenue_max: result?.max });
                           }
                         } catch {
                           setEmailError("Erreur. Veuillez réessayer.");
