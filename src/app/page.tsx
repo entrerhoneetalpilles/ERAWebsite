@@ -90,7 +90,7 @@ const schemaOrg = {
       alternateName: "ERA Conciergerie Provence",
       description: "Conciergerie de locations saisonnières haut de gamme entre le Rhône et les Alpilles. Gestion Airbnb, Booking, VRBO pour propriétaires. 20 communes en Provence.",
       url: "https://entre-rhone-alpilles.fr",
-      telephone: "+33600000000",
+      telephone: "+33752907868",
       email: "contact@entre-rhone-alpilles.fr",
       foundingDate: "2023",
       address: {
@@ -130,7 +130,7 @@ const schemaOrg = {
       logo: { "@type": "ImageObject", url: "https://entre-rhone-alpilles.fr/logo.png", width: 200, height: 60 },
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: "+33600000000",
+        telephone: "+33752907868",
         contactType: "customer service",
         availableLanguage: ["French","English"],
         areaServed: "FR",

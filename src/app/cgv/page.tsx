@@ -68,7 +68,7 @@ export default function CGVPage() {
           <div>
             <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">8. Contact</h2>
             <p>Entre Rhône et Alpilles · Saint-Rémy-de-Provence (13210)<br />
-            Email : contact@entre-rhone-alpilles.fr · Tél. : 06 00 00 00 00</p>
+            Email : contact@entre-rhone-alpilles.fr · Tél. : 07 52 90 78 68</p>
           </div>
         </div>
       </section>

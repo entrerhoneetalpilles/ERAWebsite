@@ -193,7 +193,7 @@ export async function POST(req: NextRequest) {
                 </a>
               </div>
               <p style="font-size:12px;color:#9A8A78;text-align:center;margin:0">
-                Ou appelez-nous directement : <a href="tel:+33600000000" style="color:#6E8052;font-weight:600">06 00 00 00 00</a><br/>
+                Ou appelez-nous directement : <a href="tel:+33752907868" style="color:#6E8052;font-weight:600">07 52 90 78 68</a><br/>
                 <span style="font-size:11px">Lun–Sam · 9h–19h · Réponse garantie sous 24h</span>
               </p>
             </div>

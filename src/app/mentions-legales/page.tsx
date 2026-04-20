@@ -22,7 +22,7 @@ export default function MentionsLegalesPage() {
           <p>Entre Rhône et Alpilles — Conciergerie de Locations Saisonnières<br />
           Adresse : Saint-Rémy-de-Provence (13210)<br />
           Email : contact@entre-rhone-alpilles.fr<br />
-          Téléphone : 06 00 00 00 00</p>
+          Téléphone : 07 52 90 78 68</p>
 
           <h2>Hébergement</h2>
           <p>Le site entre-rhone-alpilles.fr est hébergé par Vercel Inc.,

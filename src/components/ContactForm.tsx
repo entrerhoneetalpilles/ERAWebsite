@@ -5,7 +5,7 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 
 const contactInfo = [
-  { icon: <Phone className="w-5 h-5" aria-hidden="true" />, label: "Téléphone", value: "06 00 00 00 00", href: "tel:+33600000000" },
+  { icon: <Phone className="w-5 h-5" aria-hidden="true" />, label: "Téléphone", value: "07 52 90 78 68", href: "tel:+33752907868" },
   { icon: <Mail className="w-5 h-5" aria-hidden="true" />, label: "Email", value: "contact@entre-rhone-alpilles.fr", href: "mailto:contact@entre-rhone-alpilles.fr" },
   { icon: <MapPin className="w-5 h-5" aria-hidden="true" />, label: "Zone", value: "Saint-Rémy-de-Provence, 13210", href: undefined },
   { icon: <Clock className="w-5 h-5" aria-hidden="true" />, label: "Disponibilité", value: "Lun–Sam, 9h–19h", href: undefined },

@@ -109,7 +109,7 @@ function confirmHtml({ name, subject }: { name: string; subject: string }) {
         <div style="background:#F5F0E8;border-radius:8px;padding:20px;margin-bottom:0">
           <p style="font-size:12px;color:#9A8A78;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px">Nos coordonnées</p>
           <table style="font-size:14px;color:#3A3228">
-            <tr><td style="padding:3px 12px 3px 0;color:#9A8A78">Téléphone</td><td>06 00 00 00 00 (Lun–Sam, 9h–19h)</td></tr>
+            <tr><td style="padding:3px 12px 3px 0;color:#9A8A78">Téléphone</td><td>07 52 90 78 68 (Lun–Sam, 9h–19h)</td></tr>
             <tr><td style="padding:3px 12px 3px 0;color:#9A8A78">Email</td><td><a href="mailto:contact@entre-rhone-alpilles.fr" style="color:#6E8052">contact@entre-rhone-alpilles.fr</a></td></tr>
           </table>
         </div>

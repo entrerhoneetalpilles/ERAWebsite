@@ -61,11 +61,11 @@ export default function Footer() {
                 Saint-Rémy-de-Provence, 13210
               </a>
               <a
-                href="tel:+33600000000"
+                href="tel:+33752907868"
                 className="flex items-center gap-2 hover:text-white transition-colors"
               >
                 <Phone className="w-4 h-4 flex-shrink-0 text-[var(--color-or)]" aria-hidden="true" />
-                06 00 00 00 00
+                07 52 90 78 68
               </a>
               <a
                 href="mailto:contact@entre-rhone-alpilles.fr"

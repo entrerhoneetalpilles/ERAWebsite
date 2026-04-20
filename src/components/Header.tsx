@@ -132,13 +132,13 @@ export default function Header() {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-4">
             <a
-              href="tel:+33600000000"
+              href="tel:+33752907868"
               className="flex items-center gap-1.5 text-xs transition-colors"
               style={{ color: "var(--texte-discret)" }}
               aria-label="Nous appeler"
             >
               <Phone className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>06 00 00 00 00</span>
+              <span>07 52 90 78 68</span>
             </a>
             <Link
               href="/conciergerie/estimer-mes-revenus"
@@ -198,12 +198,12 @@ export default function Header() {
                 style={{ borderColor: "var(--color-gres-clair)" }}
               >
                 <a
-                  href="tel:+33600000000"
+                  href="tel:+33752907868"
                   className="flex items-center gap-2 text-xs"
                   style={{ color: "var(--texte-discret)" }}
                 >
                   <Phone className="w-4 h-4" />
-                  06 00 00 00 00
+                  07 52 90 78 68
                 </a>
                 <Link
                   href="/conciergerie/estimer-mes-revenus"

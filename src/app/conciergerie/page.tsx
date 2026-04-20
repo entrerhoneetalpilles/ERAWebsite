@@ -35,7 +35,7 @@ const schemaOrg = {
   name: "Entre Rhône et Alpilles — Conciergerie",
   description: "Service de conciergerie de locations saisonnières haut de gamme en Provence. Gestion complète : check-in/out, ménage, tarification dynamique, communication voyageurs.",
   url: "https://entre-rhone-alpilles.fr/conciergerie",
-  telephone: "+33600000000",
+  telephone: "+33752907868",
   email: "contact@entre-rhone-alpilles.fr",
   serviceType: "Conciergerie de locations saisonnières",
   areaServed: [
