@@ -21,9 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/avis`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/a-propos`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.65 },
-    { url: `${BASE}/cgv`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
-    { url: `${BASE}/mentions-legales`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
-    { url: `${BASE}/politique-confidentialite`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
+    // cgv, mentions-legales, politique-confidentialite sont noindex — ne pas inclure dans le sitemap
   ];
 
   const communeRoutes: MetadataRoute.Sitemap = communes.flatMap((c) => {
@@ -49,13 +47,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }));
 
+  // "avec-piscine" a sa propre page statique — on l'exclut des typeRoutes pour éviter le doublon
   const typeRoutes: MetadataRoute.Sitemap = [
-    ...propertyTypes.map((t) => ({
-      url: `${BASE}/locations/${t.slug}`,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: 0.78,
-    })),
+    ...propertyTypes
+      .filter((t) => t.slug !== "avec-piscine")
+      .map((t) => ({
+        url: `${BASE}/locations/${t.slug}`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.78,
+      })),
     ...activityTags.map((t) => ({
       url: `${BASE}/locations/${t.slug}`,
       lastModified: now,

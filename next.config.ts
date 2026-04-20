@@ -33,16 +33,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  async redirects() {
-    return [
-      { source: "/locations/saint-remy", destination: "/locations/saint-remy-de-provence", permanent: true },
-      { source: "/locations/les-baux", destination: "/locations/les-baux-de-provence", permanent: true },
-      { source: "/destinations/saint-remy", destination: "/destinations/saint-remy-de-provence", permanent: true },
-      { source: "/destinations/les-baux", destination: "/destinations/les-baux-de-provence", permanent: true },
-      { source: "/conciergerie/services", destination: "/conciergerie/nos-services", permanent: true },
-      { source: "/conciergerie/estimer", destination: "/conciergerie/estimer-mes-revenus", permanent: true },
-    ];
-  },
 };
 
 export default nextConfig;

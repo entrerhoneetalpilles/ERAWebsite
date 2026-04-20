@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) return {};
   return {
-    title: `${post.title} — Blog Entre Rhône et Alpilles`,
+    title: post.title,
     description: post.excerpt,
     alternates: { canonical: `https://entre-rhone-alpilles.fr/blog/${slug}` },
     openGraph: {

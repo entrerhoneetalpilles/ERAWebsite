@@ -9,9 +9,13 @@ import FAQAccordion from "@/components/FAQAccordion";
 import { communes, testimonials, blogPosts } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
+  title: {
+    absolute:
+      "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
+  },
   description:
     "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières. Estimation gratuite en 2 min.",
+  alternates: { canonical: "https://entre-rhone-alpilles.fr" },
 };
 
 const stats = [
