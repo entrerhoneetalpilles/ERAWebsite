@@ -80,7 +80,7 @@ export default async function DestinationVillePage({ params }: Props) {
     touristType: commune.profilVoyageur,
   };
 
-  const toc = ["Pourquoi séjourner", "Incontournables", "Quand venir", "Événements", "Nos hébergements"];
+  const toc = ["Pourquoi séjourner", "Incontournables", "Quand venir", "Événements", "Où dormir", "Nos hébergements"];
 
   return (
     <div className="pt-20">
@@ -128,12 +128,16 @@ export default async function DestinationVillePage({ params }: Props) {
           <article className="lg:col-span-3 prose-sm max-w-none">
             <section id="pourquoi-séjourner" className="mb-12">
               <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">Pourquoi séjourner à {commune.name} ?</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">{commune.description}</p>
-              <p className="text-gray-600 leading-relaxed">
-                {commune.name} est idéal pour les voyageurs recherchant {commune.profilVoyageur.toLowerCase()}.
-                Le village offre une harmonie rare entre authenticité provençale et confort moderne.
+              <p className="text-gray-600 leading-relaxed mb-4">
+                {commune.name} séduit les voyageurs en quête d&apos;authenticité provençale et de dépaysement total.
+                Niché entre le Rhône et les Alpilles, le village offre un cadre d&apos;exception : lumière du Sud,
+                architecture centenaire, gastronomie et nature préservée à portée de main.
               </p>
-              <div className="mt-6 p-4 bg-[var(--color-cream)] rounded-xl">
+              <p className="text-gray-600 leading-relaxed mb-6">
+                Que vous soyez en famille, en couple ou entre amis, {commune.name} répond à toutes les envies.
+                {commune.profilVoyageur ? ` C'est la destination idéale pour ${commune.profilVoyageur.toLowerCase()}.` : ""}
+              </p>
+              <div className="mt-4 p-4 bg-[var(--color-cream)] rounded-xl">
                 <p className="text-sm font-semibold text-gray-700">Point fort : <span className="font-normal">{commune.atout}</span></p>
               </div>
             </section>
@@ -170,17 +174,31 @@ export default async function DestinationVillePage({ params }: Props) {
               </div>
             </section>
 
-            <section id="nos-hébergements" className="mb-12">
-              <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">
-                Nos hébergements à {commune.name}
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 not-prose">
+            <section id="où-dormir" className="mb-12">
+              <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">Où dormir à {commune.name} ?</h2>
+              <p className="text-gray-600 leading-relaxed mb-6">
+                Entre mas provençaux avec piscine, villas contemporaines et bastides historiques, l&apos;offre
+                d&apos;hébergement à {commune.name} est vaste. Notre conciergerie locale sélectionne
+                uniquement des biens de caractère, vérifiés et gérés avec soin.
+              </p>
+              <h3 className="font-serif text-lg font-semibold text-gray-900 mb-3">
+                Nos meilleures locations à {commune.name}
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 not-prose mb-6">
                 {mockProperties.map((p) => (
                   <PropertyCard key={p.slug} {...p} href={`/locations/${commune.slug}`} />
                 ))}
               </div>
+              <h3 className="font-serif text-lg font-semibold text-gray-900 mb-3">
+                Quand réserver votre séjour à {commune.name} ?
+              </h3>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                La haute saison (juillet-août) se réserve 3 à 6 mois à l&apos;avance pour les meilleurs biens.
+                Le printemps (avril-juin) et l&apos;automne (septembre-octobre) offrent un excellent rapport
+                qualité/prix avec moins de monde et des températures idéales pour découvrir la région.
+              </p>
               <Link href={`/locations/${commune.slug}`}
-                className="inline-flex items-center gap-2 mt-6 text-[var(--color-rhone)] font-semibold hover:text-[var(--color-rhone-light)] transition-colors">
+                className="inline-flex items-center gap-2 mt-2 text-[var(--color-rhone)] font-semibold hover:text-[var(--color-rhone-light)] transition-colors">
                 Voir tous les hébergements à {commune.name}
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>

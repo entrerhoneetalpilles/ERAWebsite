@@ -116,6 +116,49 @@ const articleContent: Record<string, string[]> = {
   ],
 };
 
+const internalLinks: Record<string, { label: string; href: string }[]> = {
+  "preparer-location-estivale-provence": [
+    { label: "Confier mon bien à ERA — conciergerie Provence", href: "/conciergerie" },
+    { label: "Estimer mes revenus locatifs gratuitement", href: "/conciergerie/estimer-mes-revenus" },
+    { label: "Nos locations de vacances à Saint-Rémy-de-Provence", href: "/locations/saint-remy-de-provence" },
+  ],
+  "guide-feria-arles": [
+    { label: "Guide complet d'Arles — que faire, voir, loger", href: "/destinations/arles" },
+    { label: "Locations de vacances à Arles", href: "/locations/arles" },
+    { label: "Estimer mes revenus Airbnb en Provence", href: "/conciergerie/estimer-mes-revenus" },
+  ],
+  "printemps-alpilles-que-faire": [
+    { label: "Guide de Saint-Rémy-de-Provence au printemps", href: "/destinations/saint-remy-de-provence" },
+    { label: "Locations avec piscine en Provence", href: "/locations/avec-piscine" },
+    { label: "Tous nos hébergements entre Rhône et Alpilles", href: "/locations" },
+  ],
+  "fiscalite-location-courte-duree-provence": [
+    { label: "Notre service de conciergerie Provence — gestion complète", href: "/conciergerie" },
+    { label: "Nos services de gestion locative", href: "/conciergerie/nos-services" },
+    { label: "FAQ — toutes vos questions sur la location saisonnière", href: "/faq" },
+  ],
+  "saint-remy-de-provence-guide-complet": [
+    { label: "Guide de Saint-Rémy-de-Provence — incontournables & agenda", href: "/destinations/saint-remy-de-provence" },
+    { label: "Nos locations de mas et villas à Saint-Rémy", href: "/locations/saint-remy-de-provence" },
+    { label: "Estimer mes revenus locatifs à Saint-Rémy", href: "/conciergerie/estimer-mes-revenus" },
+  ],
+  "optimiser-annonce-airbnb-provence": [
+    { label: "Déléguer la gestion à notre conciergerie Provence", href: "/conciergerie" },
+    { label: "Découvrir tous nos services de gestion locative", href: "/conciergerie/nos-services" },
+    { label: "Estimer mes revenus Airbnb gratuitement", href: "/conciergerie/estimer-mes-revenus" },
+  ],
+  "marches-provencaux-alpilles": [
+    { label: "Guide de Saint-Rémy-de-Provence — marché du mercredi", href: "/destinations/saint-remy-de-provence" },
+    { label: "Guide d'Arles — grand marché du samedi", href: "/destinations/arles" },
+    { label: "Louer un mas ou une villa proche des marchés", href: "/locations" },
+  ],
+  "investir-location-saisonniere-alpilles": [
+    { label: "Confier la gestion de mon bien — conciergerie ERA", href: "/conciergerie" },
+    { label: "Nos locations haut de gamme à Eygalières", href: "/locations/eygalieres" },
+    { label: "Estimer le potentiel locatif de mon bien gratuitement", href: "/conciergerie/estimer-mes-revenus" },
+  ],
+};
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
@@ -123,6 +166,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   const content = articleContent[slug] ?? [post.excerpt];
   const related = blogPosts.filter((p) => p.slug !== slug).slice(0, 2);
+  const links = internalLinks[slug] ?? [];
 
   const schemaOrg = {
     "@context": "https://schema.org",
@@ -206,6 +250,24 @@ export default async function BlogPostPage({ params }: Props) {
             </>
           ))}
         </div>
+
+        {/* Internal links */}
+        {links.length > 0 && (
+          <div className="mt-10 p-6 bg-[var(--color-cream)] rounded-xl border border-[var(--color-gres-clair)]">
+            <p className="font-serif text-lg font-light mb-4 text-[var(--color-encre)]">Pour aller plus loin</p>
+            <ul className="space-y-2">
+              {links.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href}
+                    className="inline-flex items-center gap-2 text-sm text-[var(--color-rhone)] hover:text-[var(--color-rhone-dark)] transition-colors font-medium">
+                    <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Author */}
         <div className="mt-12 pt-8 border-t border-gray-100 flex items-center gap-4">

@@ -220,12 +220,20 @@ export default async function LocationsSlugPage({ params }: Props) {
         <section className="py-16 bg-[var(--color-cream)]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">
-              Pourquoi séjourner à {commune.name} ?
+              Pourquoi louer à {commune.name} avec ERA ?
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">{commune.description}</p>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              Chaque bien que nous proposons à {commune.name} est sélectionné pour son authenticité,
+              son confort et sa situation. Nos hébergements de caractère — mas provençaux, villas avec piscine,
+              bastides et gîtes — sont gérés par une équipe locale qui connaît la région sur le bout des doigts.
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              Avec notre service de conciergerie, vous bénéficiez d&apos;un accueil personnalisé à votre arrivée,
+              de recommandations d&apos;initiés sur les meilleurs restaurants, marchés et activités,
+              et d&apos;une assistance disponible 7j/7 tout au long de votre séjour.
+            </p>
             <p className="text-gray-600 leading-relaxed">
-              Avec notre service de conciergerie local, vous bénéficiez d&apos;un accueil personnalisé,
-              de recommandations d&apos;initiés et d&apos;une assistance disponible tout au long de votre séjour.
+              <strong>Point fort :</strong> {commune.atout}
             </p>
           </div>
         </section>
