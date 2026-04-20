@@ -62,7 +62,11 @@ export const metadata: Metadata = {
       "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières.",
   },
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
+    ],
+    // apple-touch-icon géré automatiquement via app/apple-icon.tsx
   },
 };
 
