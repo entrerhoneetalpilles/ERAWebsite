@@ -9,9 +9,9 @@ import FAQAccordion from "@/components/FAQAccordion";
 import { communes, testimonials, blogPosts } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Conciergerie Airbnb en Provence — Entre Rhône et Alpilles",
+  title: "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
   description:
-    "Conciergerie de locations saisonnières haut de gamme entre le Rhône et les Alpilles. Délégation totale pour propriétaires, hébergements d'exception pour voyageurs. 20 communes couvertes en Provence.",
+    "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières. Estimation gratuite en 2 min.",
 };
 
 const stats = [

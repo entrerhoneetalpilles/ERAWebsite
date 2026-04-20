@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://entre-rhone-alpilles.fr"),
   title: {
     default:
-      "Conciergerie Airbnb en Provence — Entre Rhône et Alpilles",
+      "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
     template: "%s — Entre Rhône et Alpilles",
   },
   description:
-    "Conciergerie de locations saisonnières haut de gamme entre le Rhône et les Alpilles. Délégation totale, maximisation des revenus, zéro stress pour les propriétaires.",
+    "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières. Estimation gratuite en 2 min.",
   keywords: [
     "conciergerie airbnb provence",
     "gestion locative courte durée",
@@ -51,9 +51,9 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: "https://entre-rhone-alpilles.fr",
     siteName: "Entre Rhône et Alpilles",
-    title: "Conciergerie Airbnb en Provence — Entre Rhône et Alpilles",
+    title: "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
     description:
-      "Conciergerie de locations saisonnières haut de gamme entre le Rhône et les Alpilles.",
+      "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières.",
     images: [
       {
         url: "/og-image.svg",
@@ -65,9 +65,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Conciergerie Airbnb en Provence — Entre Rhône et Alpilles",
+    title: "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
     description:
-      "Conciergerie de locations saisonnières haut de gamme entre le Rhône et les Alpilles.",
+      "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières.",
     images: ["/og-image.svg"],
   },
   icons: {

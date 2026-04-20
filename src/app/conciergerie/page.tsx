@@ -4,13 +4,13 @@ import { ArrowRight, CheckCircle, Clock, TrendingUp, Users, Wrench, Star } from 
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Conciergerie Airbnb Provence — Services pour Propriétaires",
+  title: "Conciergerie Location Saisonnière Alpilles | Gestion Locative Provence",
   description:
-    "Déléguez la gestion de votre location saisonnière en Provence. 3 formules : Essentiel 18%, Premium 22%, Prestige 28% HT. Vous percevez vos revenus directement.",
+    "Déléguez totalement la gestion de votre bien en Alpilles. Check-in, ménage, tarification dynamique, 85% d'occupation. ERA gère tout.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie" },
   openGraph: {
-    title: "Conciergerie Airbnb Provence — Gestion locative complète",
-    description: "3 formules : Essentiel 18% HT, Premium 22% HT, Prestige 28% HT. Vous percevez vos revenus directement — ERA facture séparément.",
+    title: "Conciergerie Location Saisonnière Alpilles | Gestion Locative Provence",
+    description: "Déléguez totalement la gestion de votre bien en Alpilles. Check-in, ménage, tarification dynamique, 85% d'occupation. ERA gère tout.",
   },
 };
 
