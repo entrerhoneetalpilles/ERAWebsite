@@ -292,6 +292,9 @@ export default function HomePage() {
             >
               Découvrir nos services
             </Link>
+            <Link href="/a-propos" className="inline-flex items-center gap-2 px-6 py-3 text-[var(--color-rhone)] font-semibold hover:underline transition-colors text-sm">
+              Notre histoire →
+            </Link>
           </div>
         </div>
       </section>

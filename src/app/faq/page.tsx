@@ -77,7 +77,7 @@ export default function FAQPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[{ label: "FAQ" }]} />
           <div className="mt-8 max-w-3xl">
-            <h1 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="font-serif text-4xl sm:text-5xl font-light mb-6">
               Foire aux questions
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
@@ -105,52 +105,52 @@ export default function FAQPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         <section id="proprietaires" aria-labelledby="faq-prop-heading">
-          <h2 id="faq-prop-heading" className="font-serif text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          <h2 id="faq-prop-heading" className="font-serif text-2xl font-light mb-8 flex items-center gap-3">
             Questions propriétaires
             <span className="text-sm font-normal text-gray-400 font-sans">{faqProprietaires.length} questions</span>
           </h2>
           <FAQAccordion items={faqProprietaires} schema={false} />
           <div className="mt-8">
             <Link href="/conciergerie/estimer-mes-revenus"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-lg hover:bg-[var(--color-rhone-light)] transition-colors">
               Estimer mes revenus gratuitement <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
         </section>
 
         <section id="voyageurs" aria-labelledby="faq-voy-heading">
-          <h2 id="faq-voy-heading" className="font-serif text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          <h2 id="faq-voy-heading" className="font-serif text-2xl font-light mb-8 flex items-center gap-3">
             Questions voyageurs
             <span className="text-sm font-normal text-gray-400 font-sans">{faqVoyageurs.length} questions</span>
           </h2>
           <FAQAccordion items={faqVoyageurs} schema={false} />
           <div className="mt-8">
             <Link href="/locations"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-alpilles)] text-white font-semibold rounded-full hover:bg-[var(--color-alpilles-light)] transition-colors">
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-alpilles)] text-white font-semibold rounded-lg hover:bg-[var(--color-alpilles-light)] transition-colors">
               Voir nos hébergements <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
         </section>
 
         <section id="destinations" aria-labelledby="faq-dest-heading">
-          <h2 id="faq-dest-heading" className="font-serif text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          <h2 id="faq-dest-heading" className="font-serif text-2xl font-light mb-8 flex items-center gap-3">
             Questions destinations
             <span className="text-sm font-normal text-gray-400 font-sans">{faqDestinations.length} questions</span>
           </h2>
           <FAQAccordion items={faqDestinations} schema={false} />
           <div className="mt-8">
             <Link href="/destinations"
-              className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-full hover:bg-[var(--color-rhone)]/5 transition-colors">
+              className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-lg hover:bg-[var(--color-rhone)]/5 transition-colors">
               Explorer les destinations <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
         </section>
 
         <div className="bg-[var(--color-cream)] rounded-2xl p-8 text-center">
-          <p className="font-serif text-xl font-bold text-gray-900 mb-3">Vous n'avez pas trouvé votre réponse ?</p>
+          <p className="font-serif text-xl font-light mb-3">Vous n'avez pas trouvé votre réponse ?</p>
           <p className="text-gray-600 mb-6">Notre équipe vous répond sous 24h.</p>
           <Link href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors">
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white font-semibold rounded-lg hover:bg-[var(--color-rhone-light)] transition-colors">
             Nous contacter <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>

@@ -7,17 +7,17 @@ import { testimonials } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Avis Clients — Entre Rhône et Alpilles Conciergerie",
   description:
-    "Plus de 200 avis vérifiés de propriétaires et voyageurs. Note moyenne 4,9/5. Découvrez les témoignages de nos clients en Provence.",
+    "Avis vérifiés de propriétaires et voyageurs. Note moyenne 4,9/5. Découvrez les témoignages de nos clients en Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/avis" },
   openGraph: {
     title: "Avis Clients — Entre Rhône et Alpilles Conciergerie",
-    description: "Plus de 200 avis vérifiés de propriétaires et voyageurs. Note moyenne 4,9/5.",
+    description: "Avis vérifiés de propriétaires et voyageurs. Note moyenne 4,9/5.",
     url: "https://entre-rhone-alpilles.fr/avis",
   },
 };
 
 const stats = [
-  { value: "4,9/5", label: "Note moyenne", sub: "208 avis" },
+  { value: "4,9/5", label: "Note moyenne", sub: "Source Airbnb" },
   { value: "98%", label: "Recommandent ERA", sub: "Propriétaires" },
   { value: "4,8/5", label: "Satisfaction voyageurs", sub: "Toutes plateformes" },
   { value: "Superhost", label: "Niveau Superhost", sub: "Airbnb France" },
@@ -30,7 +30,7 @@ const schemaOrg = {
   aggregateRating: {
     "@type": "AggregateRating",
     ratingValue: "4.9",
-    reviewCount: "208",
+    reviewCount: String(testimonials.length),
     bestRating: "5",
     worstRating: "1",
   },
@@ -57,8 +57,8 @@ export default function AvisPage() {
                 <Star key={i} className="w-8 h-8 fill-[var(--color-or)] text-[var(--color-or)]" aria-hidden="true" />
               ))}
             </div>
-            <h1 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-4">Ils nous font confiance</h1>
-            <p className="text-xl text-gray-600">Plus de 200 avis vérifiés de propriétaires et voyageurs satisfaits.</p>
+            <h1 className="font-serif text-4xl sm:text-5xl font-light mb-4">Ils nous font confiance</h1>
+            <p className="text-xl text-gray-600">Propriétaires et voyageurs témoignent de leur expérience avec Entre Rhône et Alpilles.</p>
           </div>
         </div>
       </div>
@@ -81,7 +81,7 @@ export default function AvisPage() {
       {/* Avis */}
       <section className="py-20 bg-white" aria-labelledby="reviews-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 id="reviews-heading" className="font-serif text-2xl font-bold text-gray-900 mb-10">Témoignages récents</h2>
+          <h2 id="reviews-heading" className="font-serif text-2xl font-light mb-10">Témoignages récents</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {testimonials.map((t) => <TestimonialCard key={t.name} testimonial={t} />)}
           </div>

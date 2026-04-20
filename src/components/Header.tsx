@@ -38,6 +38,7 @@ const navLinks = [
   { href: "/blog", label: "Blog" },
   { href: "/avis", label: "Avis" },
   { href: "/faq", label: "FAQ" },
+  { href: "/a-propos", label: "À propos" },
 ];
 
 export default function Header() {

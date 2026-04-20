@@ -170,7 +170,7 @@ export default async function BlogPostPage({ params }: Props) {
               {post.readTime} min
             </span>
           </div>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
+          <h1 className="font-serif text-3xl sm:text-4xl font-light leading-tight mb-4">
             {post.title}
           </h1>
           <p className="text-xl text-gray-600 leading-relaxed border-l-4 border-[var(--color-or)] pl-5">
@@ -185,11 +185,25 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Content */}
         <div className="space-y-6">
           {content.map((paragraph, i) => (
-            <p key={i} className="text-gray-700 leading-relaxed text-base"
-              dangerouslySetInnerHTML={{
-                __html: paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-              }}
-            />
+            <>
+              <p key={i} className="text-gray-700 leading-relaxed text-base"
+                dangerouslySetInnerHTML={{
+                  __html: paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                }}
+              />
+              {i === 2 && content.length > 4 && (
+                <div key="mid-cta" className="my-8 p-6 bg-[var(--color-cream)] rounded-xl border-l-4 border-[var(--color-or)] flex flex-col sm:flex-row sm:items-center gap-4">
+                  <div className="flex-1">
+                    <p className="font-serif text-lg font-light mb-1">Quel revenu peut générer votre bien ?</p>
+                    <p className="text-sm text-gray-600">Estimez gratuitement en 2 minutes avec notre simulateur.</p>
+                  </div>
+                  <Link href="/conciergerie/estimer-mes-revenus"
+                    className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-3 bg-[var(--color-rhone)] text-white text-sm font-semibold rounded-lg hover:bg-[var(--color-rhone-light)] transition-colors whitespace-nowrap">
+                    Simuler mes revenus <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </Link>
+                </div>
+              )}
+            </>
           ))}
         </div>
 
@@ -222,11 +236,11 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         {/* CTA */}
-        <div className="mt-10 p-8 bg-[var(--color-rhone)] rounded-2xl text-center text-white">
-          <p className="font-serif text-xl font-bold mb-3">Vous êtes propriétaire en Provence ?</p>
+        <div className="mt-10 p-8 bg-[var(--color-rhone)] rounded-xl text-center text-white">
+          <p className="font-serif text-xl font-light mb-3">Vous êtes propriétaire en Provence ?</p>
           <p className="text-white/80 text-sm mb-6">Confiez la gestion de votre bien et maximisez vos revenus locatifs.</p>
           <Link href="/conciergerie/estimer-mes-revenus"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-or)] text-white font-semibold rounded-full hover:bg-[var(--color-or-light)] transition-colors">
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-or)] text-white font-semibold rounded-lg hover:bg-[var(--color-or-light)] transition-colors">
             Estimation gratuite <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>
@@ -236,7 +250,7 @@ export default async function BlogPostPage({ params }: Props) {
       {related.length > 0 && (
         <section className="py-16 bg-[var(--color-cream)]" aria-labelledby="related-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="related-heading" className="font-serif text-2xl font-bold text-gray-900 mb-8">Articles liés</h2>
+            <h2 id="related-heading" className="font-serif text-2xl font-light mb-8">Articles liés</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {related.map((p) => <BlogCard key={p.slug} post={p} />)}
             </div>
