@@ -157,6 +157,11 @@ export default function Footer() {
             </h3>
             <ul className="flex flex-col gap-2.5">
               <li>
+                <Link href="/a-propos" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  Notre histoire
+                </Link>
+              </li>
+              <li>
                 <Link href="/blog" className="text-sm text-gray-300 hover:text-white transition-colors">
                   Blog
                 </Link>
