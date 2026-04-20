@@ -77,7 +77,7 @@ export default function Footer() {
             </div>
             <div className="flex gap-3 mt-6">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/entrerhoneetalpilles"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"

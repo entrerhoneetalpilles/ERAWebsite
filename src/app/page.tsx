@@ -256,6 +256,9 @@ export default function HomePage() {
             <Link href="/conciergerie/nos-services" className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-full hover:bg-[var(--color-rhone)]/5 transition-colors">
               Découvrir nos services
             </Link>
+            <Link href="/a-propos" className="inline-flex items-center gap-2 px-6 py-3 text-[var(--color-rhone)] font-semibold hover:underline transition-colors text-sm">
+              Notre histoire →
+            </Link>
           </div>
         </div>
       </section>
