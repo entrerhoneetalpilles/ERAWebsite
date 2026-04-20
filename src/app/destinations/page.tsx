@@ -5,10 +5,26 @@ import CommuneCard from "@/components/CommuneCard";
 import Breadcrumb from "@/components/Breadcrumb";
 import { communes, getCommunesByCircle } from "@/lib/data";
 
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Destinations en Provence — 20 Communes entre Rhône et Alpilles",
+  description: "Guides complets de 20 communes entre le Rhône et les Alpilles : locations, activités, infos pratiques.",
+  url: "https://entre-rhone-alpilles.fr/destinations",
+  hasPart: communes.map((c, i) => ({
+    "@type": "TouristDestination",
+    position: i + 1,
+    name: c.name,
+    url: `https://entre-rhone-alpilles.fr/destinations/${c.slug}`,
+    description: c.description,
+    containedInPlace: { "@type": "State", name: "Provence-Alpes-Côte d'Azur" },
+  })),
+};
+
 export const metadata: Metadata = {
-  title: "Destinations en Provence — Entre Rhône et Alpilles",
+  title: "Destinations Provence — 20 Communes Alpilles & Rhône",
   description:
-    "Guides complets de 20 communes entre le Rhône et les Alpilles : Saint-Rémy-de-Provence, Arles, Les Baux, Eygalières, Maussane et bien d'autres.",
+    "Guides de 20 communes entre le Rhône et les Alpilles : Saint-Rémy-de-Provence, Arles, Les Baux-de-Provence, Eygalières, Maussane et bien d'autres.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/destinations" },
   openGraph: {
     title: "Destinations Provence — 20 Communes entre Rhône et Alpilles",
@@ -24,6 +40,7 @@ export default function DestinationsPage() {
 
   return (
     <div className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
       <div className="bg-[var(--color-cream)] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[{ label: "Destinations" }]} />

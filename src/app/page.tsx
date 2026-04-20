@@ -121,7 +121,6 @@ const schemaOrg = {
       paymentAccepted: "Carte bancaire, Virement",
       hasMap: "https://maps.google.com/?q=Saint-Rémy-de-Provence",
       sameAs: [
-        "https://www.airbnb.fr",
         "https://www.facebook.com/entrerhonealpilles",
         "https://www.instagram.com/entrerhoneetalpilles",
       ],

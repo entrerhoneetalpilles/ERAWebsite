@@ -21,6 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `Location avec Piscine ${commune.name} — Mas & Villas Provence`,
     description: `Locations avec piscine privée à ${commune.name} : mas et villas de charme sélectionnés par Entre Rhône et Alpilles. Piscine chauffée disponible. Réservation directe.`,
     alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/avec-piscine/${commune.slug}` },
+    openGraph: {
+      title: `Location avec Piscine ${commune.name} — Mas & Villas`,
+      description: `Mas et villas avec piscine privée à ${commune.name}. Sélectionnés par Entre Rhône et Alpilles.`,
+      url: `https://entre-rhone-alpilles.fr/locations/avec-piscine/${commune.slug}`,
+    },
   };
 }
 

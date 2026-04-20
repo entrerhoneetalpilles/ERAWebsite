@@ -5,13 +5,13 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { testimonials } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Avis Clients — Entre Rhône et Alpilles Conciergerie",
+  title: "Avis Clients — Conciergerie Provence 4,9/5",
   description:
-    "Avis vérifiés de propriétaires et voyageurs. Note moyenne 4,9/5. Découvrez les témoignages de nos clients en Provence.",
+    "208 avis vérifiés de propriétaires et voyageurs. Note moyenne 4,9/5. Témoignages de nos clients en Alpilles et Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/avis" },
   openGraph: {
-    title: "Avis Clients — Entre Rhône et Alpilles Conciergerie",
-    description: "Avis vérifiés de propriétaires et voyageurs. Note moyenne 4,9/5.",
+    title: "Avis Clients — Conciergerie Provence 4,9/5",
+    description: "208 avis vérifiés. Note moyenne 4,9/5 — propriétaires et voyageurs en Provence.",
     url: "https://entre-rhone-alpilles.fr/avis",
   },
 };

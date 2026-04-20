@@ -4,9 +4,15 @@ import { ArrowRight, CheckCircle } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Nos Services de Conciergerie — Entre Rhône et Alpilles",
-  description: "Check-in/out, ménage, tarification dynamique IA, communication voyageurs, maintenance. Découvrez les services inclus dans chacune de nos 3 formules de conciergerie en Provence.",
+  title: "Services de Conciergerie Locative en Provence",
+  description:
+    "Check-in/out, ménage, tarification dynamique, communication voyageurs, maintenance. Services inclus dans nos 3 formules de conciergerie Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie/nos-services" },
+  openGraph: {
+    title: "Services de Conciergerie Locative en Provence",
+    description: "Check-in/out, ménage, tarification dynamique, maintenance. Découvrez les 3 formules de conciergerie.",
+    url: "https://entre-rhone-alpilles.fr/conciergerie/nos-services",
+  },
 };
 
 const serviceGroups = [

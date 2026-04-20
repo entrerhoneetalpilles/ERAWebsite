@@ -7,7 +7,7 @@ import NewsletterForm from "@/components/NewsletterForm";
 import { blogPosts } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Blog — Conseils Conciergerie & Guides Provence",
+  title: "Blog — Conseils Location & Guides Provence",
   description:
     "Conseils pour propriétaires, guides de voyage Provence, actualités du marché locatif. Le blog d'Entre Rhône et Alpilles.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/blog" },

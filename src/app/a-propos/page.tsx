@@ -4,13 +4,13 @@ import { ArrowRight, MapPin, Heart, Zap } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "À propos — Entre Rhône et Alpilles",
+  title: "Notre histoire — Conciergerie Provence",
   description:
-    "Notre histoire, notre vision, notre engagement. Une conciergerie de locations saisonnières née d'une passion pour la Provence et d'une exigence du service haut de gamme.",
+    "Née d'une passion pour la Provence : l'histoire, la vision et l'engagement d'une conciergerie de locations saisonnières haut de gamme en Alpilles.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/a-propos" },
   openGraph: {
-    title: "À propos — Entre Rhône et Alpilles",
-    description: "Notre histoire, notre vision, notre engagement pour la conciergerie de locations saisonnières en Provence.",
+    title: "Notre histoire — Conciergerie Provence",
+    description: "L'histoire, la vision et l'engagement d'une conciergerie haut de gamme en Provence.",
     url: "https://entre-rhone-alpilles.fr/a-propos",
   },
 };

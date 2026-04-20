@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import EstimerForm from "@/components/EstimerForm";
 
 export const metadata: Metadata = {
-  title: "Estimer mes revenus — Simulateur Gratuit Location Provence",
+  title: "Simulateur Revenus Locatifs Provence",
   description:
-    "Calculez vos revenus locatifs potentiels en Provence. Simulation gratuite pour mas, villas, bastides en Alpilles. Basé sur les données AirDNA et notre expertise locale.",
+    "Calculez gratuitement vos revenus Airbnb en Alpilles et Provence. Résultat en 30 secondes basé sur les données AirDNA et notre expertise locale.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie/estimer-mes-revenus" },
   openGraph: {
-    title: "Simulateur de revenus locatifs — Provence & Alpilles",
+    title: "Simulateur Revenus Locatifs Provence",
     description: "Estimez gratuitement vos revenus Airbnb en Provence. Résultat en 30 secondes.",
+    url: "https://entre-rhone-alpilles.fr/conciergerie/estimer-mes-revenus",
   },
 };
 

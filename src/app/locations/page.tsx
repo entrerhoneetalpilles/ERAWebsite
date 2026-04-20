@@ -5,9 +5,9 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { communes, propertyTypes, activityTags } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Locations de Vacances en Provence — Alpilles & Rhône",
+  title: "Locations de Vacances en Provence — Mas, Villas",
   description:
-    "Découvrez nos hébergements de caractère entre le Rhône et les Alpilles : mas provençaux, villas avec piscine, bastides, appartements. 20 communes en Provence.",
+    "Hébergements de caractère entre le Rhône et les Alpilles : mas provençaux, villas avec piscine, bastides. 20 communes en Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/locations" },
   openGraph: {
     title: "Locations de Vacances en Provence — Mas, Villas, Bastides",

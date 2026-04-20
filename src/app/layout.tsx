@@ -78,6 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
+      dir="ltr"
       className={`${cormorant.variable} ${dmSans.variable} h-full`}
     >
       <head>

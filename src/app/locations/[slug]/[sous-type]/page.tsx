@@ -28,6 +28,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${pt.plural} à ${commune.name} — Location Provence`,
     description: `${pt.plural} à louer à ${commune.name} en Provence. Hébergements de caractère sélectionnés par Entre Rhône et Alpilles. Réservation directe.`,
     alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/${commune.slug}/${sousType}` },
+    openGraph: {
+      title: `${pt.plural} à ${commune.name} — Location Provence`,
+      description: `${pt.plural} de caractère à ${commune.name} sélectionnés par Entre Rhône et Alpilles.`,
+      url: `https://entre-rhone-alpilles.fr/locations/${commune.slug}/${sousType}`,
+    },
   };
 }
 

@@ -4,9 +4,14 @@ import { ArrowRight } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Comment ça marche — Conciergerie Entre Rhône et Alpilles",
-  description: "Découvrez notre processus de gestion locative en Provence. Estimation, onboarding, gestion complète — tout en 3 étapes simples.",
+  title: "Comment ça marche — Gestion Locative Provence",
+  description: "Notre processus en 3 étapes : estimation gratuite, mise en ligne professionnelle, gestion complète de votre location saisonnière en Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie/comment-ca-marche" },
+  openGraph: {
+    title: "Comment ça marche — Gestion Locative Provence",
+    description: "Estimation, mise en ligne, gestion complète : notre processus en 3 étapes pour les propriétaires en Provence.",
+    url: "https://entre-rhone-alpilles.fr/conciergerie/comment-ca-marche",
+  },
 };
 
 const steps = [

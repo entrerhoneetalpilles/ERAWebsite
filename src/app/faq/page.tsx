@@ -5,13 +5,13 @@ import Breadcrumb from "@/components/Breadcrumb";
 import FAQAccordion from "@/components/FAQAccordion";
 
 export const metadata: Metadata = {
-  title: "FAQ — Toutes vos questions sur la Conciergerie & Locations Provence",
+  title: "FAQ Conciergerie & Locations Saisonnières Provence",
   description:
-    "Réponses à toutes vos questions : tarifs conciergerie, gestion Airbnb, réservations voyageurs, assurances, fiscalité location courte durée en Provence.",
+    "Tarifs, gestion Airbnb, réservations, assurances et fiscalité location courte durée en Provence. Toutes les réponses.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/faq" },
   openGraph: {
-    title: "FAQ Conciergerie & Locations — Entre Rhône et Alpilles",
-    description: "Réponses à toutes vos questions : tarifs, gestion Airbnb, réservations, assurances et fiscalité location courte durée en Provence.",
+    title: "FAQ Conciergerie & Locations Saisonnières Provence",
+    description: "Tarifs, gestion Airbnb, réservations, assurances et fiscalité location courte durée en Provence.",
     url: "https://entre-rhone-alpilles.fr/faq",
   },
 };

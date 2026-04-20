@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: post.title,
       description: post.excerpt,
       type: "article",
-      publishedTime: post.date,
+      publishedTime: post.date.length === 10 ? `${post.date}T00:00:00Z` : post.date,
       authors: ["Entre Rhône et Alpilles"],
       tags: [post.category, "Provence", "Alpilles"],
     },
