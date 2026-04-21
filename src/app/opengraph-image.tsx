@@ -110,15 +110,33 @@ export default function Image() {
             Conciergerie · Provence
           </div>
 
+          {/* CTA */}
+          <div
+            style={{
+              marginTop: 32,
+              padding: "10px 28px",
+              background: "#4A6741",
+              borderRadius: 6,
+              fontSize: 16,
+              color: "#fff",
+              fontFamily: "system-ui, -apple-system, sans-serif",
+              fontWeight: 500,
+              letterSpacing: 2,
+              textTransform: "uppercase",
+            }}
+          >
+            Estimation gratuite →
+          </div>
+
           {/* URL */}
           <div
             style={{
-              fontSize: 17,
+              fontSize: 15,
               color: "#B89A70",
               letterSpacing: 2,
               fontFamily: "system-ui, -apple-system, sans-serif",
               fontWeight: 300,
-              marginTop: 22,
+              marginTop: 20,
             }}
           >
             entre-rhone-alpilles.fr

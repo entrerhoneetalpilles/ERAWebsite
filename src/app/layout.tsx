@@ -51,13 +51,13 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: "https://entre-rhone-alpilles.fr",
     siteName: "Entre Rhône et Alpilles",
-    title: "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
+    title: "Conciergerie Saisonnière Provence — Alpilles & Arles",
     description:
       "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
+    title: "Conciergerie Saisonnière Provence — Alpilles & Arles",
     description:
       "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières.",
   },
