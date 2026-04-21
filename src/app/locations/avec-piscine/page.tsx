@@ -29,7 +29,7 @@ const schemaOrg = {
 };
 
 const featuredWithPiscine = [
-  { title: "Mas des Oliviers — Piscine & Vue Alpilles", location: "Saint-Rémy-de-Provence", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, slug: "mas-des-oliviers-saint-remy", href: "/locations/saint-remy-de-provence", featured: true, image: "/images/properties/mas-piscine-aerien.jpg" },
+  { title: "Mas des Oliviers — Piscine & Vue Alpilles", location: "Saint-Rémy-de-Provence", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, slug: "mas-des-oliviers-saint-remy", href: "/locations/saint-remy-de-provence", featured: true, image: "/images/properties/mas-des-oliviers.jpg" },
   { title: "Villa Baux — Piscine Panoramique", location: "Les Baux-de-Provence", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, slug: "villa-baux-terrasse", href: "/locations/les-baux-de-provence", image: "/images/properties/villa-baux.jpg" },
   { title: "Mas Maussane — Piscine & Oliveraie", location: "Maussane-les-Alpilles", type: "Mas", guests: 10, price: 390, rating: 5.0, reviewCount: 22, hasPiscine: true, slug: "mas-maussane-alpilles", href: "/locations/maussane-les-alpilles", image: "/images/properties/mas-maussane.jpg" },
   { title: "Bastide Eygalières — Piscine Luxe", location: "Eygalières", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, slug: "bastide-eygalieres-luxe", href: "/locations/eygalieres", image: "/images/properties/bastide-eygalieres.jpg" },

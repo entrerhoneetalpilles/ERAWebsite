@@ -35,9 +35,9 @@ export default async function AvecPiscineVillePage({ params }: Props) {
   if (!commune) notFound();
 
   const mockProperties = [
-    { title: `Mas avec piscine — ${commune.name}`, location: commune.name, type: "Mas", guests: 8, price: 290, rating: 4.9, reviewCount: 28, hasPiscine: true, slug: `mas-piscine-${ville}`, featured: true, image: "/images/properties/mas-piscine-aerien.jpg" },
-    { title: `Villa piscine chauffée — ${commune.name}`, location: commune.name, type: "Villa", guests: 6, price: 250, rating: 4.8, reviewCount: 21, hasPiscine: true, slug: `villa-piscine-${ville}`, image: "/images/properties/mas-piscine-jardin.jpg" },
-    { title: `Bastide piscine panoramique — ${commune.name}`, location: commune.name, type: "Bastide", guests: 10, price: 420, rating: 5.0, reviewCount: 12, hasPiscine: true, slug: `bastide-piscine-${ville}`, image: "/images/properties/bastide-eygalieres.jpg" },
+    { title: `Mas avec piscine — ${commune.name}`, location: commune.name, type: "Mas", guests: 8, price: 290, rating: 4.9, reviewCount: 28, hasPiscine: true, slug: `mas-piscine-${ville}`, featured: true },
+    { title: `Villa piscine chauffée — ${commune.name}`, location: commune.name, type: "Villa", guests: 6, price: 250, rating: 4.8, reviewCount: 21, hasPiscine: true, slug: `villa-piscine-${ville}` },
+    { title: `Bastide piscine panoramique — ${commune.name}`, location: commune.name, type: "Bastide", guests: 10, price: 420, rating: 5.0, reviewCount: 12, hasPiscine: true, slug: `bastide-piscine-${ville}` },
   ];
 
   const faqItems = [
