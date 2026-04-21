@@ -88,7 +88,7 @@ const schemaOrg = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["LocalBusiness", "ProfessionalService"],
+      "@type": "LocalBusiness",
       "@id": "https://entre-rhone-alpilles.fr/#business",
       name: "Entre Rhône et Alpilles — Conciergerie",
       alternateName: "ERA Conciergerie Provence",
