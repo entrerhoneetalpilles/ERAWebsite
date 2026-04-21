@@ -14,9 +14,9 @@ const circleColors = {
 };
 
 const circleLabels = {
-  1: "Priorité absolue",
-  2: "Fort potentiel",
-  3: "Longue traîne",
+  1: "Cœur des Alpilles",
+  2: "Alpilles & Camargue",
+  3: "Grande Provence",
 };
 
 const bandColors = {
