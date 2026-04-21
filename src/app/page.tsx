@@ -88,7 +88,7 @@ const schemaOrg = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["LocalBusiness", "LodgingBusiness"],
+      "@type": ["LocalBusiness", "ProfessionalService"],
       "@id": "https://entre-rhone-alpilles.fr/#business",
       name: "Entre Rhône et Alpilles — Conciergerie",
       alternateName: "ERA Conciergerie Provence",
@@ -105,7 +105,7 @@ const schemaOrg = {
         addressRegion: "Provence-Alpes-Côte d'Azur",
         addressCountry: "FR",
       },
-      geo: { "@type": "GeoCoordinates", latitude: 43.789, longitude: 4.832 },
+      geo: { "@type": "GeoCoordinates", latitude: 43.7896, longitude: 4.8318 },
       openingHoursSpecification: [
         { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday"], opens: "09:00", closes: "19:00" },
         { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "09:00", closes: "17:00" },
@@ -114,7 +114,7 @@ const schemaOrg = {
         "Saint-Rémy-de-Provence","Les Baux-de-Provence","Maussane-les-Alpilles","Fontvieille","Paradou",
         "Arles","Villeneuve-lès-Avignon","Tarascon","Boulbon","Graveson","Barbentane","Châteaurenard",
         "Saint-Étienne-du-Grès","Eygalières","Aureille","Mouriès","Mollégès","Noves","Verquières","Orgon",
-      ].map((name) => ({ "@type": "City", name, containedInPlace: { "@type": "State", name: "Provence-Alpes-Côte d'Azur" } })),
+      ],
       aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "208", bestRating: "5", worstRating: "1" },
       priceRange: "€€€",
       currenciesAccepted: "EUR",
@@ -150,6 +150,12 @@ const schemaOrg = {
         target: { "@type": "EntryPoint", urlTemplate: "https://entre-rhone-alpilles.fr/locations?q={search_term_string}" },
         "query-input": "required name=search_term_string",
       },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: "https://entre-rhone-alpilles.fr" },
+      ],
     },
   ],
 };
