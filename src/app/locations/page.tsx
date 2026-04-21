@@ -101,9 +101,6 @@ export default function LocationsHubPage() {
               <Link key={c.slug} href={`/locations/${c.slug}`}
                 className="p-4 bg-white rounded-xl border border-gray-100 hover:border-[var(--color-rhone)] hover:shadow-sm transition-all text-center group">
                 <p className="text-sm font-semibold text-gray-800 group-hover:text-[var(--color-rhone)] transition-colors leading-snug">{c.name}</p>
-                <p className="text-xs text-gray-400 mt-1">
-                  {c.circle === 1 ? "C1" : c.circle === 2 ? "C2" : "C3"}
-                </p>
               </Link>
             ))}
           </div>
