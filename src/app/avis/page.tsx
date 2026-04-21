@@ -5,19 +5,19 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { testimonials } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Avis Clients — Conciergerie Provence 4,9/5",
+  title: "Avis Clients — Conciergerie Provence 4,7/5",
   description:
-    "208 avis vérifiés de propriétaires et voyageurs. Note moyenne 4,9/5. Témoignages de nos clients en Alpilles et Provence.",
+    "40 avis vérifiés de propriétaires. Note moyenne 4,7/5. Témoignages de nos clients en Alpilles et Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/avis" },
   openGraph: {
     title: "Avis Clients — Conciergerie Provence 4,9/5",
-    description: "208 avis vérifiés. Note moyenne 4,9/5 — propriétaires et voyageurs en Provence.",
+    description: "40 avis vérifiés. Note moyenne 4,7/5 — propriétaires en Provence.",
     url: "https://entre-rhone-alpilles.fr/avis",
   },
 };
 
 const stats = [
-  { value: "4,9/5", label: "Note moyenne", sub: "Source Airbnb" },
+  { value: "4,7/5", label: "Note moyenne", sub: "40 avis vérifiés" },
   { value: "98%", label: "Recommandent ERA", sub: "Propriétaires" },
   { value: "4,8/5", label: "Satisfaction voyageurs", sub: "Toutes plateformes" },
   { value: "Superhost", label: "Niveau Superhost", sub: "Airbnb France" },
@@ -29,7 +29,7 @@ const schemaOrg = {
   name: "Entre Rhône et Alpilles",
   aggregateRating: {
     "@type": "AggregateRating",
-    ratingValue: "4.9",
+    ratingValue: "4.7",
     reviewCount: String(testimonials.length),
     bestRating: "5",
     worstRating: "1",

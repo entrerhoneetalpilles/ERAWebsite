@@ -84,8 +84,8 @@ const schemaOrg = {
   },
   aggregateRating: {
     "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "208",
+    ratingValue: "4.7",
+    reviewCount: "40",
     bestRating: "5",
   },
 };

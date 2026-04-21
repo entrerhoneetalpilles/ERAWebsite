@@ -115,7 +115,7 @@ const schemaOrg = {
         "Arles","Villeneuve-lès-Avignon","Tarascon","Boulbon","Graveson","Barbentane","Châteaurenard",
         "Saint-Étienne-du-Grès","Eygalières","Aureille","Mouriès","Mollégès","Noves","Verquières","Orgon",
       ],
-      aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "208", bestRating: "5", worstRating: "1" },
+      aggregateRating: { "@type": "AggregateRating", ratingValue: "4.7", reviewCount: "40", bestRating: "5", worstRating: "1" },
       priceRange: "€€€",
       currenciesAccepted: "EUR",
       paymentAccepted: "Carte bancaire, Virement",
@@ -384,7 +384,7 @@ export default function HomePage() {
             <h2 id="testimonials-heading" className="font-serif font-normal text-3xl sm:text-4xl text-[var(--color-encre)] mb-3">
               Ils nous font confiance
             </h2>
-            <p style={{ color: "var(--texte-discret)" }}>4,9/5 · Plus de 200 avis vérifiés</p>
+            <p style={{ color: "var(--texte-discret)" }}>4,7/5 · 40 avis propriétaires vérifiés</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {testimonials.map((t) => (

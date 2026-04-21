@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 const stats = [
   { value: "30+", label: "Biens gérés", sub: "Mas, villas, bastides, appartements" },
-  { value: "4,9/5", label: "Note moyenne", sub: "Sur plus de 200 avis vérifiés" },
+  { value: "4,7/5", label: "Note moyenne", sub: "40 avis propriétaires vérifiés" },
   { value: "20", label: "Communes couvertes", sub: "Entre le Rhône et les Alpilles" },
   { value: "85%", label: "Taux d'occupation", sub: "Moyenne annuelle du portfolio" },
 ];
