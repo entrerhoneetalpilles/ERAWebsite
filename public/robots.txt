@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Legal pages — not indexed
+Disallow: /mentions-legales
+Disallow: /politique-confidentialite
+Disallow: /cgv
+
+# Next.js internals
+Disallow: /_next/
+
+Sitemap: https://entre-rhone-alpilles.fr/sitemap.xml

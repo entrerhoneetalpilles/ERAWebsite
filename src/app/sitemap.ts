@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/avis`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/a-propos`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.65 },
+    { url: `${BASE}/kit-media`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     // cgv, mentions-legales, politique-confidentialite sont noindex — ne pas inclure dans le sitemap
   ];
 
