@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { Suspense } from "react";
 import { ArrowRight, MapPin } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import PropertyCard from "@/components/PropertyCard";
+import PropertyTypeFilter from "@/components/PropertyTypeFilter";
 import FAQAccordion from "@/components/FAQAccordion";
 import {
   communes,
@@ -21,7 +23,7 @@ export async function generateStaticParams() {
   ];
 }
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ type?: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -129,12 +131,35 @@ const mockProperties = (slug: string, label: string) => {
   ];
 };
 
-export default async function LocationsSlugPage({ params }: Props) {
+const typeSlugToName: Record<string, string> = {
+  mas: "Mas",
+  villa: "Villa",
+  bastide: "Bastide",
+  appartement: "Appartement",
+  gite: "Gîte",
+  "maison-village": "Maison de village",
+};
+
+export default async function LocationsSlugPage({ params, searchParams }: Props) {
   const { slug } = await params;
+  const { type: selectedType } = await searchParams;
 
   const commune = getCommuneBySlug(slug);
   if (commune) {
-    const properties = mockProperties(commune.slug, commune.name);
+    const allProperties = mockProperties(commune.slug, commune.name);
+
+    const properties = selectedType
+      ? selectedType === "avec-piscine"
+        ? allProperties.filter((p) => p.hasPiscine)
+        : allProperties.filter((p) => typeSlugToName[selectedType] && p.type === typeSlugToName[selectedType])
+      : allProperties;
+
+    const filterTypes = [
+      ...commune.propertyTypes
+        .filter((s) => typeSlugToName[s])
+        .map((s) => ({ slug: s, label: typeSlugToName[s] })),
+      ...(allProperties.some((p) => p.hasPiscine) ? [{ slug: "avec-piscine", label: "Avec piscine" }] : []),
+    ];
 
     const faqItems = [
       { question: `Quels types de biens peut-on louer à ${commune.name} ?`, answer: `À ${commune.name}, nous proposons principalement des ${commune.propertyTypes.join(", ")}. Chaque bien est sélectionné pour sa qualité et son authenticité provençale.` },
@@ -189,31 +214,23 @@ export default async function LocationsSlugPage({ params }: Props) {
 
         <section className="py-20 bg-white" aria-labelledby="properties-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
               <h2 id="properties-heading" className="font-serif text-2xl font-bold text-gray-900">
                 Hébergements à {commune.name}
               </h2>
-              <span className="text-sm text-gray-500">{properties.length} biens disponibles</span>
+              <span className="text-sm text-gray-500">{properties.length} bien{properties.length > 1 ? "s" : ""} disponible{properties.length > 1 ? "s" : ""}</span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {properties.map((p) => <PropertyCard key={p.slug} {...p} href={`/locations/${commune.slug}`} />)}
-            </div>
-
-            <div className="border-t border-gray-100 pt-12">
-              <h2 className="font-serif text-xl font-bold text-gray-900 mb-6">
-                Explorer par type de bien à {commune.name}
-              </h2>
-              <div className="flex flex-wrap gap-3">
-                {commune.propertyTypes.map((type) => {
-                  const pt = propertyTypes.find((p) => p.slug === type);
-                  return (
-                    <Link key={type} href={`/locations/${commune.slug}/${type}`}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-cream)] rounded-full text-sm font-medium text-gray-700 hover:bg-[var(--color-rhone)] hover:text-white transition-colors">
-                      {pt?.plural ?? type}
-                    </Link>
-                  );
-                })}
-              </div>
+            <Suspense fallback={null}>
+              <PropertyTypeFilter types={filterTypes} />
+            </Suspense>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+              {properties.length > 0 ? (
+                properties.map((p) => <PropertyCard key={p.slug} {...p} href={`/locations/${commune.slug}`} />)
+              ) : (
+                <p className="col-span-3 py-12 text-center text-gray-500">
+                  Aucun bien disponible pour ce filtre.
+                </p>
+              )}
             </div>
           </div>
         </section>
