@@ -58,46 +58,46 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // Données différenciées par commune pour éviter le duplicate content
-const communePropertyData: Record<string, { name: string; type: string; guests: number; price: number; rating: number; reviewCount: number; hasPiscine: boolean; adjective: string }[]> = {
+const communePropertyData: Record<string, { name: string; type: string; guests: number; price: number; rating: number; reviewCount: number; hasPiscine: boolean; adjective: string; image: string }[]> = {
   "saint-remy-de-provence": [
-    { name: "Mas des Oliviers — Vue Alpilles", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, adjective: "Vue panoramique" },
-    { name: "Villa du Marché — Centre Saint-Rémy", type: "Villa", guests: 6, price: 255, rating: 4.8, reviewCount: 29, hasPiscine: true, adjective: "Plein centre" },
-    { name: "Maison Glanum — Charme provençal", type: "Maison de village", guests: 4, price: 145, rating: 4.9, reviewCount: 52, hasPiscine: false, adjective: "Cœur village" },
+    { name: "Mas des Oliviers — Vue Alpilles", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, adjective: "Vue panoramique", image: "/images/properties/mas-piscine-aerien.jpg" },
+    { name: "Villa du Marché — Centre Saint-Rémy", type: "Villa", guests: 6, price: 255, rating: 4.8, reviewCount: 29, hasPiscine: true, adjective: "Plein centre", image: "/images/properties/villa-baux.jpg" },
+    { name: "Maison Glanum — Charme provençal", type: "Maison de village", guests: 4, price: 145, rating: 4.9, reviewCount: 52, hasPiscine: false, adjective: "Cœur village", image: "/images/properties/interieur-mas-salon.jpg" },
   ],
   "les-baux-de-provence": [
-    { name: "Villa des Baux — Terrasse panoramique", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, adjective: "Vue château" },
-    { name: "Bastide Alpilles — Standing luxe", type: "Bastide", guests: 10, price: 480, rating: 5.0, reviewCount: 18, hasPiscine: true, adjective: "Luxe absolu" },
-    { name: "Mas des Carrières — Lumières", type: "Mas", guests: 8, price: 350, rating: 4.9, reviewCount: 24, hasPiscine: true, adjective: "Prestige" },
+    { name: "Villa des Baux — Terrasse panoramique", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, adjective: "Vue château", image: "/images/properties/mas-piscine-jardin.jpg" },
+    { name: "Bastide Alpilles — Standing luxe", type: "Bastide", guests: 10, price: 480, rating: 5.0, reviewCount: 18, hasPiscine: true, adjective: "Luxe absolu", image: "/images/properties/bastide-eygalieres.jpg" },
+    { name: "Mas des Carrières — Lumières", type: "Mas", guests: 8, price: 350, rating: 4.9, reviewCount: 24, hasPiscine: true, adjective: "Prestige", image: "/images/properties/mas-des-oliviers.jpg" },
   ],
   "eygalieres": [
-    { name: "Bastide Eygalières — Discrétion absolue", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, adjective: "Exclusivité" },
-    { name: "Villa des Célébrités — Piscine privée", type: "Villa", guests: 8, price: 520, rating: 5.0, reviewCount: 11, hasPiscine: true, adjective: "Ultra-luxe" },
-    { name: "Mas Garrigue — Vue Alpilles Est", type: "Mas", guests: 6, price: 380, rating: 4.9, reviewCount: 22, hasPiscine: true, adjective: "Vue imprenable" },
+    { name: "Bastide Eygalières — Discrétion absolue", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, adjective: "Exclusivité", image: "/images/properties/bastide-eygalieres.jpg" },
+    { name: "Villa des Célébrités — Piscine privée", type: "Villa", guests: 8, price: 520, rating: 5.0, reviewCount: 11, hasPiscine: true, adjective: "Ultra-luxe", image: "/images/properties/mas-piscine-jardin.jpg" },
+    { name: "Mas Garrigue — Vue Alpilles Est", type: "Mas", guests: 6, price: 380, rating: 4.9, reviewCount: 22, hasPiscine: true, adjective: "Vue imprenable", image: "/images/properties/mas-maussane.jpg" },
   ],
   "maussane-les-alpilles": [
-    { name: "Mas Oliveraie — Huile d'or", type: "Mas", guests: 8, price: 295, rating: 4.9, reviewCount: 33, hasPiscine: true, adjective: "AOP oliviers" },
-    { name: "Gîte du Moulin — Famille", type: "Gîte", guests: 6, price: 185, rating: 4.8, reviewCount: 41, hasPiscine: true, adjective: "Vue moulin" },
-    { name: "Maison du Village — Gastronomie", type: "Maison de village", guests: 4, price: 140, rating: 4.7, reviewCount: 28, hasPiscine: false, adjective: "Restaurants à pied" },
+    { name: "Mas Oliveraie — Huile d'or", type: "Mas", guests: 8, price: 295, rating: 4.9, reviewCount: 33, hasPiscine: true, adjective: "AOP oliviers", image: "/images/properties/mas-maussane.jpg" },
+    { name: "Gîte du Moulin — Famille", type: "Gîte", guests: 6, price: 185, rating: 4.8, reviewCount: 41, hasPiscine: true, adjective: "Vue moulin", image: "/images/properties/gite-paradou.jpg" },
+    { name: "Maison du Village — Gastronomie", type: "Maison de village", guests: 4, price: 140, rating: 4.7, reviewCount: 28, hasPiscine: false, adjective: "Restaurants à pied", image: "/images/properties/interieur-mas-salon.jpg" },
   ],
   "arles": [
-    { name: "Appartement du Théâtre — UNESCO", type: "Appartement", guests: 4, price: 140, rating: 4.9, reviewCount: 58, hasPiscine: false, adjective: "Centre historique" },
-    { name: "Mas Camargue — Feria", type: "Mas", guests: 8, price: 240, rating: 4.8, reviewCount: 35, hasPiscine: true, adjective: "Porte Camargue" },
-    { name: "Maison LUMA — Art contemporain", type: "Maison de village", guests: 5, price: 180, rating: 5.0, reviewCount: 22, hasPiscine: false, adjective: "Quartier artistique" },
+    { name: "Appartement du Théâtre — UNESCO", type: "Appartement", guests: 4, price: 140, rating: 4.9, reviewCount: 58, hasPiscine: false, adjective: "Centre historique", image: "/images/properties/appartement-arles.jpg" },
+    { name: "Mas Camargue — Feria", type: "Mas", guests: 8, price: 240, rating: 4.8, reviewCount: 35, hasPiscine: true, adjective: "Porte Camargue", image: "/images/properties/mas-saint-remy.jpg" },
+    { name: "Maison LUMA — Art contemporain", type: "Maison de village", guests: 5, price: 180, rating: 5.0, reviewCount: 22, hasPiscine: false, adjective: "Quartier artistique", image: "/images/properties/interieur-mas-salon.jpg" },
   ],
   "fontvieille": [
-    { name: "Mas Daudet — Vue Moulin", type: "Mas", guests: 8, price: 260, rating: 4.8, reviewCount: 29, hasPiscine: true, adjective: "Hommage Daudet" },
-    { name: "Gîte des Cyclamens — Vélo", type: "Gîte", guests: 6, price: 155, rating: 4.7, reviewCount: 38, hasPiscine: false, adjective: "Départ cyclable" },
-    { name: "Villa Fontaine — Famille", type: "Villa", guests: 10, price: 295, rating: 4.9, reviewCount: 21, hasPiscine: true, adjective: "Idéal familles" },
+    { name: "Mas Daudet — Vue Moulin", type: "Mas", guests: 8, price: 260, rating: 4.8, reviewCount: 29, hasPiscine: true, adjective: "Hommage Daudet", image: "/images/properties/mas-des-oliviers.jpg" },
+    { name: "Gîte des Cyclamens — Vélo", type: "Gîte", guests: 6, price: 155, rating: 4.7, reviewCount: 38, hasPiscine: false, adjective: "Départ cyclable", image: "/images/properties/gite-paradou.jpg" },
+    { name: "Villa Fontaine — Famille", type: "Villa", guests: 10, price: 295, rating: 4.9, reviewCount: 21, hasPiscine: true, adjective: "Idéal familles", image: "/images/properties/villa-baux.jpg" },
   ],
   "paradou": [
-    { name: "Mas du Silence — Slow travel", type: "Mas", guests: 6, price: 275, rating: 5.0, reviewCount: 19, hasPiscine: true, adjective: "Calme total" },
-    { name: "Gîte des Oliviers — Intimiste", type: "Gîte", guests: 4, price: 160, rating: 4.9, reviewCount: 31, hasPiscine: false, adjective: "Secret villageois" },
-    { name: "Bastide Paradou — Couple", type: "Bastide", guests: 4, price: 340, rating: 5.0, reviewCount: 12, hasPiscine: true, adjective: "Romantique" },
+    { name: "Mas du Silence — Slow travel", type: "Mas", guests: 6, price: 275, rating: 5.0, reviewCount: 19, hasPiscine: true, adjective: "Calme total", image: "/images/properties/mas-piscine-jardin.jpg" },
+    { name: "Gîte des Oliviers — Intimiste", type: "Gîte", guests: 4, price: 160, rating: 4.9, reviewCount: 31, hasPiscine: false, adjective: "Secret villageois", image: "/images/properties/gite-paradou.jpg" },
+    { name: "Bastide Paradou — Couple", type: "Bastide", guests: 4, price: 340, rating: 5.0, reviewCount: 12, hasPiscine: true, adjective: "Romantique", image: "/images/properties/bastide-eygalieres.jpg" },
   ],
   "villeneuve-les-avignon": [
-    { name: "Villa Chartreuse — Vue Palais Papes", type: "Villa", guests: 8, price: 310, rating: 4.9, reviewCount: 26, hasPiscine: true, adjective: "Vue unique" },
-    { name: "Appartement Festival — Avignon", type: "Appartement", guests: 4, price: 160, rating: 4.8, reviewCount: 44, hasPiscine: false, adjective: "Festival Off" },
-    { name: "Maison du Rhône — Jardins", type: "Maison de village", guests: 6, price: 210, rating: 4.7, reviewCount: 33, hasPiscine: false, adjective: "Bord de Rhône" },
+    { name: "Villa Chartreuse — Vue Palais Papes", type: "Villa", guests: 8, price: 310, rating: 4.9, reviewCount: 26, hasPiscine: true, adjective: "Vue unique", image: "/images/properties/mas-piscine-jardin.jpg" },
+    { name: "Appartement Festival — Avignon", type: "Appartement", guests: 4, price: 160, rating: 4.8, reviewCount: 44, hasPiscine: false, adjective: "Festival Off", image: "/images/properties/appartement-arles.jpg" },
+    { name: "Maison du Rhône — Jardins", type: "Maison de village", guests: 6, price: 210, rating: 4.7, reviewCount: 33, hasPiscine: false, adjective: "Bord de Rhône", image: "/images/properties/interieur-mas-salon.jpg" },
   ],
 };
 
@@ -113,6 +113,7 @@ const mockProperties = (slug: string, label: string) => {
       rating: p.rating,
       reviewCount: p.reviewCount,
       hasPiscine: p.hasPiscine,
+      image: p.image,
       slug: `${p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`,
     }));
   }
@@ -122,9 +123,9 @@ const mockProperties = (slug: string, label: string) => {
   const ratings = [4.7, 4.7, 4.8, 4.8, 4.9, 4.9, 5.0];
   const reviews = [18, 22, 27, 31, 35, 41, 48];
   return [
-    { title: `Mas provençal — ${label}`, location: label, type: "Mas", guests: 8, price: prices[(seed + 2) % 7] + 80, rating: ratings[(seed + 1) % 7], reviewCount: reviews[(seed + 2) % 7], hasPiscine: true, slug: `mas-provencal-${slug}` },
-    { title: `Villa ${label.split("-")[0]} — Jardin`, location: label, type: "Villa", guests: 6, price: prices[(seed + 4) % 7] + 40, rating: ratings[(seed + 3) % 7], reviewCount: reviews[(seed + 1) % 7], hasPiscine: true, slug: `villa-jardin-${slug}` },
-    { title: `Gîte de caractère — ${label}`, location: label, type: "Gîte", guests: 4, price: prices[seed % 7], rating: ratings[(seed + 2) % 7], reviewCount: reviews[(seed + 4) % 7], hasPiscine: false, slug: `gite-caractere-${slug}` },
+    { title: `Mas provençal — ${label}`, location: label, type: "Mas", guests: 8, price: prices[(seed + 2) % 7] + 80, rating: ratings[(seed + 1) % 7], reviewCount: reviews[(seed + 2) % 7], hasPiscine: true, slug: `mas-provencal-${slug}`, image: "/images/properties/mas-des-oliviers.jpg" },
+    { title: `Villa ${label.split("-")[0]} — Jardin`, location: label, type: "Villa", guests: 6, price: prices[(seed + 4) % 7] + 40, rating: ratings[(seed + 3) % 7], reviewCount: reviews[(seed + 1) % 7], hasPiscine: true, slug: `villa-jardin-${slug}`, image: "/images/properties/villa-baux.jpg" },
+    { title: `Gîte de caractère — ${label}`, location: label, type: "Gîte", guests: 4, price: prices[seed % 7], rating: ratings[(seed + 2) % 7], reviewCount: reviews[(seed + 4) % 7], hasPiscine: false, slug: `gite-caractere-${slug}`, image: "/images/properties/gite-paradou.jpg" },
   ];
 };
 
@@ -172,7 +173,7 @@ export default async function LocationsSlugPage({ params }: Props) {
               <div className="flex items-center gap-2 text-[var(--color-rhone)] mb-4">
                 <MapPin className="w-5 h-5" aria-hidden="true" />
                 <span className="text-sm font-semibold uppercase tracking-wider">
-                  {commune.circle === 1 ? "Cœur des Alpilles" : commune.circle === 2 ? "Zone de développement" : "Frontière stratégique"}
+                  {commune.circle === 1 ? "Cœur des Alpilles" : commune.circle === 2 ? "Alpilles & Camargue" : "Grande Provence"}
                 </span>
               </div>
               <h1 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-6">

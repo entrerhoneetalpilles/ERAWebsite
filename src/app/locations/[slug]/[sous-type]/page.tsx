@@ -42,9 +42,20 @@ export default async function LocationsVilleTypePage({ params }: Props) {
   const pt = getPropertyTypeBySlug(sousType);
   if (!commune || !pt) notFound();
 
+  const typeImages: Record<string, string> = {
+    "mas": "/images/properties/mas-des-oliviers.jpg",
+    "villa": "/images/properties/villa-baux.jpg",
+    "bastide": "/images/properties/bastide-eygalieres.jpg",
+    "gite": "/images/properties/gite-paradou.jpg",
+    "appartement": "/images/properties/appartement-arles.jpg",
+    "maison-de-village": "/images/properties/interieur-mas-salon.jpg",
+    "avec-piscine": "/images/properties/mas-piscine-aerien.jpg",
+  };
+  const typeImage = typeImages[sousType] ?? "/images/properties/mas-des-oliviers.jpg";
+
   const mockProperties = [
-    { title: `${pt.name} de charme — ${commune.name}`, location: commune.name, type: pt.name, guests: 6, price: 240, rating: 4.9, reviewCount: 28, hasPiscine: sousType === "avec-piscine", slug: `${sousType}-charme-${slug}` },
-    { title: `${pt.name} Vue Alpilles — ${commune.name}`, location: commune.name, type: pt.name, guests: 8, price: 310, rating: 4.8, reviewCount: 19, hasPiscine: sousType === "avec-piscine", slug: `${sousType}-vue-alpilles-${slug}` },
+    { title: `${pt.name} de charme — ${commune.name}`, location: commune.name, type: pt.name, guests: 6, price: 240, rating: 4.9, reviewCount: 28, hasPiscine: sousType === "avec-piscine", slug: `${sousType}-charme-${slug}`, image: typeImage },
+    { title: `${pt.name} Vue Alpilles — ${commune.name}`, location: commune.name, type: pt.name, guests: 8, price: 310, rating: 4.8, reviewCount: 19, hasPiscine: sousType === "avec-piscine", slug: `${sousType}-vue-alpilles-${slug}`, image: typeImage },
   ];
 
   const faqItems = [

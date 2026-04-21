@@ -65,9 +65,9 @@ export default async function DestinationVillePage({ params }: Props) {
   const localInfo = getLocalInfo(ville);
 
   const mockProperties = [
-    { title: `Mas de charme — ${commune.name}`, location: commune.name, type: "Mas", guests: 8, price: 280, rating: 4.9, reviewCount: 32, hasPiscine: true, slug: `mas-charme-${ville}` },
-    { title: `Villa avec piscine — ${commune.name}`, location: commune.name, type: "Villa", guests: 6, price: 220, rating: 4.8, reviewCount: 18, hasPiscine: true, slug: `villa-piscine-${ville}` },
-    { title: `Gîte authentique — ${commune.name}`, location: commune.name, type: "Gîte", guests: 4, price: 130, rating: 4.7, reviewCount: 24, hasPiscine: false, slug: `gite-authentique-${ville}` },
+    { title: `Mas de charme — ${commune.name}`, location: commune.name, type: "Mas", guests: 8, price: 280, rating: 4.9, reviewCount: 32, hasPiscine: true, slug: `mas-charme-${ville}`, image: "/images/properties/mas-des-oliviers.jpg" },
+    { title: `Villa avec piscine — ${commune.name}`, location: commune.name, type: "Villa", guests: 6, price: 220, rating: 4.8, reviewCount: 18, hasPiscine: true, slug: `villa-piscine-${ville}`, image: "/images/properties/mas-piscine-jardin.jpg" },
+    { title: `Gîte authentique — ${commune.name}`, location: commune.name, type: "Gîte", guests: 4, price: 130, rating: 4.7, reviewCount: 24, hasPiscine: false, slug: `gite-authentique-${ville}`, image: "/images/properties/gite-paradou.jpg" },
   ];
 
   const schemaOrg = {
