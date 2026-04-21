@@ -361,11 +361,43 @@
 
   @media print {
     .print-btn { display: none; }
+    .site-nav { display: none; }
     .cover { min-height: auto; padding: 48px; }
     section { padding: 48px; }
     .contact-block { padding: 48px; }
     .footer { padding: 24px 48px; }
   }
+
+  /* ── BARRE NAV SITE ── */
+  .site-nav {
+    position: sticky; top: 0; z-index: 200;
+    background: var(--warm-dark);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 32px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .site-nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; font-weight: 300; color: var(--blanc-casse);
+    text-decoration: none;
+  }
+  .site-nav-brand span { color: var(--color-or); font-weight: 400; }
+  .site-nav-actions { display: flex; align-items: center; gap: 16px; }
+  .site-nav-back {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--gres-clair); text-decoration: none;
+    transition: color .2s;
+  }
+  .site-nav-back:hover { color: var(--blanc-casse); }
+  .site-nav-print {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    background: var(--color-rhone); color: var(--cream);
+    border: none; padding: 8px 18px; cursor: pointer;
+    border-radius: 4px; transition: background .2s;
+  }
+  .site-nav-print:hover { background: var(--color-rhone-dark); }
 </style>
 
 <style id="global-overlay">
@@ -424,6 +456,16 @@
 <body>
 <a href="#main-content" class="skip-link">Aller au contenu</a>
 
+<!-- BARRE NAVIGATION SITE -->
+<nav class="site-nav" aria-label="Navigation">
+  <a href="https://entre-rhone-alpilles.fr" class="site-nav-brand">
+    Entre Rhône <span>et Alpilles</span>
+  </a>
+  <div class="site-nav-actions">
+    <a href="https://entre-rhone-alpilles.fr" class="site-nav-back">← Retour au site</a>
+    <button class="site-nav-print" onclick="window.print()">⬇ Télécharger</button>
+  </div>
+</nav>
 
 <!-- COVER -->
 <div class="cover">
@@ -775,10 +817,9 @@
 <!-- FOOTER -->
 <div class="footer">
   <div class="footer-brand">Entre Rhône et Alpilles</div>
-  <div class="footer-copy">Kit Média · 2025 · Tous droits réservés</div>
+  <div class="footer-copy">Kit Média · 2026 · Tous droits réservés</div>
 </div>
 
-<button class="print-btn" onclick="window.print()">⬇ Télécharger / Imprimer</button>
 
 </body>
 </html>

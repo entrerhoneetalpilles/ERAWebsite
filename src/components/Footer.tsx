@@ -181,6 +181,11 @@ export default function Footer() {
                   Contact
                 </Link>
               </li>
+              <li>
+                <a href="/kit-media-entre-rhone-alpilles.html" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  Kit Média
+                </a>
+              </li>
             </ul>
             <h3 className="font-semibold text-white mt-8 mb-4 text-sm uppercase tracking-wider">
               Légal
