@@ -64,8 +64,10 @@
   --ombre-xl: 0 16px 48px rgba(194, 168, 130, 0.22);
 }
 
-html {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {

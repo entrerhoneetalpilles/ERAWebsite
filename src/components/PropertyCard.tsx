@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Users, Star, Waves } from "lucide-react";
 
@@ -42,16 +43,22 @@ export default function PropertyCard({
     >
       {/* Image */}
       <Link href={cardHref} className="block relative overflow-hidden aspect-[4/3]">
-        <div
-          className="w-full h-full bg-gradient-to-br from-[var(--color-cream)] to-[var(--color-alpilles)]/20 group-hover:scale-105 transition-transform duration-500"
-          style={
-            image
-              ? { backgroundImage: `url(${image})`, backgroundSize: "cover", backgroundPosition: "center" }
-              : {}
-          }
-          role="img"
-          aria-label={`Photo de ${title}`}
-        />
+        {image ? (
+          <Image
+            src={image}
+            alt={`Photo de ${title}`}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            priority={featured}
+          />
+        ) : (
+          <div
+            className="w-full h-full bg-gradient-to-br from-[var(--color-cream)] to-[var(--color-alpilles)]/20 group-hover:scale-105 transition-transform duration-500"
+            role="img"
+            aria-label={`Photo de ${title}`}
+          />
+        )}
         {featured && (
           <span
             className="absolute top-3 left-3 px-3 py-1 text-white text-xs font-medium rounded-full tracking-wide"

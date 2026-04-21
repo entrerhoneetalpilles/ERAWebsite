@@ -54,9 +54,12 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300 ${
-        scrolled || isOpen ? "shadow-sm border-b border-[var(--color-gres-clair)]" : ""
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 bg-white transition-[border-color,box-shadow] duration-300"
+      style={{
+        borderBottom: "1px solid",
+        borderColor: scrolled || isOpen ? "var(--color-gres-clair)" : "transparent",
+        boxShadow: scrolled || isOpen ? "var(--ombre-sm)" : "none",
+      }}
       role="banner"
     >
       <nav
@@ -97,7 +100,7 @@ export default function Header() {
                     aria-expanded={activeDropdown === link.href}
                   >
                     {link.label}
-                    <svg className="w-3 h-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-3 h-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
                     </svg>
                   </Link>
@@ -162,9 +165,15 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile menu */}
-        {isOpen && (
-          <div id="mobile-menu" className="lg:hidden border-t border-[var(--color-gres-clair)] py-4">
+        {/* Mobile menu — CSS-animated to avoid DOM insertion CLS */}
+        <div
+          id="mobile-menu"
+          className="lg:hidden overflow-hidden transition-[max-height] duration-300 ease-in-out"
+          style={{ maxHeight: isOpen ? "600px" : "0px" }}
+          aria-hidden={!isOpen}
+          inert={!isOpen ? true : undefined}
+        >
+          <div className="border-t border-[var(--color-gres-clair)] py-4">
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <div key={link.href}>
@@ -173,6 +182,7 @@ export default function Header() {
                     className="block px-4 py-2.5 text-xs font-medium rounded-lg transition-colors uppercase"
                     style={{ color: "var(--texte-corps)", letterSpacing: "0.1em" }}
                     onClick={() => setIsOpen(false)}
+                    tabIndex={isOpen ? undefined : -1}
                   >
                     {link.label}
                   </Link>
@@ -185,6 +195,7 @@ export default function Header() {
                           className="block px-4 py-2 text-sm rounded-lg transition-colors"
                           style={{ color: "var(--texte-leger)" }}
                           onClick={() => setIsOpen(false)}
+                          tabIndex={isOpen ? undefined : -1}
                         >
                           {child.label}
                         </Link>
@@ -201,8 +212,9 @@ export default function Header() {
                   href="tel:+33752907868"
                   className="flex items-center gap-2 text-xs"
                   style={{ color: "var(--texte-discret)" }}
+                  tabIndex={isOpen ? undefined : -1}
                 >
-                  <Phone className="w-4 h-4" />
+                  <Phone className="w-4 h-4" aria-hidden="true" />
                   07 52 90 78 68
                 </a>
                 <Link
@@ -210,6 +222,7 @@ export default function Header() {
                   className="w-full text-center px-4 py-3 bg-[var(--color-rhone)] text-white text-xs rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
                   style={{ letterSpacing: "0.08em", textTransform: "uppercase" }}
                   onClick={() => setIsOpen(false)}
+                  tabIndex={isOpen ? undefined : -1}
                 >
                   Confier mon bien
                 </Link>
@@ -218,13 +231,14 @@ export default function Header() {
                   className="w-full text-center px-4 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] text-xs rounded-md hover:bg-[var(--color-cream)] transition-colors"
                   style={{ letterSpacing: "0.08em", textTransform: "uppercase" }}
                   onClick={() => setIsOpen(false)}
+                  tabIndex={isOpen ? undefined : -1}
                 >
                   Trouver un hébergement
                 </Link>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );

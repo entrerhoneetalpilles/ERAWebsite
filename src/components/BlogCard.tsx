@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Clock } from "lucide-react";
 import type { BlogPost } from "@/lib/data";
@@ -14,12 +15,21 @@ export default function BlogCard({ post }: BlogCardProps) {
       style={{ borderColor: "var(--color-gres-clair)" }}
     >
       <Link href={`/blog/${post.slug}`} className="block relative aspect-[16/9] overflow-hidden">
-        <div
-          className="w-full h-full bg-gradient-to-br from-[var(--color-cream)] to-[var(--color-alpilles)]/30 group-hover:scale-105 transition-transform duration-500"
-          style={post.image ? { backgroundImage: `url(${post.image})`, backgroundSize: "cover", backgroundPosition: "center" } : {}}
-          role="img"
-          aria-label={`Illustration pour "${post.title}"`}
-        />
+        {post.image ? (
+          <Image
+            src={post.image}
+            alt={`Illustration pour "${post.title}"`}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div
+            className="w-full h-full bg-gradient-to-br from-[var(--color-cream)] to-[var(--color-alpilles)]/30 group-hover:scale-105 transition-transform duration-500"
+            role="img"
+            aria-label={`Illustration pour "${post.title}"`}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         <span
           className="absolute bottom-3 left-3 inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full backdrop-blur-sm"
