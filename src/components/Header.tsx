@@ -165,16 +165,14 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile menu — CSS-animated to avoid DOM insertion CLS */}
-        <div
-          id="mobile-menu"
-          className="lg:hidden overflow-hidden transition-[max-height] duration-300 ease-in-out"
-          style={{ maxHeight: isOpen ? "600px" : "0px" }}
-          aria-hidden={!isOpen}
-          inert={!isOpen ? true : undefined}
-        >
-          <div className="border-t border-[var(--color-gres-clair)] py-4">
-            <div className="flex flex-col gap-1">
+        {/* Mobile menu */}
+        {isOpen && (
+          <div
+            id="mobile-menu"
+            className="lg:hidden border-t border-[var(--color-gres-clair)] overflow-y-auto"
+            style={{ maxHeight: "calc(100dvh - 4rem)" }}
+          >
+            <div className="py-4 flex flex-col gap-1">
               {navLinks.map((link) => (
                 <div key={link.href}>
                   <Link
@@ -182,7 +180,6 @@ export default function Header() {
                     className="block px-4 py-2.5 text-xs font-medium rounded-lg transition-colors uppercase"
                     style={{ color: "var(--texte-corps)", letterSpacing: "0.1em" }}
                     onClick={() => setIsOpen(false)}
-                    tabIndex={isOpen ? undefined : -1}
                   >
                     {link.label}
                   </Link>
@@ -195,7 +192,6 @@ export default function Header() {
                           className="block px-4 py-2 text-sm rounded-lg transition-colors"
                           style={{ color: "var(--texte-leger)" }}
                           onClick={() => setIsOpen(false)}
-                          tabIndex={isOpen ? undefined : -1}
                         >
                           {child.label}
                         </Link>
@@ -212,7 +208,6 @@ export default function Header() {
                   href="tel:+33752907868"
                   className="flex items-center gap-2 text-xs"
                   style={{ color: "var(--texte-discret)" }}
-                  tabIndex={isOpen ? undefined : -1}
                 >
                   <Phone className="w-4 h-4" aria-hidden="true" />
                   07 52 90 78 68
@@ -222,7 +217,6 @@ export default function Header() {
                   className="w-full text-center px-4 py-3 bg-[var(--color-rhone)] text-white text-xs rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
                   style={{ letterSpacing: "0.08em", textTransform: "uppercase" }}
                   onClick={() => setIsOpen(false)}
-                  tabIndex={isOpen ? undefined : -1}
                 >
                   Confier mon bien
                 </Link>
@@ -231,14 +225,13 @@ export default function Header() {
                   className="w-full text-center px-4 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] text-xs rounded-md hover:bg-[var(--color-cream)] transition-colors"
                   style={{ letterSpacing: "0.08em", textTransform: "uppercase" }}
                   onClick={() => setIsOpen(false)}
-                  tabIndex={isOpen ? undefined : -1}
                 >
                   Trouver un hébergement
                 </Link>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </nav>
     </header>
   );
