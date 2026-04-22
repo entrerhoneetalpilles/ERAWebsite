@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
   },
   description:
-    "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières. Estimation gratuite en 2 min.",
+    "Conciergerie de locations saisonnières dans les Alpilles et en Provence. Mas, villas, bastides entre Arles et Eygalières. Estimation gratuite en 2 min.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr" },
 };
 
@@ -199,9 +199,9 @@ export default function HomePage() {
           >
             La conciergerie{" "}
             <br />
-            <em className="not-italic text-[var(--color-rhone-dark)] italic">de référence</em>{" "}
+            <em className="not-italic text-[var(--color-rhone-dark)] italic">des Alpilles</em>{" "}
             <br />
-            en Provence
+            et de Provence
           </h1>
 
           {/* Description */}
@@ -266,7 +266,7 @@ export default function HomePage() {
               Pour les propriétaires
             </p>
             <h2 id="owners-heading" className="font-serif font-normal text-3xl sm:text-4xl text-[var(--color-encre)] mb-4">
-              Votre bien en de bonnes mains
+              Conciergerie dans les Alpilles — votre bien en de bonnes mains
             </h2>
             <p className="leading-relaxed" style={{ color: "var(--texte-leger)" }}>
               Confiez la gestion de votre mas, villa ou appartement à notre équipe locale. Nous optimisons vos revenus tout en préservant votre tranquillité et votre bien.
