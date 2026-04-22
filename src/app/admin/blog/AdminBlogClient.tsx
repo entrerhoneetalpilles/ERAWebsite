@@ -4,11 +4,12 @@ import { useState, useMemo, useEffect } from "react";
 import {
   Check, Lock, Eye, EyeOff, FileText, Sparkles, Rocket,
   CheckCircle, AlertCircle, ExternalLink, RefreshCw,
-  LayoutList, Pencil, Trash2, X, Loader2,
+  LayoutList, Pencil, Trash2, X, Loader2, BarChart2,
 } from "lucide-react";
 import BlogForm, { type FormValues } from "./BlogForm";
 import SeoPanel from "./SeoPanel";
 import PromptGenerator from "./PromptGenerator";
+import SeoReport from "./SeoReport";
 import { computeSeoScore } from "./seoScorer";
 import type { BlogPost } from "@/lib/data";
 
@@ -202,7 +203,7 @@ interface Props {
 export default function AdminBlogClient({ initialPosts }: Props) {
   const [authed, setAuthed] = useState(false);
   const [values, setValues] = useState<FormValues>(EMPTY);
-  const [tab, setTab] = useState<"form" | "prompt" | "manage">("form");
+  const [tab, setTab] = useState<"form" | "prompt" | "manage" | "seo">("form");
   const [mode, setMode] = useState<Mode>("create");
 
   const [publishStatus, setPublishStatus] = useState<PublishStatus>("idle");
@@ -364,6 +365,12 @@ export default function AdminBlogClient({ initialPosts }: Props) {
               {initialPosts.length}
             </span>
           </button>
+          <button
+            onClick={() => setTab("seo")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === "seo" ? "bg-[var(--color-rhone)] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}
+          >
+            <BarChart2 className="w-4 h-4" /> Rapports SEO
+          </button>
         </div>
 
         {/* ── Form / Edit tab ── */}
@@ -475,6 +482,9 @@ export default function AdminBlogClient({ initialPosts }: Props) {
 
         {/* ── Prompt tab ── */}
         {tab === "prompt" && mode === "create" && <PromptGenerator onImport={handleImport} />}
+
+        {/* ── SEO report tab ── */}
+        {tab === "seo" && <SeoReport />}
 
         {/* ── Manage tab ── */}
         {tab === "manage" && (
