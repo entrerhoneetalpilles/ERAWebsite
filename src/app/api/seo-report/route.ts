@@ -28,6 +28,7 @@ export interface PageResult {
   h1Count: number;
   h2Count: number;
   h2Texts: string[];
+  h3Count: number;
   canonical: string | null;
   robotsMeta: string | null;
   ogTitle: string | null;
@@ -40,6 +41,11 @@ export interface PageResult {
   wordCount: number;
   internalLinks: number;
   externalLinks: number;
+  viewport: string | null;
+  htmlLang: string | null;
+  responseTimeMs: number;
+  pageSizeKb: number;
+  textHtmlRatio: number;
   issues: Issue[];
   score: number;
   psi?: { performance: number; seo: number; accessibility: number; lcp: number | null; cls: number | null };
@@ -121,7 +127,7 @@ function getCanonical(html: string): string | null {
   return m ? m[1].trim() : null;
 }
 
-function getHeadings(html: string, tag: "h1" | "h2"): string[] {
+function getHeadings(html: string, tag: "h1" | "h2" | "h3"): string[] {
   const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "gi");
   const results: string[] = [];
   let m;
@@ -184,63 +190,133 @@ function getWordCount(html: string): number {
   return text.split(/\s+/).filter((w) => w.length > 1).length;
 }
 
+function getHtmlLang(html: string): string | null {
+  const m = html.match(/<html[^>]+lang=["']([^"']+)["']/i);
+  return m ? m[1] : null;
+}
+
+function getTextHtmlRatio(html: string): number {
+  if (!html) return 0;
+  const body = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i)?.[1] ?? html;
+  const cleaned = body
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "");
+  const textLen = cleaned.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().length;
+  return cleaned.length > 0 ? Math.round((textLen / cleaned.length) * 100) : 0;
+}
+
 // ── Scoring ────────────────────────────────────────────────────
 
 const SCORE_WEIGHTS = {
+  // Blocking
+  HTTP_ERROR: { sev: "critical" as Severity, pts: 50, msg: (s: number) => `Erreur HTTP ${s}` },
+  // Title
   TITLE_MISSING: { sev: "critical" as Severity, pts: 20, msg: "Balise <title> manquante" },
   TITLE_TOO_LONG: { sev: "warning" as Severity, pts: 8, msg: (n: number) => `Titre trop long (${n} car. — max 60)` },
   TITLE_TOO_SHORT: { sev: "warning" as Severity, pts: 5, msg: (n: number) => `Titre trop court (${n} car. — idéal 50-60)` },
+  TITLE_DUPLICATE: { sev: "critical" as Severity, pts: 15, msg: "Titre identique sur une autre page" },
+  // Description
   DESC_MISSING: { sev: "critical" as Severity, pts: 20, msg: "Meta description manquante" },
   DESC_TOO_LONG: { sev: "warning" as Severity, pts: 5, msg: (n: number) => `Meta description trop longue (${n} car. — max 160)` },
   DESC_TOO_SHORT: { sev: "warning" as Severity, pts: 8, msg: (n: number) => `Meta description trop courte (${n} car. — idéal 140-160)` },
+  DESC_DUPLICATE: { sev: "warning" as Severity, pts: 10, msg: "Meta description dupliquée entre pages" },
+  // Headings
   H1_MISSING: { sev: "critical" as Severity, pts: 15, msg: "H1 manquant" },
   H1_DUPLICATE: { sev: "warning" as Severity, pts: 10, msg: (n: number) => `${n} balises H1 présentes (doit être unique)` },
+  NO_H2: { sev: "warning" as Severity, pts: 5, msg: "Aucun H2 (structure de contenu insuffisante)" },
+  // Canonical
   NO_CANONICAL: { sev: "warning" as Severity, pts: 5, msg: "Lien canonical manquant" },
+  WRONG_CANONICAL: { sev: "critical" as Severity, pts: 15, msg: "Canonical pointe vers une URL différente" },
+  // Open Graph
   NO_OG_TITLE: { sev: "warning" as Severity, pts: 5, msg: "og:title manquant (partage réseaux sociaux)" },
   NO_OG_DESC: { sev: "warning" as Severity, pts: 5, msg: "og:description manquant" },
   NO_OG_IMAGE: { sev: "warning" as Severity, pts: 5, msg: "og:image manquant (image de partage)" },
+  // Structured data
   NO_JSON_LD: { sev: "warning" as Severity, pts: 5, msg: "Aucune donnée structurée JSON-LD" },
+  // Images
   IMG_ALT: { sev: "warning" as Severity, pts: 3, msg: (n: number) => `${n} image${n > 1 ? "s" : ""} sans attribut alt` },
-  THIN_CONTENT: { sev: "warning" as Severity, pts: 5, msg: (n: number) => `Contenu mince (${n} mots — vise 600+)` },
-  HTTP_ERROR: { sev: "critical" as Severity, pts: 50, msg: (s: number) => `Erreur HTTP ${s}` },
+  // Content
+  THIN_CONTENT: { sev: "warning" as Severity, pts: 5, msg: (n: number, thr: number) => `Contenu mince (${n} mots — vise ${thr}+)` },
+  LOW_TEXT_RATIO: { sev: "warning" as Severity, pts: 5, msg: (n: number) => `Ratio texte/HTML faible (${n}% — vise 15%+)` },
+  // Technical
+  NO_VIEWPORT: { sev: "critical" as Severity, pts: 10, msg: "Balise viewport manquante (SEO mobile)" },
+  NO_LANG: { sev: "warning" as Severity, pts: 5, msg: "Attribut lang absent sur <html>" },
+  SLOW_RESPONSE: { sev: "warning" as Severity, pts: 5, msg: (n: number) => `Réponse lente (${n} ms — vise < 2 s)` },
 };
 
 function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[]; score: number } {
   const issues: Issue[] = [];
   let deduct = 0;
 
-  function add(code: keyof typeof SCORE_WEIGHTS, msgArg?: number) {
+  function add(code: keyof typeof SCORE_WEIGHTS, ...args: number[]) {
     const w = SCORE_WEIGHTS[code];
-    const message = typeof w.msg === "function" ? (w.msg as (n: number) => string)(msgArg ?? 0) : w.msg;
+    let message: string;
+    if (typeof w.msg === "function") {
+      message = (w.msg as (...n: number[]) => string)(...args);
+    } else {
+      message = w.msg as string;
+    }
     issues.push({ severity: w.sev, code, message });
     deduct += w.pts;
   }
 
   if (result.httpStatus >= 400) { add("HTTP_ERROR", result.httpStatus); return { issues, score: Math.max(0, 100 - deduct) }; }
 
+  // Technical
+  if (!result.viewport) add("NO_VIEWPORT");
+  if (!result.htmlLang) add("NO_LANG");
+  if (result.responseTimeMs > 3000 && result.responseTimeMs > 0) add("SLOW_RESPONSE", result.responseTimeMs);
+
+  // Title
   if (!result.title) add("TITLE_MISSING");
   else if (result.titleLength > 60) add("TITLE_TOO_LONG", result.titleLength);
   else if (result.titleLength < 30) add("TITLE_TOO_SHORT", result.titleLength);
 
+  // Description
   if (!result.description) add("DESC_MISSING");
   else if (result.descriptionLength > 160) add("DESC_TOO_LONG", result.descriptionLength);
   else if (result.descriptionLength < 100) add("DESC_TOO_SHORT", result.descriptionLength);
 
+  // Headings
   if (result.h1Count === 0) add("H1_MISSING");
   else if (result.h1Count > 1) add("H1_DUPLICATE", result.h1Count);
 
-  if (!result.canonical && result.pageType !== "home") add("NO_CANONICAL");
+  const contentPagesH2: PageType[] = ["home", "blog", "location", "destination", "conciergerie"];
+  if (result.h2Count === 0 && contentPagesH2.includes(result.pageType)) add("NO_H2");
+
+  // Canonical
+  if (!result.canonical) {
+    if (result.pageType !== "home") add("NO_CANONICAL");
+  } else {
+    const canonNorm = result.canonical.replace(/\/$/, "");
+    const urlNorm = result.url.replace(/\/$/, "");
+    if (canonNorm !== urlNorm) add("WRONG_CANONICAL");
+  }
+
+  // Open Graph
   if (!result.ogTitle) add("NO_OG_TITLE");
   if (!result.ogDescription) add("NO_OG_DESC");
   if (!result.ogImage) add("NO_OG_IMAGE");
 
+  // JSON-LD
   const importantTypes: PageType[] = ["home", "blog", "location", "destination", "conciergerie"];
   if (!result.hasJsonLd && importantTypes.includes(result.pageType)) add("NO_JSON_LD");
 
+  // Images
   if (result.imagesWithoutAlt > 0) add("IMG_ALT", result.imagesWithoutAlt);
 
+  // Content
+  const thinThresholds: Record<PageType, number> = {
+    blog: 500, home: 250, location: 300, destination: 300,
+    conciergerie: 200, "blog-index": 100, static: 100,
+  };
+  const thr = thinThresholds[result.pageType] ?? 200;
   const contentTypes: PageType[] = ["home", "blog", "location", "destination", "conciergerie", "static"];
-  if (result.wordCount < 300 && contentTypes.includes(result.pageType)) add("THIN_CONTENT", result.wordCount);
+  if (result.wordCount < thr && contentTypes.includes(result.pageType)) {
+    add("THIN_CONTENT", result.wordCount, thr);
+  }
+
+  if (result.textHtmlRatio < 10 && result.pageSizeKb > 20) add("LOW_TEXT_RATIO", result.textHtmlRatio);
 
   return { issues, score: Math.max(0, 100 - deduct) };
 }
@@ -251,6 +327,7 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
   const url = `${SITE}${path}`;
   let html = "";
   let httpStatus = 200;
+  const start = Date.now();
 
   try {
     const res = await fetch(url, {
@@ -264,10 +341,13 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
     httpStatus = 0;
   }
 
+  const responseTimeMs = Date.now() - start;
+
   const title = getTitle(html);
   const description = getMeta(html, "description");
   const h1s = getHeadings(html, "h1");
   const h2s = getHeadings(html, "h2");
+  const h3s = getHeadings(html, "h3");
   const canonical = getCanonical(html);
   const robotsMeta = getMeta(html, "robots");
   const ogTitle = getOg(html, "title");
@@ -277,6 +357,10 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
   const imgs = countImages(html);
   const links = countLinks(html);
   const wordCount = getWordCount(html);
+  const viewport = getMeta(html, "viewport");
+  const htmlLang = getHtmlLang(html);
+  const pageSizeKb = Math.round(html.length / 1024);
+  const textHtmlRatio = getTextHtmlRatio(html);
 
   const partial: Omit<PageResult, "issues" | "score"> = {
     path, url, pageType, httpStatus,
@@ -284,11 +368,14 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
     description, descriptionLength: description?.length ?? 0,
     h1: h1s[0] ?? null, h1Count: h1s.length,
     h2Count: h2s.length, h2Texts: h2s.slice(0, 6),
+    h3Count: h3s.length,
     canonical, robotsMeta,
     ogTitle, ogDescription, ogImage,
     hasJsonLd: jsonLdTypes.length > 0, jsonLdTypes,
     imagesTotal: imgs.total, imagesWithoutAlt: imgs.withoutAlt,
     wordCount, internalLinks: links.internal, externalLinks: links.external,
+    viewport, htmlLang,
+    responseTimeMs, pageSizeKb, textHtmlRatio,
   };
 
   const { issues, score: pageScore } = score(partial);
@@ -357,13 +444,50 @@ export async function POST(req: NextRequest) {
         const pages = getPages(mode);
         send({ type: "total", count: pages.length });
 
-        // Crawl in parallel batches of 6
+        // Crawl in parallel batches of 6 — stream results live
+        const allResults: PageResult[] = [];
         const BATCH = 6;
         for (let i = 0; i < pages.length; i += BATCH) {
           const batch = pages.slice(i, i + BATCH);
           const results = await Promise.all(batch.map((p) => analyzePage(p.path, p.pageType)));
-          for (const r of results) send({ type: "page", data: r });
+          for (const r of results) {
+            allResults.push(r);
+            send({ type: "page", data: r });
+          }
         }
+
+        // Cross-page duplicate detection
+        const titleMap = new Map<string, string[]>();
+        const descMap = new Map<string, string[]>();
+        for (const r of allResults) {
+          if (r.title) {
+            const arr = titleMap.get(r.title) ?? [];
+            arr.push(r.path);
+            titleMap.set(r.title, arr);
+          }
+          if (r.description) {
+            const arr = descMap.get(r.description) ?? [];
+            arr.push(r.path);
+            descMap.set(r.description, arr);
+          }
+        }
+
+        type Correction = { path: string; addIssues: Issue[]; scoreDelta: number };
+        const corrections: Correction[] = [];
+        for (const r of allResults) {
+          const addIssues: Issue[] = [];
+          let delta = 0;
+          if (r.title && (titleMap.get(r.title) ?? []).length > 1) {
+            addIssues.push({ severity: "critical", code: "TITLE_DUPLICATE", message: SCORE_WEIGHTS.TITLE_DUPLICATE.msg as string });
+            delta -= SCORE_WEIGHTS.TITLE_DUPLICATE.pts;
+          }
+          if (r.description && (descMap.get(r.description) ?? []).length > 1) {
+            addIssues.push({ severity: "warning", code: "DESC_DUPLICATE", message: SCORE_WEIGHTS.DESC_DUPLICATE.msg as string });
+            delta -= SCORE_WEIGHTS.DESC_DUPLICATE.pts;
+          }
+          if (addIssues.length > 0) corrections.push({ path: r.path, addIssues, scoreDelta: delta });
+        }
+        if (corrections.length > 0) send({ type: "corrections", data: corrections });
 
         // PageSpeed for homepage + first blog post (if key is set)
         if (PSI_KEY || process.env.PSI_ALLOW_NO_KEY) {
