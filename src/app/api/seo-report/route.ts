@@ -86,6 +86,14 @@ function dHtml(s: string) {
   return s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&apos;/g, "'");
 }
 
+/** Returns main/article content or full page minus nav/header/footer/aside */
+function contentZone(html: string): string {
+  return (
+    html.match(/<(?:main|article)[^>]*>([\s\S]*?)<\/(?:main|article)>/i)?.[1] ??
+    html.replace(/<(?:nav|header|footer|aside)[^>]*>[\s\S]*?<\/(?:nav|header|footer|aside)>/gi, "")
+  );
+}
+
 function getMeta(html: string, name: string): string | null {
   const patterns = [
     new RegExp(`<meta[^>]+name=["']${name}["'][^>]+content=["']([^"']*?)["']`, "i"),
@@ -116,8 +124,9 @@ function getTitle(html: string): string | null {
 }
 
 function getCanonical(html: string): string | null {
-  const m = html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i)
-    ?? html.match(/<link[^>]+href=["']([^"']+)["'][^>]+rel=["']canonical["']/i);
+  const m =
+    html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i) ??
+    html.match(/<link[^>]+href=["']([^"']+)["'][^>]+rel=["']canonical["']/i);
   return m ? m[1].trim() : null;
 }
 
@@ -147,11 +156,12 @@ function getJsonLdTypes(html: string): string[] {
 }
 
 function countImages(html: string): { total: number; withoutAlt: number } {
+  const zone = contentZone(html);
   const re = /<img([^>]*)>/gi;
   let total = 0;
   let withoutAlt = 0;
   let m;
-  while ((m = re.exec(html)) !== null) {
+  while ((m = re.exec(zone)) !== null) {
     total++;
     const attrs = m[1];
     const hasAlt = /alt=["'][^"']*["']/i.test(attrs);
@@ -162,11 +172,12 @@ function countImages(html: string): { total: number; withoutAlt: number } {
 }
 
 function countLinks(html: string): { internal: number; external: number } {
+  const zone = contentZone(html);
   const re = /<a[^>]+href=["']([^"']+)["']/gi;
   let internal = 0;
   let external = 0;
   let m;
-  while ((m = re.exec(html)) !== null) {
+  while ((m = re.exec(zone)) !== null) {
     const href = m[1];
     if (href.startsWith("http") && !href.includes(SITE.replace(/https?:\/\//, ""))) external++;
     else if (!href.startsWith("mailto:") && !href.startsWith("tel:") && !href.startsWith("#")) internal++;
@@ -176,7 +187,8 @@ function countLinks(html: string): { internal: number; external: number } {
 
 function getWordCount(html: string): number {
   const main = html.match(/<(?:main|article)[^>]*>([\s\S]*?)<\/(?:main|article)>/i)?.[1] ?? html;
-  const text = main.replace(/<script[\s\S]*?<\/script>/gi, "")
+  const text = main
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
     .replace(/<style[\s\S]*?<\/style>/gi, "")
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
@@ -186,63 +198,188 @@ function getWordCount(html: string): number {
 
 // ── Scoring ────────────────────────────────────────────────────
 
-const SCORE_WEIGHTS = {
-  TITLE_MISSING: { sev: "critical" as Severity, pts: 20, msg: "Balise <title> manquante" },
-  TITLE_TOO_LONG: { sev: "warning" as Severity, pts: 8, msg: (n: number) => `Titre trop long (${n} car. — max 60)` },
-  TITLE_TOO_SHORT: { sev: "warning" as Severity, pts: 5, msg: (n: number) => `Titre trop court (${n} car. — idéal 50-60)` },
-  DESC_MISSING: { sev: "critical" as Severity, pts: 20, msg: "Meta description manquante" },
-  DESC_TOO_LONG: { sev: "warning" as Severity, pts: 5, msg: (n: number) => `Meta description trop longue (${n} car. — max 160)` },
-  DESC_TOO_SHORT: { sev: "warning" as Severity, pts: 8, msg: (n: number) => `Meta description trop courte (${n} car. — idéal 140-160)` },
-  H1_MISSING: { sev: "critical" as Severity, pts: 15, msg: "H1 manquant" },
-  H1_DUPLICATE: { sev: "warning" as Severity, pts: 10, msg: (n: number) => `${n} balises H1 présentes (doit être unique)` },
-  NO_CANONICAL: { sev: "warning" as Severity, pts: 5, msg: "Lien canonical manquant" },
-  NO_OG_TITLE: { sev: "warning" as Severity, pts: 5, msg: "og:title manquant (partage réseaux sociaux)" },
-  NO_OG_DESC: { sev: "warning" as Severity, pts: 5, msg: "og:description manquant" },
-  NO_OG_IMAGE: { sev: "warning" as Severity, pts: 5, msg: "og:image manquant (image de partage)" },
-  NO_JSON_LD: { sev: "warning" as Severity, pts: 5, msg: "Aucune donnée structurée JSON-LD" },
-  IMG_ALT: { sev: "warning" as Severity, pts: 3, msg: (n: number) => `${n} image${n > 1 ? "s" : ""} sans attribut alt` },
-  THIN_CONTENT: { sev: "warning" as Severity, pts: 5, msg: (n: number) => `Contenu mince (${n} mots — vise 600+)` },
-  HTTP_ERROR: { sev: "critical" as Severity, pts: 50, msg: (s: number) => `Erreur HTTP ${s}` },
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const SW: Record<string, { sev: Severity; pts: number; msg: string | ((...a: any[]) => string) }> = {
+  // Critical — erreurs bloquantes
+  HTTP_ERROR:            { sev: "critical", pts: 50, msg: (s: number) => `Erreur HTTP ${s}` },
+  TITLE_MISSING:         { sev: "critical", pts: 25, msg: "Balise <title> manquante" },
+  TITLE_DUPLICATE:       { sev: "critical", pts: 15, msg: "Titre identique à une autre page (contenu dupliqué)" },
+  DESC_MISSING:          { sev: "critical", pts: 20, msg: "Meta description manquante" },
+  H1_MISSING:            { sev: "critical", pts: 20, msg: "H1 manquant" },
+  CANONICAL_MISMATCH:    { sev: "critical", pts: 15, msg: (url: string) => `Canonical incorrect → ${url}` },
+  // Warnings majeurs
+  H1_DUPLICATE:          { sev: "warning",  pts: 12, msg: (n: number) => `${n} balises H1 présentes (doit être unique)` },
+  DESC_DUPLICATE:        { sev: "warning",  pts: 10, msg: "Meta description identique à une autre page" },
+  THIN_CONTENT:          { sev: "warning",  pts: 10, msg: (n: number, min: number) => `Contenu mince (${n} mots — vise ${min}+)` },
+  NO_H2:                 { sev: "warning",  pts: 8,  msg: "Aucune balise H2 (structure de contenu manquante)" },
+  NO_OG_IMAGE:           { sev: "warning",  pts: 8,  msg: "og:image manquant" },
+  NO_JSON_LD:            { sev: "warning",  pts: 8,  msg: "Données structurées JSON-LD manquantes" },
+  TITLE_TOO_LONG_SEVERE: { sev: "warning",  pts: 8,  msg: (n: number) => `Titre très long (${n} car. — recommandé ≤ 70)` },
+  // Warnings modérés
+  H1_TITLE_MISMATCH:     { sev: "warning",  pts: 5,  msg: "H1 et titre sans mot-clé commun" },
+  NO_INTERNAL_LINKS:     { sev: "warning",  pts: 5,  msg: "Aucun lien interne dans le contenu (page isolée)" },
+  TITLE_TOO_SHORT:       { sev: "warning",  pts: 5,  msg: (n: number) => `Titre trop court (${n} car. — idéal 45-70)` },
+  TITLE_TOO_LONG:        { sev: "warning",  pts: 5,  msg: (n: number) => `Titre trop long (${n} car. — recommandé ≤ 70)` },
+  NO_CANONICAL:          { sev: "warning",  pts: 5,  msg: "Lien canonical manquant" },
+  DESC_TOO_LONG:         { sev: "warning",  pts: 5,  msg: (n: number) => `Meta description trop longue (${n} car. — max 160)` },
+  DESC_TOO_SHORT:        { sev: "warning",  pts: 5,  msg: (n: number) => `Meta description trop courte (${n} car. — idéal 120-160)` },
+  // Warnings mineurs
+  NO_OG_TITLE:           { sev: "warning",  pts: 4,  msg: "og:title manquant" },
+  NO_OG_DESC:            { sev: "warning",  pts: 3,  msg: "og:description manquant" },
+  IMG_ALT:               { sev: "warning",  pts: 3,  msg: (n: number) => `${n} image${n > 1 ? "s" : ""} sans attribut alt` },
 };
+
+const THIN_MIN: Partial<Record<PageType, number>> = {
+  blog: 400,
+  home: 350,
+  conciergerie: 300,
+  location: 150,
+  destination: 150,
+};
+
+const STOP_WORDS = new Set(["de", "du", "des", "le", "la", "les", "un", "une", "et", "en", "sur", "pour", "par", "avec", "dans", "au", "aux", "qui", "que", "son", "ses", "notre", "nos"]);
+
+function keywords(text: string): Set<string> {
+  return new Set(text.toLowerCase().split(/\W+/).filter((w) => w.length > 3 && !STOP_WORDS.has(w)));
+}
 
 function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[]; score: number } {
   const issues: Issue[] = [];
   let deduct = 0;
 
-  function add(code: keyof typeof SCORE_WEIGHTS, msgArg?: number) {
-    const w = SCORE_WEIGHTS[code];
-    const message = typeof w.msg === "function" ? (w.msg as (n: number) => string)(msgArg ?? 0) : w.msg;
-    issues.push({ severity: w.sev, code, message });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function add(code: string, ...args: any[]) {
+    const w = SW[code];
+    if (!w) return;
+    const msg = typeof w.msg === "function" ? w.msg(...args) : w.msg;
+    issues.push({ severity: w.sev, code, message: msg });
     deduct += w.pts;
   }
 
-  if (result.httpStatus >= 400) { add("HTTP_ERROR", result.httpStatus); return { issues, score: Math.max(0, 100 - deduct) }; }
+  if (result.httpStatus >= 400) {
+    add("HTTP_ERROR", result.httpStatus);
+    return { issues, score: Math.max(0, 100 - deduct) };
+  }
 
-  if (!result.title) add("TITLE_MISSING");
-  else if (result.titleLength > 60) add("TITLE_TOO_LONG", result.titleLength);
-  else if (result.titleLength < 30) add("TITLE_TOO_SHORT", result.titleLength);
+  // ── Title ──────────────────────────────────────────────────
+  if (!result.title) {
+    add("TITLE_MISSING");
+  } else if (result.titleLength > 80) {
+    add("TITLE_TOO_LONG_SEVERE", result.titleLength);
+  } else if (result.titleLength > 70) {
+    add("TITLE_TOO_LONG", result.titleLength);
+  } else if (result.titleLength < 30) {
+    add("TITLE_TOO_SHORT", result.titleLength);
+  }
 
-  if (!result.description) add("DESC_MISSING");
-  else if (result.descriptionLength > 160) add("DESC_TOO_LONG", result.descriptionLength);
-  else if (result.descriptionLength < 100) add("DESC_TOO_SHORT", result.descriptionLength);
+  // ── Description ───────────────────────────────────────────
+  if (!result.description) {
+    add("DESC_MISSING");
+  } else if (result.descriptionLength > 160) {
+    add("DESC_TOO_LONG", result.descriptionLength);
+  } else if (result.descriptionLength < 120) {
+    add("DESC_TOO_SHORT", result.descriptionLength);
+  }
 
-  if (result.h1Count === 0) add("H1_MISSING");
-  else if (result.h1Count > 1) add("H1_DUPLICATE", result.h1Count);
+  // ── H1 ────────────────────────────────────────────────────
+  if (result.h1Count === 0) {
+    add("H1_MISSING");
+  } else if (result.h1Count > 1) {
+    add("H1_DUPLICATE", result.h1Count);
+  }
 
-  if (!result.canonical && result.pageType !== "home") add("NO_CANONICAL");
+  // ── H1 ↔ Title keyword coherence ──────────────────────────
+  if (result.title && result.h1) {
+    const titleKw = keywords(result.title);
+    const h1Kw = keywords(result.h1);
+    if (titleKw.size > 0 && h1Kw.size > 0 && ![...h1Kw].some((w) => titleKw.has(w))) {
+      add("H1_TITLE_MISMATCH");
+    }
+  }
+
+  // ── H2 structure ──────────────────────────────────────────
+  const needsH2: PageType[] = ["home", "blog", "location", "destination", "conciergerie"];
+  if (result.h2Count === 0 && needsH2.includes(result.pageType)) {
+    add("NO_H2");
+  }
+
+  // ── Canonical ─────────────────────────────────────────────
+  if (result.canonical) {
+    const canonPath = result.canonical.replace(/^https?:\/\/(www\.)?[^/]+/, "").replace(/\/$/, "") || "/";
+    const expectedPath = result.path.replace(/\/$/, "") || "/";
+    if (canonPath !== expectedPath) add("CANONICAL_MISMATCH", result.canonical);
+  } else if (result.pageType !== "home") {
+    add("NO_CANONICAL");
+  }
+
+  // ── Open Graph ────────────────────────────────────────────
   if (!result.ogTitle) add("NO_OG_TITLE");
   if (!result.ogDescription) add("NO_OG_DESC");
   if (!result.ogImage) add("NO_OG_IMAGE");
 
-  const importantTypes: PageType[] = ["home", "blog", "location", "destination", "conciergerie"];
-  if (!result.hasJsonLd && importantTypes.includes(result.pageType)) add("NO_JSON_LD");
+  // ── JSON-LD ───────────────────────────────────────────────
+  const needsJsonLd: PageType[] = ["home", "blog", "location", "destination", "conciergerie"];
+  if (!result.hasJsonLd && needsJsonLd.includes(result.pageType)) add("NO_JSON_LD");
 
+  // ── Images (content zone) ─────────────────────────────────
   if (result.imagesWithoutAlt > 0) add("IMG_ALT", result.imagesWithoutAlt);
 
-  const contentTypes: PageType[] = ["home", "blog", "location", "destination", "conciergerie", "static"];
-  if (result.wordCount < 300 && contentTypes.includes(result.pageType)) add("THIN_CONTENT", result.wordCount);
+  // ── Internal links (content zone) ─────────────────────────
+  const needsLinks: PageType[] = ["blog", "location", "destination", "conciergerie"];
+  if (result.internalLinks === 0 && needsLinks.includes(result.pageType)) {
+    add("NO_INTERNAL_LINKS");
+  }
+
+  // ── Thin content (by page type) ───────────────────────────
+  const minWords = THIN_MIN[result.pageType] ?? 0;
+  if (minWords > 0 && result.wordCount < minWords) {
+    add("THIN_CONTENT", result.wordCount, minWords);
+  }
 
   return { issues, score: Math.max(0, 100 - deduct) };
+}
+
+// ── Cross-page analysis (duplicate titles / descriptions) ──────
+
+function crossPageCorrections(
+  results: PageResult[]
+): Record<string, { issues: Issue[]; score: number }> {
+  const titleCount = new Map<string, number>();
+  const descCount = new Map<string, number>();
+
+  for (const r of results) {
+    if (r.httpStatus < 400) {
+      if (r.title) titleCount.set(r.title.toLowerCase(), (titleCount.get(r.title.toLowerCase()) ?? 0) + 1);
+      if (r.description) descCount.set(r.description.toLowerCase(), (descCount.get(r.description.toLowerCase()) ?? 0) + 1);
+    }
+  }
+
+  const corrections: Record<string, { issues: Issue[]; score: number }> = {};
+
+  for (const r of results) {
+    const extra: Issue[] = [];
+    let extraDeduct = 0;
+
+    if (r.title && (titleCount.get(r.title.toLowerCase()) ?? 0) > 1) {
+      const w = SW.TITLE_DUPLICATE;
+      extra.push({ severity: w.sev, code: "TITLE_DUPLICATE", message: w.msg as string });
+      extraDeduct += w.pts;
+    }
+    if (r.description && (descCount.get(r.description.toLowerCase()) ?? 0) > 1) {
+      const w = SW.DESC_DUPLICATE;
+      extra.push({ severity: w.sev, code: "DESC_DUPLICATE", message: w.msg as string });
+      extraDeduct += w.pts;
+    }
+
+    if (extra.length > 0) {
+      corrections[r.path] = {
+        issues: [...r.issues, ...extra],
+        score: Math.max(0, r.score - extraDeduct),
+      };
+    }
+  }
+
+  return corrections;
 }
 
 // ── Page fetch + analysis ──────────────────────────────────────
@@ -341,7 +478,7 @@ export async function POST(req: NextRequest) {
       }
 
       try {
-        // Check sitemap + robots
+        // Infrastructure check
         const [sitemapRes, robotsRes] = await Promise.all([
           fetch(`${SITE}/sitemap.xml`, { cache: "no-store" }).catch(() => null),
           fetch(`${SITE}/robots.txt`, { cache: "no-store" }).catch(() => null),
@@ -357,15 +494,25 @@ export async function POST(req: NextRequest) {
         const pages = getPages(mode);
         send({ type: "total", count: pages.length });
 
-        // Crawl in parallel batches of 6
+        // Phase 1 — crawl (stream individual page results for real-time UX)
+        const allResults: PageResult[] = [];
         const BATCH = 6;
         for (let i = 0; i < pages.length; i += BATCH) {
           const batch = pages.slice(i, i + BATCH);
           const results = await Promise.all(batch.map((p) => analyzePage(p.path, p.pageType)));
-          for (const r of results) send({ type: "page", data: r });
+          for (const r of results) {
+            allResults.push(r);
+            send({ type: "page", data: r });
+          }
         }
 
-        // PageSpeed for homepage + first blog post (if key is set)
+        // Phase 2 — cross-page analysis (duplicate titles/descriptions)
+        const corrections = crossPageCorrections(allResults);
+        if (Object.keys(corrections).length > 0) {
+          send({ type: "corrections", corrections });
+        }
+
+        // PageSpeed for homepage + first blog post
         if (PSI_KEY || process.env.PSI_ALLOW_NO_KEY) {
           const psiTargets = ["/", blogPosts[0] ? `/blog/${blogPosts[0].slug}` : null].filter(Boolean) as string[];
           for (const path of psiTargets) {

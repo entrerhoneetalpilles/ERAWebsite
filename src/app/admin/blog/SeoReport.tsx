@@ -159,6 +159,12 @@ export default function SeoReport() {
       setCurrentPath(page.path);
       setPages((prev) => [...prev, page]);
       setProgress((p) => ({ ...p, done: p.done + 1 }));
+    } else if (type === "corrections") {
+      const corrections = event.corrections as Record<string, { issues: Issue[]; score: number }>;
+      setPages((prev) => prev.map((p) => {
+        const c = corrections[p.path];
+        return c ? { ...p, issues: c.issues, score: c.score } : p;
+      }));
     } else if (type === "psi") {
       setPsiList((prev) => [...prev, { path: event.path as string, data: event.data as PsiEntry["data"] }]);
     } else if (type === "done") {
