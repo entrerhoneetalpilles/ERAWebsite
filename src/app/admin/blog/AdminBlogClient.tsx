@@ -154,6 +154,11 @@ export default function AdminBlogClient() {
     category: values.category,
   }), [values]);
 
+  function handleImport(imported: Partial<FormValues>) {
+    setValues((prev: FormValues) => ({ ...prev, ...imported }));
+    setTab("form");
+  }
+
   if (!authed) return <PasswordGate onSuccess={() => setAuthed(true)} />;
 
   return (
@@ -205,7 +210,7 @@ export default function AdminBlogClient() {
           </div>
         )}
 
-        {tab === "prompt" && <PromptGenerator />}
+        {tab === "prompt" && <PromptGenerator onImport={handleImport} />}
 
         {tab === "export" && (
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">

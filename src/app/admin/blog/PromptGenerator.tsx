@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Copy, Check, Sparkles } from "lucide-react";
+import { Copy, Check, Sparkles, ClipboardPaste, ArrowRight, AlertTriangle, CheckCircle } from "lucide-react";
+import type { FormValues } from "./BlogForm";
+import { parseMarkdownArticle } from "./markdownParser";
 
 // ── Données statiques ────────────────────────────────────────────
 const COMMUNES = [
@@ -170,9 +172,16 @@ function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: 
   );
 }
 
-export default function PromptGenerator() {
+interface Props {
+  onImport: (values: Partial<FormValues>) => void;
+}
+
+export default function PromptGenerator({ onImport }: Props) {
   const [cfg, setCfg] = useState<PromptConfig>(DEFAULT);
   const [copied, setCopied] = useState(false);
+  const [pasteRaw, setPasteRaw] = useState("");
+  const [warnings, setWarnings] = useState<string[]>([]);
+  const [imported, setImported] = useState(false);
 
   const prompt = buildPrompt(cfg);
 
@@ -195,7 +204,16 @@ export default function PromptGenerator() {
     setTimeout(() => setCopied(false), 2500);
   }
 
+  function handleImport() {
+    if (!pasteRaw.trim()) return;
+    const result = parseMarkdownArticle(pasteRaw);
+    setWarnings(result.warnings);
+    setImported(true);
+    onImport(result.values);
+  }
+
   return (
+    <div className="space-y-6">
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
       {/* ── Panneau de configuration ── */}
@@ -346,11 +364,80 @@ export default function PromptGenerator() {
         </div>
 
         <div className="mt-4 p-3 bg-[#F5F0E8] rounded-xl text-xs text-gray-600 leading-relaxed">
-          <span className="font-semibold text-[#6E8052]">Workflow :</span>{" "}
-          Copie ce prompt → colle-le dans Claude ou ChatGPT → l&apos;IA génère le Markdown
-          → copie le contenu dans l&apos;onglet <strong>Rédaction</strong> → le score SEO se met à jour en temps réel.
+          <span className="font-semibold text-[#6E8052]">Étape 1 :</span>{" "}
+          Copie ce prompt <ArrowRight className="inline w-3 h-3 mx-1" />
+          colle-le dans Claude, ChatGPT ou Gemini <ArrowRight className="inline w-3 h-3 mx-1" />
+          récupère le Markdown généré <ArrowRight className="inline w-3 h-3 mx-1" />
+          colle-le dans <strong>l&apos;Étape 2</strong> ci-dessous.
         </div>
       </div>
+    </div>
+
+    {/* ── Étape 2 : coller le résultat IA ── */}
+    <div className="bg-white rounded-2xl border-2 border-dashed border-[var(--color-alpilles)] p-6">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-8 h-8 rounded-full bg-[var(--color-rhone)] text-white flex items-center justify-center text-sm font-bold shrink-0">
+          2
+        </div>
+        <div>
+          <h2 className="font-semibold text-gray-800">Coller le résultat de l&apos;IA</h2>
+          <p className="text-xs text-gray-500 mt-0.5">
+            Le formulaire se remplira automatiquement — titre, slug, meta, contenu et catégorie.
+          </p>
+        </div>
+        <ClipboardPaste className="w-5 h-5 text-[var(--color-alpilles)] ml-auto shrink-0" />
+      </div>
+
+      <textarea
+        rows={12}
+        className="w-full border border-gray-200 rounded-xl px-4 py-3 text-xs font-mono text-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--color-rhone)] bg-gray-50 transition resize-y"
+        placeholder={"Colle ici le Markdown retourné par le LLM...\n\nExemple attendu :\n# Titre de l'article en Provence\n\nPremier paragraphe d'introduction...\n\n## Section 1\n\nContenu..."}
+        value={pasteRaw}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+          setPasteRaw(e.target.value);
+          setImported(false);
+          setWarnings([]);
+        }}
+      />
+
+      <div className="flex items-center gap-3 mt-4">
+        <button
+          onClick={handleImport}
+          disabled={!pasteRaw.trim()}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors ${
+            pasteRaw.trim()
+              ? "bg-[var(--color-rhone)] hover:bg-[var(--color-rhone-dark)] text-white"
+              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+          }`}
+        >
+          <Sparkles className="w-4 h-4" />
+          Remplir le formulaire automatiquement
+        </button>
+
+        {imported && warnings.length === 0 && (
+          <span className="flex items-center gap-1.5 text-sm text-emerald-600 font-medium">
+            <CheckCircle className="w-4 h-4" />
+            Importé — allez dans Rédaction !
+          </span>
+        )}
+      </div>
+
+      {imported && warnings.length > 0 && (
+        <div className="mt-4 space-y-2">
+          {warnings.map((w: string, i: number) => (
+            <div key={i} className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 rounded-lg px-3 py-2">
+              <AlertTriangle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+              {w}
+            </div>
+          ))}
+          {warnings.length > 0 && (
+            <p className="text-xs text-gray-500 mt-1">
+              L&apos;article a été importé malgré ces avertissements — corrige les points signalés dans l&apos;onglet <strong>Rédaction</strong>.
+            </p>
+          )}
+        </div>
+      )}
+    </div>
     </div>
   );
 }
