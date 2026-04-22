@@ -1,11 +1,16 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Check, Lock, Eye, EyeOff, FileText, Sparkles, Rocket, CheckCircle, AlertCircle, ExternalLink, RefreshCw } from "lucide-react";
+import {
+  Check, Lock, Eye, EyeOff, FileText, Sparkles, Rocket,
+  CheckCircle, AlertCircle, ExternalLink, RefreshCw,
+  LayoutList, Pencil, Trash2, X, Loader2,
+} from "lucide-react";
 import BlogForm, { type FormValues } from "./BlogForm";
 import SeoPanel from "./SeoPanel";
 import PromptGenerator from "./PromptGenerator";
 import { computeSeoScore } from "./seoScorer";
+import type { BlogPost } from "@/lib/data";
 
 const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? "ERA2026";
 const SESSION_KEY = "era_admin_auth";
@@ -71,9 +76,7 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
               {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
-          {err && (
-            <p className="text-xs text-red-500 text-center">Mot de passe incorrect.</p>
-          )}
+          {err && <p className="text-xs text-red-500 text-center">Mot de passe incorrect.</p>}
           <button
             type="submit"
             className="w-full bg-[var(--color-rhone)] hover:bg-[var(--color-rhone-dark)] text-white font-semibold rounded-xl py-3 text-sm transition-colors"
@@ -86,16 +89,129 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
   );
 }
 
+// ── Article list (Gérer tab) ───────────────────────────────────
+function ArticleList({
+  posts,
+  onEdit,
+  onDelete,
+}: {
+  posts: BlogPost[];
+  onEdit: (post: BlogPost) => void;
+  onDelete: (slug: string) => void;
+}) {
+  const [confirmSlug, setConfirmSlug] = useState<string | null>(null);
+  const [loadingSlug, setLoadingSlug] = useState<string | null>(null);
+
+  async function handleDelete(slug: string) {
+    setLoadingSlug(slug);
+    await onDelete(slug);
+    setConfirmSlug(null);
+    setLoadingSlug(null);
+  }
+
+  const categoryColor: Record<string, string> = {
+    "Conseils propriétaires": "bg-[var(--color-rhone)]/10 text-[var(--color-rhone)]",
+    "Guides de voyage": "bg-emerald-50 text-emerald-700",
+    "Actualités région": "bg-amber-50 text-amber-700",
+  };
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm divide-y divide-gray-100">
+      {posts.length === 0 && (
+        <p className="text-sm text-gray-400 text-center py-12">Aucun article publié.</p>
+      )}
+      {posts.map((post) => (
+        <div key={post.slug} className="flex items-start gap-4 p-5">
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-gray-900 truncate">{post.title}</p>
+            <div className="flex items-center gap-2 mt-1 flex-wrap">
+              <span className="text-xs text-gray-400">{post.date}</span>
+              <span className="text-gray-200">·</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${categoryColor[post.category] ?? "bg-gray-100 text-gray-600"}`}>
+                {post.category}
+              </span>
+              <span className="text-gray-200">·</span>
+              <span className="text-xs text-gray-400">{post.readTime} min</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <a
+              href={`/blog/${post.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg text-gray-400 hover:text-[var(--color-rhone)] hover:bg-[var(--color-rhone)]/5 transition-colors"
+              title="Voir l'article"
+            >
+              <ExternalLink className="w-4 h-4" />
+            </a>
+            <button
+              onClick={() => onEdit(post)}
+              className="p-2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+              title="Modifier"
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
+
+            {confirmSlug === post.slug ? (
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => handleDelete(post.slug)}
+                  disabled={loadingSlug === post.slug}
+                  className="flex items-center gap-1 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50"
+                >
+                  {loadingSlug === post.slug ? (
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                  ) : (
+                    <Trash2 className="w-3 h-3" />
+                  )}
+                  Confirmer
+                </button>
+                <button
+                  onClick={() => setConfirmSlug(null)}
+                  className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setConfirmSlug(post.slug)}
+                className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                title="Supprimer"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── Types ──────────────────────────────────────────────────────
 type PublishStatus = "idle" | "loading" | "success" | "error";
+type Mode = "create" | "edit";
+
+interface Props {
+  initialPosts: BlogPost[];
+}
 
 // ── Main component ─────────────────────────────────────────────
-export default function AdminBlogClient() {
+export default function AdminBlogClient({ initialPosts }: Props) {
   const [authed, setAuthed] = useState(false);
   const [values, setValues] = useState<FormValues>(EMPTY);
-  const [tab, setTab] = useState<"form" | "prompt">("form");
+  const [tab, setTab] = useState<"form" | "prompt" | "manage">("form");
+  const [mode, setMode] = useState<Mode>("create");
+
   const [publishStatus, setPublishStatus] = useState<PublishStatus>("idle");
   const [publishError, setPublishError] = useState("");
   const [publishedSlug, setPublishedSlug] = useState("");
+
+  const [manageStatus, setManageStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [manageMsg, setManageMsg] = useState("");
+  const [loadingEdit, setLoadingEdit] = useState(false);
 
   useEffect(() => {
     if (sessionStorage.getItem(SESSION_KEY) === "1") setAuthed(true);
@@ -114,13 +230,61 @@ export default function AdminBlogClient() {
     setTab("form");
   }
 
+  // ── Edit ──
+  async function handleEdit(post: BlogPost) {
+    setLoadingEdit(true);
+    try {
+      const res = await fetch(`/api/manage-article?slug=${encodeURIComponent(post.slug)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Impossible de charger le contenu.");
+      setValues({
+        title: post.title,
+        slug: post.slug,
+        excerpt: post.excerpt,
+        category: post.category,
+        image: post.image,
+        date: post.date,
+        content: data.content,
+      });
+      setMode("edit");
+      setPublishStatus("idle");
+      setPublishError("");
+      setTab("form");
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erreur lors du chargement.");
+    } finally {
+      setLoadingEdit(false);
+    }
+  }
+
+  // ── Delete ──
+  async function handleDelete(slug: string) {
+    setManageStatus("loading");
+    setManageMsg("");
+    try {
+      const res = await fetch(`/api/manage-article?slug=${encodeURIComponent(slug)}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Erreur lors de la suppression.");
+      setManageStatus("success");
+      setManageMsg(`Article "${slug}" supprimé. Redéploiement en cours…`);
+    } catch (err) {
+      setManageStatus("error");
+      setManageMsg(err instanceof Error ? err.message : "Erreur inconnue.");
+    }
+  }
+
+  // ── Publish / Update ──
   async function handlePublish() {
     if (!values.slug || !values.title || !values.content) return;
     setPublishStatus("loading");
     setPublishError("");
     try {
-      const res = await fetch("/api/publish-article", {
-        method: "POST",
+      const url = mode === "edit" ? "/api/manage-article" : "/api/publish-article";
+      const method = mode === "edit" ? "PUT" : "POST";
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
@@ -138,7 +302,15 @@ export default function AdminBlogClient() {
     }
   }
 
+  function cancelEdit() {
+    setMode("create");
+    setValues(EMPTY);
+    setPublishStatus("idle");
+    setPublishError("");
+  }
+
   function handleReset() {
+    setMode("create");
     setValues(EMPTY);
     setPublishStatus("idle");
     setPublishError("");
@@ -156,10 +328,13 @@ export default function AdminBlogClient() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="font-serif text-3xl font-bold text-gray-900">
-            Créer un article de blog
+            {mode === "edit" ? "Modifier l'article" : "Créer un article de blog"}
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            Le compteur SEO se met à jour en temps réel — visez le grade <strong>A</strong> ou <strong>S</strong> avant de publier.
+            {mode === "edit"
+              ? <>Mode édition — <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">/blog/{values.slug}</code></>
+              : <>Le compteur SEO se met à jour en temps réel — visez le grade <strong>A</strong> ou <strong>S</strong>.</>
+            }
           </p>
         </div>
 
@@ -169,56 +344,71 @@ export default function AdminBlogClient() {
             onClick={() => setTab("form")}
             className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === "form" ? "bg-[var(--color-rhone)] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}
           >
-            <FileText className="w-4 h-4" /> Rédaction
+            <FileText className="w-4 h-4" />
+            {mode === "edit" ? "Modifier" : "Rédaction"}
           </button>
+          {mode === "create" && (
+            <button
+              onClick={() => setTab("prompt")}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === "prompt" ? "bg-[var(--color-rhone)] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}
+            >
+              <Sparkles className="w-4 h-4" /> Générer un prompt IA
+            </button>
+          )}
           <button
-            onClick={() => setTab("prompt")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === "prompt" ? "bg-[var(--color-rhone)] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}
+            onClick={() => { setTab("manage"); setManageStatus("idle"); setManageMsg(""); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === "manage" ? "bg-[var(--color-rhone)] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}
           >
-            <Sparkles className="w-4 h-4" /> Générer un prompt IA
+            <LayoutList className="w-4 h-4" /> Gérer les articles
+            <span className={`text-xs rounded-full px-1.5 py-0.5 font-bold ${tab === "manage" ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500"}`}>
+              {initialPosts.length}
+            </span>
           </button>
         </div>
 
+        {/* ── Form / Edit tab ── */}
         {tab === "form" && (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Form — 2/3 */}
-              <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-                <BlogForm values={values} onChange={setValues} />
+            {mode === "edit" && (
+              <div className="mb-4 flex items-center gap-3 px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-700">
+                <Pencil className="w-4 h-4 shrink-0" />
+                <span>Tu modifies <strong>{values.title}</strong>. Le slug est fixe.</span>
+                <button onClick={cancelEdit} className="ml-auto flex items-center gap-1 text-blue-500 hover:text-blue-700 font-medium">
+                  <X className="w-3.5 h-3.5" /> Annuler
+                </button>
               </div>
-              {/* SEO panel — 1/3 */}
+            )}
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+                <BlogForm values={values} onChange={setValues} slugReadOnly={mode === "edit"} />
+              </div>
               <div className="lg:col-span-1">
                 <SeoPanel result={seoResult} />
               </div>
             </div>
 
-            {/* ── Publication ─────────────────────────────────────── */}
+            {/* Publication panel */}
             <div className="mt-6">
               {publishStatus === "success" ? (
                 <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-4">
                   <CheckCircle className="w-8 h-8 text-emerald-500 shrink-0" />
                   <div className="flex-1">
-                    <p className="font-semibold text-emerald-800">Article publié avec succès !</p>
+                    <p className="font-semibold text-emerald-800">
+                      {mode === "edit" ? "Article mis à jour !" : "Article publié avec succès !"}
+                    </p>
                     <p className="text-sm text-emerald-700 mt-0.5">
-                      L&apos;article <strong>{values.title}</strong> est maintenant en ligne.
+                      <strong>{values.title}</strong> — redéploiement Vercel en cours (~1 min).
                     </p>
                   </div>
                   <div className="flex gap-3 shrink-0">
-                    <a
-                      href={`/blog/${publishedSlug}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Voir l&apos;article
+                    <a href={`/blog/${publishedSlug}`} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition-colors">
+                      <ExternalLink className="w-4 h-4" /> Voir l&apos;article
                     </a>
-                    <button
-                      onClick={handleReset}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-emerald-300 hover:border-emerald-500 text-emerald-700 text-sm font-semibold rounded-xl transition-colors"
-                    >
-                      <RefreshCw className="w-4 h-4" />
-                      Nouvel article
+                    <button onClick={handleReset}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-emerald-300 hover:border-emerald-500 text-emerald-700 text-sm font-semibold rounded-xl transition-colors">
+                      <RefreshCw className="w-4 h-4" /> Nouvel article
                     </button>
                   </div>
                 </div>
@@ -226,38 +416,31 @@ export default function AdminBlogClient() {
                 <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                     <div className="flex-1">
-                      <p className="font-semibold text-gray-900">Publier l&apos;article</p>
+                      <p className="font-semibold text-gray-900">
+                        {mode === "edit" ? "Enregistrer les modifications" : "Publier l'article"}
+                      </p>
                       <p className="text-sm text-gray-500 mt-0.5">
-                        L&apos;article sera ajouté directement au site — pas de copier-coller nécessaire.
+                        {mode === "edit"
+                          ? "Les modifications seront appliquées après redéploiement (~1 min)."
+                          : "L'article sera ajouté directement au site — pas de copier-coller nécessaire."}
                       </p>
                     </div>
                     <button
                       onClick={handlePublish}
                       disabled={!canPublish || publishStatus === "loading"}
-                      className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-colors shrink-0 ${
-                        canPublish && publishStatus !== "loading"
-                          ? "bg-[var(--color-rhone)] hover:bg-[var(--color-rhone-dark)] text-white"
-                          : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      }`}
+                      className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-colors shrink-0 ${canPublish && publishStatus !== "loading"
+                        ? "bg-[var(--color-rhone)] hover:bg-[var(--color-rhone-dark)] text-white"
+                        : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        }`}
                     >
                       {publishStatus === "loading" ? (
-                        <>
-                          <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                          </svg>
-                          Publication…
-                        </>
+                        <><Loader2 className="w-4 h-4 animate-spin" /> {mode === "edit" ? "Mise à jour…" : "Publication…"}</>
                       ) : publishStatus === "error" ? (
-                        <>
-                          <RefreshCw className="w-4 h-4" />
-                          Réessayer
-                        </>
+                        <><RefreshCw className="w-4 h-4" /> Réessayer</>
+                      ) : mode === "edit" ? (
+                        <><Check className="w-4 h-4" /> Mettre à jour</>
                       ) : (
-                        <>
-                          <Rocket className="w-4 h-4" />
-                          Publier sur le site
-                        </>
+                        <><Rocket className="w-4 h-4" /> Publier sur le site</>
                       )}
                     </button>
                   </div>
@@ -274,17 +457,14 @@ export default function AdminBlogClient() {
                       Remplis au minimum le titre, le slug et le contenu pour activer la publication.
                     </p>
                   )}
-
                   {canPublish && seoResult.grade !== "S" && seoResult.grade !== "A" && (
                     <p className="mt-3 text-xs text-amber-600">
-                      <strong>Conseil :</strong> ton score SEO est <strong>{seoResult.grade}</strong> — améliore-le avant de publier pour maximiser ta visibilité Google.
+                      <strong>Conseil :</strong> ton score SEO est <strong>{seoResult.grade}</strong> — améliore-le avant de publier.
                     </p>
                   )}
-
                   {canPublish && (seoResult.grade === "S" || seoResult.grade === "A") && (
                     <p className="mt-3 text-xs text-emerald-600 flex items-center gap-1">
-                      <Check className="w-3 h-3" />
-                      Score SEO <strong>{seoResult.grade}</strong> — prêt à publier !
+                      <Check className="w-3 h-3" /> Score SEO <strong>{seoResult.grade}</strong> — prêt à publier !
                     </p>
                   )}
                 </div>
@@ -293,7 +473,58 @@ export default function AdminBlogClient() {
           </>
         )}
 
-        {tab === "prompt" && <PromptGenerator onImport={handleImport} />}
+        {/* ── Prompt tab ── */}
+        {tab === "prompt" && mode === "create" && <PromptGenerator onImport={handleImport} />}
+
+        {/* ── Manage tab ── */}
+        {tab === "manage" && (
+          <div className="space-y-4">
+            {/* Status banner */}
+            {manageStatus === "success" && (
+              <div className="flex items-center gap-3 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700">
+                <CheckCircle className="w-4 h-4 shrink-0" />
+                {manageMsg}
+                <button onClick={() => setManageStatus("idle")} className="ml-auto text-emerald-400 hover:text-emerald-600">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+            {manageStatus === "error" && (
+              <div className="flex items-center gap-3 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                {manageMsg}
+                <button onClick={() => setManageStatus("idle")} className="ml-auto text-red-400 hover:text-red-600">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            {loadingEdit && (
+              <div className="flex items-center gap-2 px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-700">
+                <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+                Chargement du contenu…
+              </div>
+            )}
+
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm text-gray-500">
+                {initialPosts.length} article{initialPosts.length > 1 ? "s" : ""} publiés — liste issue du dernier déploiement.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-[var(--color-rhone)] transition-colors"
+              >
+                <RefreshCw className="w-3.5 h-3.5" /> Rafraîchir
+              </button>
+            </div>
+
+            <ArticleList
+              posts={initialPosts}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

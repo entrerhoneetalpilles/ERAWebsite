@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import AdminBlogClient from "./AdminBlogClient";
+import { blogPosts } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Admin — Créer un article de blog",
+  title: "Admin — Gérer le blog ERA",
   robots: { index: false, follow: false },
 };
 
 export default function AdminBlogPage() {
-  return <AdminBlogClient />;
+  return <AdminBlogClient initialPosts={blogPosts} />;
 }

@@ -38,20 +38,18 @@ export interface FormValues {
 interface Props {
   values: FormValues;
   onChange: (next: FormValues) => void;
+  slugReadOnly?: boolean;
 }
 
 const inputCls =
   "w-full border border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[var(--color-rhone)] bg-white transition";
 const labelCls = "block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1";
 
-export default function BlogForm({ values, onChange }: Props) {
+export default function BlogForm({ values, onChange, slugReadOnly = false }: Props) {
   function set<K extends keyof FormValues>(key: K, val: string) {
     const next: FormValues = { ...values, [key]: val };
-    if (key === "title") {
+    if (key === "title" && !slugReadOnly) {
       next.slug = slugify(val);
-    }
-    if (key === "content") {
-      // readTime tracked externally via estimateReadTime export
     }
     onChange(next);
   }
@@ -87,11 +85,15 @@ export default function BlogForm({ values, onChange }: Props) {
           <span className="text-xs text-gray-400 whitespace-nowrap">/blog/</span>
           <input
             type="text"
-            className={inputCls}
+            className={slugReadOnly ? `${inputCls} bg-gray-50 text-gray-400 cursor-not-allowed` : inputCls}
             value={values.slug}
+            readOnly={slugReadOnly}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => set("slug", e.target.value)}
           />
         </div>
+        {slugReadOnly && (
+          <p className="mt-1 text-xs text-amber-600">Le slug ne peut pas être modifié (URLs existantes).</p>
+        )}
       </div>
 
       {/* Excerpt / meta description */}
