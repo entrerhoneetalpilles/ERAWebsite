@@ -409,7 +409,7 @@ export const blogPosts: BlogPost[] = [
       "Nos conseils pour maximiser vos revenus locatifs pendant la haute saison en Alpilles.",
     date: "2025-04-15",
     category: "Conseils propriétaires",
-    image: "/images/blog/blog-1.jpg",
+    image: "/images/blog/location-estivale-provence-preparer.jpg",
     readTime: 6,
   },
   {
@@ -419,7 +419,7 @@ export const blogPosts: BlogPost[] = [
       "Dates, programme, hébergements et conseils pour profiter pleinement de la Feria d'Arles.",
     date: "2025-04-08",
     category: "Guides de voyage",
-    image: "/images/blog/blog-2.jpg",
+    image: "/images/blog/feria-arles-guide-visiteurs.jpg",
     readTime: 8,
   },
   {
@@ -429,7 +429,7 @@ export const blogPosts: BlogPost[] = [
       "Randonnées fleuries, marchés colorés et douceur provençale — le printemps aux Alpilles est magique.",
     date: "2025-03-28",
     category: "Guides de voyage",
-    image: "/images/blog/blog-3.jpg",
+    image: "/images/blog/printemps-alpilles-que-faire.jpg",
     readTime: 5,
   },
   {
@@ -439,7 +439,7 @@ export const blogPosts: BlogPost[] = [
       "Déclaration des revenus Airbnb, régimes micro-BIC et réel, taxe de séjour, CFE — tout ce que le propriétaire doit savoir.",
     date: "2025-03-10",
     category: "Conseils propriétaires",
-    image: "/images/blog/blog-4.jpg",
+    image: "/images/blog/fiscalite-location-courte-duree-provence.jpg",
     readTime: 10,
   },
   {
@@ -449,7 +449,7 @@ export const blogPosts: BlogPost[] = [
       "Marché provençal, Glanum, Van Gogh, restaurants étoilés — tout ce qu'il faut savoir pour séjourner à Saint-Rémy.",
     date: "2025-02-20",
     category: "Guides de voyage",
-    image: "/images/blog/blog-5.jpg",
+    image: "/images/blog/saint-remy-de-provence-guide-voyage.jpg",
     readTime: 9,
   },
   {
@@ -459,7 +459,7 @@ export const blogPosts: BlogPost[] = [
       "Photos, titre, description, tarification — les 7 leviers qui font passer une annonce de la page 3 à la page 1.",
     date: "2025-02-05",
     category: "Conseils propriétaires",
-    image: "/images/blog/blog-6.jpg",
+    image: "/images/blog/optimiser-annonce-airbnb-provence.jpg",
     readTime: 7,
   },
   {
@@ -469,7 +469,7 @@ export const blogPosts: BlogPost[] = [
       "Saint-Rémy, Maussane, Eygalières, Arles… Chaque marché a son âme. Notre guide pour ne rater aucun incontournable.",
     date: "2025-01-15",
     category: "Guides de voyage",
-    image: "/images/blog/blog-7.jpg",
+    image: "/images/blog/marches-provencaux-alpilles.jpg",
     readTime: 6,
   },
   {
@@ -479,7 +479,7 @@ export const blogPosts: BlogPost[] = [
       "Rendements attendus, communes à privilégier, fiscalité avantageuse — le guide de l'investisseur en location courte durée en Provence.",
     date: "2024-12-10",
     category: "Actualités région",
-    image: "/images/blog/blog-8.jpg",
+    image: "/images/blog/investir-location-saisonniere-alpilles.jpg",
     readTime: 11,
   },
 ];

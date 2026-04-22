@@ -62,27 +62,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // Données différenciées par commune pour éviter le duplicate content
 const communePropertyData: Record<string, { name: string; type: string; guests: number; price: number; rating: number; reviewCount: number; hasPiscine: boolean; adjective: string; image?: string }[]> = {
   "saint-remy-de-provence": [
-    { name: "Mas des Oliviers — Vue Alpilles", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, adjective: "Vue panoramique", image: "/images/properties/mas-des-oliviers.jpg" },
+    { name: "Mas des Oliviers — Vue Alpilles", type: "Mas", guests: 8, price: 320, rating: 4.9, reviewCount: 47, hasPiscine: true, adjective: "Vue panoramique", image: "/images/properties/mas-location-vacances-saint-remy-de-provence.jpg" },
     { name: "Villa du Marché — Centre Saint-Rémy", type: "Villa", guests: 6, price: 255, rating: 4.8, reviewCount: 29, hasPiscine: true, adjective: "Plein centre" },
-    { name: "Maison Glanum — Charme provençal", type: "Maison de village", guests: 4, price: 145, rating: 4.9, reviewCount: 52, hasPiscine: false, adjective: "Cœur village", image: "/images/properties/interieur-mas-salon.jpg" },
+    { name: "Maison Glanum — Charme provençal", type: "Maison de village", guests: 4, price: 145, rating: 4.9, reviewCount: 52, hasPiscine: false, adjective: "Cœur village", image: "/images/properties/interieur-mas-provencal-salon.jpg" },
   ],
   "les-baux-de-provence": [
-    { name: "Villa des Baux — Terrasse panoramique", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, adjective: "Vue château", image: "/images/properties/villa-baux.jpg" },
+    { name: "Villa des Baux — Terrasse panoramique", type: "Villa", guests: 6, price: 280, rating: 4.8, reviewCount: 31, hasPiscine: true, adjective: "Vue château", image: "/images/properties/villa-location-les-baux-de-provence.jpg" },
     { name: "Bastide Alpilles — Standing luxe", type: "Bastide", guests: 10, price: 480, rating: 5.0, reviewCount: 18, hasPiscine: true, adjective: "Luxe absolu" },
-    { name: "Mas des Carrières — Lumières", type: "Mas", guests: 8, price: 350, rating: 4.9, reviewCount: 24, hasPiscine: true, adjective: "Prestige", image: "/images/properties/mas-piscine-aerien.jpg" },
+    { name: "Mas des Carrières — Lumières", type: "Mas", guests: 8, price: 350, rating: 4.9, reviewCount: 24, hasPiscine: true, adjective: "Prestige", image: "/images/properties/mas-piscine-vue-aerienne-provence.jpg" },
   ],
   "eygalieres": [
-    { name: "Bastide Eygalières — Discrétion absolue", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, adjective: "Exclusivité", image: "/images/properties/bastide-eygalieres.jpg" },
+    { name: "Bastide Eygalières — Discrétion absolue", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, adjective: "Exclusivité", image: "/images/properties/bastide-location-eygalieres-alpilles.jpg" },
     { name: "Villa des Célébrités — Piscine privée", type: "Villa", guests: 8, price: 520, rating: 5.0, reviewCount: 11, hasPiscine: true, adjective: "Ultra-luxe" },
     { name: "Mas Garrigue — Vue Alpilles Est", type: "Mas", guests: 6, price: 380, rating: 4.9, reviewCount: 22, hasPiscine: true, adjective: "Vue imprenable" },
   ],
   "maussane-les-alpilles": [
-    { name: "Mas Oliveraie — Huile d'or", type: "Mas", guests: 8, price: 295, rating: 4.9, reviewCount: 33, hasPiscine: true, adjective: "AOP oliviers", image: "/images/properties/mas-maussane.jpg" },
+    { name: "Mas Oliveraie — Huile d'or", type: "Mas", guests: 8, price: 295, rating: 4.9, reviewCount: 33, hasPiscine: true, adjective: "AOP oliviers", image: "/images/properties/mas-location-maussane-les-alpilles.jpg" },
     { name: "Gîte du Moulin — Famille", type: "Gîte", guests: 6, price: 185, rating: 4.8, reviewCount: 41, hasPiscine: true, adjective: "Vue moulin" },
     { name: "Maison du Village — Gastronomie", type: "Maison de village", guests: 4, price: 140, rating: 4.7, reviewCount: 28, hasPiscine: false, adjective: "Restaurants à pied" },
   ],
   "arles": [
-    { name: "Appartement du Théâtre — UNESCO", type: "Appartement", guests: 4, price: 140, rating: 4.9, reviewCount: 58, hasPiscine: false, adjective: "Centre historique", image: "/images/properties/appartement-arles.jpg" },
+    { name: "Appartement du Théâtre — UNESCO", type: "Appartement", guests: 4, price: 140, rating: 4.9, reviewCount: 58, hasPiscine: false, adjective: "Centre historique", image: "/images/properties/appartement-location-arles-provence.jpg" },
     { name: "Mas Camargue — Feria", type: "Mas", guests: 8, price: 240, rating: 4.8, reviewCount: 35, hasPiscine: true, adjective: "Porte Camargue" },
     { name: "Maison LUMA — Art contemporain", type: "Maison de village", guests: 5, price: 180, rating: 5.0, reviewCount: 22, hasPiscine: false, adjective: "Quartier artistique" },
   ],
@@ -93,7 +93,7 @@ const communePropertyData: Record<string, { name: string; type: string; guests: 
   ],
   "paradou": [
     { name: "Mas du Silence — Slow travel", type: "Mas", guests: 6, price: 275, rating: 5.0, reviewCount: 19, hasPiscine: true, adjective: "Calme total" },
-    { name: "Gîte des Oliviers — Intimiste", type: "Gîte", guests: 4, price: 160, rating: 4.9, reviewCount: 31, hasPiscine: false, adjective: "Secret villageois", image: "/images/properties/gite-paradou.jpg" },
+    { name: "Gîte des Oliviers — Intimiste", type: "Gîte", guests: 4, price: 160, rating: 4.9, reviewCount: 31, hasPiscine: false, adjective: "Secret villageois", image: "/images/properties/gite-location-paradou-alpilles.jpg" },
     { name: "Bastide Paradou — Couple", type: "Bastide", guests: 4, price: 340, rating: 5.0, reviewCount: 12, hasPiscine: true, adjective: "Romantique" },
   ],
   "villeneuve-les-avignon": [
