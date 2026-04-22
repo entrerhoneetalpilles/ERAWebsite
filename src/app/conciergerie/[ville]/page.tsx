@@ -17,11 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const commune = getCommuneBySlug(ville);
   if (!commune) return {};
   return {
-    title: `Conciergerie Airbnb ${commune.name} — Gestion Locative`,
+    title: `Conciergerie ${commune.name} — Gestion Locative`,
     description: `Conciergerie de location saisonnière à ${commune.name}. Gestion complète, tarification dynamique, maximisation des revenus. Devis gratuit.`,
     alternates: { canonical: `https://entre-rhone-alpilles.fr/conciergerie/${commune.slug}` },
     openGraph: {
-      title: `Conciergerie Airbnb ${commune.name} — Gestion Locative`,
+      title: `Conciergerie ${commune.name} — Gestion Locative`,
       description: `Gestion locative complète à ${commune.name}. Tarification dynamique, maximisation des revenus. Devis gratuit.`,
       url: `https://entre-rhone-alpilles.fr/conciergerie/${commune.slug}`,
     },

@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const commune = getCommuneBySlug(slug);
   if (commune) {
     return {
-      title: `Location vacances ${commune.name} — Mas, Villas, Hébergements`,
+      title: `Locations ${commune.name} — Mas, Villas`,
       description: `Locations de vacances à ${commune.name} : mas provençaux, villas avec piscine et hébergements de caractère sélectionnés par Entre Rhône et Alpilles. Réservez directement.`,
       alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/${commune.slug}` },
       openGraph: { title: `Location vacances ${commune.name}`, description: commune.description },
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pt = getPropertyTypeBySlug(slug);
   if (pt) {
     return {
-      title: `${pt.plural} à louer en Provence — Alpilles & Rhône`,
+      title: `${pt.plural} à louer en Provence`,
       description: `Trouvez votre ${pt.name.toLowerCase()} de vacances en Provence. ${pt.description}. Sélection exclusive Entre Rhône et Alpilles.`,
       alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/${pt.slug}` },
     };
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const at = activityTags.find((t) => t.slug === slug);
   if (at) {
     return {
-      title: `Hébergements ${at.name} en Provence — Alpilles & Rhône`,
+      title: `Hébergements ${at.name} — Provence`,
       description: `Hébergements idéaux pour ${at.name.toLowerCase()} en Provence. ${at.description}. Sélectionnés par notre conciergerie locale.`,
       alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/${at.slug}` },
     };

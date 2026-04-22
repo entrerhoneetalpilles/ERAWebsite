@@ -434,7 +434,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "fiscalite-location-courte-duree-provence",
-    title: "Fiscalité de la location courte durée : guide complet 2025",
+    title: "Fiscalité location courte durée — guide complet 2025",
     excerpt:
       "Déclaration des revenus Airbnb, régimes micro-BIC et réel, taxe de séjour, CFE — tout ce que le propriétaire doit savoir.",
     date: "2025-03-10",
@@ -474,7 +474,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "investir-location-saisonniere-alpilles",
-    title: "Investir dans la location saisonnière aux Alpilles : rentabilité 2025",
+    title: "Investissement locatif Alpilles — rentabilité 2025",
     excerpt:
       "Rendements attendus, communes à privilégier, fiscalité avantageuse — le guide de l'investisseur en location courte durée en Provence.",
     date: "2024-12-10",

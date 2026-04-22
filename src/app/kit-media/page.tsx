@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Kit Média — Entre Rhône et Alpilles",
+  title: "Kit Média — Conciergerie Provence",
   description:
     "Kit média officiel d'Entre Rhône et Alpilles. Données audience, chiffres clés, opportunités de partenariat pour la presse, les partenaires et les annonceurs.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/kit-media" },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Kit Média — Entre Rhône et Alpilles",
+    title: "Kit Média — Conciergerie Provence",
     description:
       "Données audience, services et opportunités de partenariat pour la conciergerie de référence en Provence.",
     url: "https://entre-rhone-alpilles.fr/kit-media",

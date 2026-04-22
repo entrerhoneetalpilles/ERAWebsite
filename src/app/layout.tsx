@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   title: {
     default:
       "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
-    template: "%s — Entre Rhône et Alpilles",
+    template: "%s | ERA",
   },
   description:
     "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières. Estimation gratuite en 2 min.",
@@ -54,12 +54,21 @@ export const metadata: Metadata = {
     title: "Conciergerie Saisonnière Provence — Alpilles & Arles",
     description:
       "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières.",
+    images: [
+      {
+        url: "https://entre-rhone-alpilles.fr/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Entre Rhône et Alpilles — Conciergerie Provence",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Conciergerie Saisonnière Provence — Alpilles & Arles",
     description:
       "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières.",
+    images: ["https://entre-rhone-alpilles.fr/opengraph-image"],
   },
   other: {
     "tdm-reservation": "1",

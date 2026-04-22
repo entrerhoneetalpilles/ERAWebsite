@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const commune = getCommuneBySlug(ville);
   if (!commune) return {};
   return {
-    title: `${commune.name} : que faire, voir et où loger ? Guide complet`,
+    title: `${commune.name} — Guide de voyage Provence`,
     description: `Guide complet de ${commune.name} en Provence : incontournables, restaurants, activités et hébergements de caractère. ${commune.atout}.`,
     alternates: { canonical: `https://entre-rhone-alpilles.fr/destinations/${commune.slug}` },
     openGraph: {

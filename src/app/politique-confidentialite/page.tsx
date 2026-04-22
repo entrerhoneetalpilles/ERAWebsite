@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Politique de confidentialité — Entre Rhône et Alpilles",
+  title: "Politique de confidentialité",
   description: "Politique de confidentialité et traitement des données personnelles de la conciergerie Entre Rhône et Alpilles. Conformité RGPD.",
   robots: { index: false, follow: false },
 };
