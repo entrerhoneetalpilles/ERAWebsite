@@ -6,8 +6,9 @@ Disallow: /mentions-legales
 Disallow: /politique-confidentialite
 Disallow: /cgv
 
-# Next.js internals
+# Next.js internals & API
 Disallow: /_next/
+Disallow: /api/
 
 # TDM rights reserved — EU Copyright Directive Art. 4
 Content-Signal: all-content-reserved

@@ -176,7 +176,7 @@ export default async function BlogPostPage({ params }: Props) {
     datePublished: post.date,
     dateModified: post.date,
     author: {
-      "@type": "Organization",
+      "@type": "Person",
       name: "Entre Rhône et Alpilles",
       url: "https://entre-rhone-alpilles.fr",
     },

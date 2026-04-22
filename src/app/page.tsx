@@ -157,6 +157,14 @@ const schemaOrg = {
         { "@type": "ListItem", position: 1, name: "Accueil", item: "https://entre-rhone-alpilles.fr" },
       ],
     },
+    {
+      "@type": "FAQPage",
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: { "@type": "Answer", text: item.answer },
+      })),
+    },
   ],
 };
 
