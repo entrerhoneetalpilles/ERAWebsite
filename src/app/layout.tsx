@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   title: {
     default:
       "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
-    template: "%s | ERA Provence",
+    template: "%s — Entre Rhône et Alpilles",
   },
   description:
     "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières. Estimation gratuite en 2 min.",
