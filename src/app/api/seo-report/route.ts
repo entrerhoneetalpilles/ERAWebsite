@@ -28,6 +28,7 @@ export interface PageResult {
   h1Count: number;
   h2Count: number;
   h2Texts: string[];
+  h3Count: number;
   canonical: string | null;
   robotsMeta: string | null;
   ogTitle: string | null;
@@ -40,6 +41,11 @@ export interface PageResult {
   wordCount: number;
   internalLinks: number;
   externalLinks: number;
+  viewport: string | null;
+  htmlLang: string | null;
+  responseTimeMs: number;
+  pageSizeKb: number;
+  textHtmlRatio: number;
   issues: Issue[];
   score: number;
   psi?: { performance: number; seo: number; accessibility: number; lcp: number | null; cls: number | null };
@@ -130,7 +136,7 @@ function getCanonical(html: string): string | null {
   return m ? m[1].trim() : null;
 }
 
-function getHeadings(html: string, tag: "h1" | "h2"): string[] {
+function getHeadings(html: string, tag: "h1" | "h2" | "h3"): string[] {
   const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "gi");
   const results: string[] = [];
   let m;
@@ -196,6 +202,21 @@ function getWordCount(html: string): number {
   return text.split(/\s+/).filter((w) => w.length > 1).length;
 }
 
+function getHtmlLang(html: string): string | null {
+  const m = html.match(/<html[^>]+lang=["']([^"']+)["']/i);
+  return m ? m[1] : null;
+}
+
+function getTextHtmlRatio(html: string): number {
+  if (!html) return 0;
+  const body = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i)?.[1] ?? html;
+  const cleaned = body
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "");
+  const textLen = cleaned.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().length;
+  return cleaned.length > 0 ? Math.round((textLen / cleaned.length) * 100) : 0;
+}
+
 // ── Scoring ────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -207,6 +228,7 @@ const SW: Record<string, { sev: Severity; pts: number; msg: string | ((...a: any
   DESC_MISSING:          { sev: "critical", pts: 20, msg: "Meta description manquante" },
   H1_MISSING:            { sev: "critical", pts: 20, msg: "H1 manquant" },
   CANONICAL_MISMATCH:    { sev: "critical", pts: 15, msg: (url: string) => `Canonical incorrect → ${url}` },
+  NO_VIEWPORT:           { sev: "critical", pts: 10, msg: "Balise viewport manquante (SEO mobile)" },
   // Warnings majeurs
   H1_DUPLICATE:          { sev: "warning",  pts: 12, msg: (n: number) => `${n} balises H1 présentes (doit être unique)` },
   DESC_DUPLICATE:        { sev: "warning",  pts: 10, msg: "Meta description identique à une autre page" },
@@ -223,6 +245,9 @@ const SW: Record<string, { sev: Severity; pts: number; msg: string | ((...a: any
   NO_CANONICAL:          { sev: "warning",  pts: 5,  msg: "Lien canonical manquant" },
   DESC_TOO_LONG:         { sev: "warning",  pts: 5,  msg: (n: number) => `Meta description trop longue (${n} car. — max 160)` },
   DESC_TOO_SHORT:        { sev: "warning",  pts: 5,  msg: (n: number) => `Meta description trop courte (${n} car. — idéal 120-160)` },
+  NO_LANG:               { sev: "warning",  pts: 5,  msg: "Attribut lang absent sur <html>" },
+  LOW_TEXT_RATIO:        { sev: "warning",  pts: 5,  msg: (n: number) => `Ratio texte/HTML faible (${n}% — vise 15%+)` },
+  SLOW_RESPONSE:         { sev: "warning",  pts: 5,  msg: (n: number) => `Réponse lente (${n} ms — vise < 2 s)` },
   // Warnings mineurs
   NO_OG_TITLE:           { sev: "warning",  pts: 4,  msg: "og:title manquant" },
   NO_OG_DESC:            { sev: "warning",  pts: 3,  msg: "og:description manquant" },
@@ -260,6 +285,11 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
     add("HTTP_ERROR", result.httpStatus);
     return { issues, score: Math.max(0, 100 - deduct) };
   }
+
+  // ── Technical ─────────────────────────────────────────────
+  if (!result.viewport) add("NO_VIEWPORT");
+  if (!result.htmlLang) add("NO_LANG");
+  if (result.responseTimeMs > 3000 && result.responseTimeMs > 0) add("SLOW_RESPONSE", result.responseTimeMs);
 
   // ── Title ──────────────────────────────────────────────────
   if (!result.title) {
@@ -336,6 +366,9 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
     add("THIN_CONTENT", result.wordCount, minWords);
   }
 
+  // ── Text/HTML ratio ───────────────────────────────────────
+  if (result.textHtmlRatio < 10 && result.pageSizeKb > 20) add("LOW_TEXT_RATIO", result.textHtmlRatio);
+
   return { issues, score: Math.max(0, 100 - deduct) };
 }
 
@@ -388,6 +421,7 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
   const url = `${SITE}${path}`;
   let html = "";
   let httpStatus = 200;
+  const start = Date.now();
 
   try {
     const res = await fetch(url, {
@@ -401,10 +435,13 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
     httpStatus = 0;
   }
 
+  const responseTimeMs = Date.now() - start;
+
   const title = getTitle(html);
   const description = getMeta(html, "description");
   const h1s = getHeadings(html, "h1");
   const h2s = getHeadings(html, "h2");
+  const h3s = getHeadings(html, "h3");
   const canonical = getCanonical(html);
   const robotsMeta = getMeta(html, "robots");
   const ogTitle = getOg(html, "title");
@@ -414,6 +451,10 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
   const imgs = countImages(html);
   const links = countLinks(html);
   const wordCount = getWordCount(html);
+  const viewport = getMeta(html, "viewport");
+  const htmlLang = getHtmlLang(html);
+  const pageSizeKb = Math.round(html.length / 1024);
+  const textHtmlRatio = getTextHtmlRatio(html);
 
   const partial: Omit<PageResult, "issues" | "score"> = {
     path, url, pageType, httpStatus,
@@ -421,11 +462,14 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
     description, descriptionLength: description?.length ?? 0,
     h1: h1s[0] ?? null, h1Count: h1s.length,
     h2Count: h2s.length, h2Texts: h2s.slice(0, 6),
+    h3Count: h3s.length,
     canonical, robotsMeta,
     ogTitle, ogDescription, ogImage,
     hasJsonLd: jsonLdTypes.length > 0, jsonLdTypes,
     imagesTotal: imgs.total, imagesWithoutAlt: imgs.withoutAlt,
     wordCount, internalLinks: links.internal, externalLinks: links.external,
+    viewport, htmlLang,
+    responseTimeMs, pageSizeKb, textHtmlRatio,
   };
 
   const { issues, score: pageScore } = score(partial);

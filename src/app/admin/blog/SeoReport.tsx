@@ -34,6 +34,7 @@ interface PageResult {
   h1Count: number;
   h2Count: number;
   h2Texts: string[];
+  h3Count: number;
   canonical: string | null;
   robotsMeta: string | null;
   ogTitle: string | null;
@@ -46,6 +47,11 @@ interface PageResult {
   wordCount: number;
   internalLinks: number;
   externalLinks: number;
+  viewport: string | null;
+  htmlLang: string | null;
+  responseTimeMs: number;
+  pageSizeKb: number;
+  textHtmlRatio: number;
   issues: Issue[];
   score: number;
   psi?: { performance: number; seo: number; accessibility: number; lcp: number | null; cls: number | null };
@@ -701,6 +707,9 @@ export default function SeoReport() {
                                     </ul>
                                   </div>
                                 )}
+                                {page.h3Count > 0 && (
+                                  <p><span className="text-gray-400">H3 : </span><span className="text-gray-700">{page.h3Count}</span></p>
+                                )}
                                 {page.jsonLdTypes.length > 0 && (
                                   <p><span className="text-gray-400">JSON-LD : </span><span className="text-gray-700">{page.jsonLdTypes.join(", ")}</span></p>
                                 )}
@@ -723,6 +732,36 @@ export default function SeoReport() {
                                     <span className="font-mono text-[10px] text-gray-600">{page.canonical}</span>
                                   </p>
                                 )}
+                                <div className="pt-1 mt-1 border-t border-gray-100 grid grid-cols-2 gap-x-4 gap-y-1">
+                                  <p>
+                                    <span className="text-gray-400">Réponse : </span>
+                                    <span className={page.responseTimeMs > 3000 ? "text-amber-600 font-semibold" : "text-gray-700"}>
+                                      {page.responseTimeMs} ms
+                                    </span>
+                                  </p>
+                                  <p>
+                                    <span className="text-gray-400">Taille HTML : </span>
+                                    <span className="text-gray-700">{page.pageSizeKb} KB</span>
+                                  </p>
+                                  <p>
+                                    <span className="text-gray-400">Ratio texte : </span>
+                                    <span className={page.textHtmlRatio < 10 ? "text-amber-600 font-semibold" : "text-gray-700"}>
+                                      {page.textHtmlRatio}%
+                                    </span>
+                                  </p>
+                                  <p>
+                                    <span className="text-gray-400">Lang : </span>
+                                    <span className={!page.htmlLang ? "text-red-500 font-semibold" : "text-gray-700"}>
+                                      {page.htmlLang ?? "absent"}
+                                    </span>
+                                  </p>
+                                  <p>
+                                    <span className="text-gray-400">Viewport : </span>
+                                    <span className={!page.viewport ? "text-red-500 font-semibold" : "text-gray-700"}>
+                                      {page.viewport ? "✓" : "absent"}
+                                    </span>
+                                  </p>
+                                </div>
                                 {page.httpStatus !== 200 && (
                                   <p className="text-red-600 font-semibold">
                                     Statut HTTP : {page.httpStatus || "Timeout / erreur réseau"}
