@@ -403,6 +403,16 @@ export const activityTags: ActivityTag[] = [
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "alpilles-dynamique-economique-tourisme-quelques-conseils",
+    title: "Alpilles : dynamique économique tourisme, quelques conseils ",
+    excerpt:
+      "La Provence attire depuis toujours les voyageurs en quête d’authenticité, de lumière et d’art de vivre. Au cœur de cette région emblématique, les Alpilles…",
+    date: "2026-04-22",
+    category: "Guides de voyage",
+    image: "/images/blog/alpilles-provence-dynamique-economique-tourisme.jpg",
+    readTime: 5,
+  },
+  {
     slug: "preparer-location-estivale-provence",
     title: "Comment préparer votre location estivale en Provence",
     excerpt:
