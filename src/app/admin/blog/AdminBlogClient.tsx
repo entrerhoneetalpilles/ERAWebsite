@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Copy, Check, Lock, Eye, EyeOff, FileText } from "lucide-react";
+import { Copy, Check, Lock, Eye, EyeOff, FileText, Sparkles } from "lucide-react";
 import BlogForm, { type FormValues } from "./BlogForm";
 import SeoPanel from "./SeoPanel";
+import PromptGenerator from "./PromptGenerator";
 import { computeSeoScore } from "./seoScorer";
 
 const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? "ERA2026";
@@ -139,7 +140,7 @@ function CopyBlock({ label, code }: { label: string; code: string }) {
 export default function AdminBlogClient() {
   const [authed, setAuthed] = useState(false);
   const [values, setValues] = useState<FormValues>(EMPTY);
-  const [tab, setTab] = useState<"form" | "export">("form");
+  const [tab, setTab] = useState<"form" | "prompt" | "export">("form");
 
   useEffect(() => {
     if (sessionStorage.getItem(SESSION_KEY) === "1") setAuthed(true);
@@ -170,20 +171,25 @@ export default function AdminBlogClient() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6">
-          {(["form", "export"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                tab === t
-                  ? "bg-[var(--color-rhone)] text-white"
-                  : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"
-              }`}
-            >
-              {t === "form" ? <><FileText className="w-4 h-4" /> Rédaction</> : <><Copy className="w-4 h-4" /> Exporter le code</>}
-            </button>
-          ))}
+        <div className="flex gap-2 mb-6 flex-wrap">
+          <button
+            onClick={() => setTab("form")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === "form" ? "bg-[var(--color-rhone)] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}
+          >
+            <FileText className="w-4 h-4" /> Rédaction
+          </button>
+          <button
+            onClick={() => setTab("prompt")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === "prompt" ? "bg-[var(--color-rhone)] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}
+          >
+            <Sparkles className="w-4 h-4" /> Générer un prompt IA
+          </button>
+          <button
+            onClick={() => setTab("export")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === "export" ? "bg-[var(--color-rhone)] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}
+          >
+            <Copy className="w-4 h-4" /> Exporter le code
+          </button>
         </div>
 
         {tab === "form" && (
@@ -198,6 +204,8 @@ export default function AdminBlogClient() {
             </div>
           </div>
         )}
+
+        {tab === "prompt" && <PromptGenerator />}
 
         {tab === "export" && (
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
