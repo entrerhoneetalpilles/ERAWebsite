@@ -147,11 +147,15 @@ function getJsonLdTypes(html: string): string[] {
 }
 
 function countImages(html: string): { total: number; withoutAlt: number } {
+  // Only count images inside <main> or <article> to exclude nav/footer icons
+  const zone = html.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1]
+    ?? html.match(/<article[^>]*>([\s\S]*?)<\/article>/i)?.[1]
+    ?? html;
   const re = /<img([^>]*)>/gi;
   let total = 0;
   let withoutAlt = 0;
   let m;
-  while ((m = re.exec(html)) !== null) {
+  while ((m = re.exec(zone)) !== null) {
     total++;
     const attrs = m[1];
     const hasAlt = /alt=["'][^"']*["']/i.test(attrs);
@@ -175,13 +179,18 @@ function countLinks(html: string): { internal: number; external: number } {
 }
 
 function getWordCount(html: string): number {
-  const main = html.match(/<(?:main|article)[^>]*>([\s\S]*?)<\/(?:main|article)>/i)?.[1] ?? html;
-  const text = main.replace(/<script[\s\S]*?<\/script>/gi, "")
+  // Prefer <main> then <article>, strip nav/header/footer from full HTML as fallback
+  let zone = html.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1]
+    ?? html.match(/<article[^>]*>([\s\S]*?)<\/article>/i)?.[1]
+    ?? html
+      .replace(/<(?:nav|header|footer|aside)[^>]*>[\s\S]*?<\/(?:nav|header|footer|aside)>/gi, "");
+  const text = zone
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
     .replace(/<style[\s\S]*?<\/style>/gi, "")
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-  return text.split(/\s+/).filter((w) => w.length > 1).length;
+  return text.split(/\s+/).filter((w) => w.length > 2).length;
 }
 
 // ── Scoring ────────────────────────────────────────────────────
@@ -195,6 +204,7 @@ const SCORE_WEIGHTS = {
   DESC_TOO_SHORT: { sev: "warning" as Severity, pts: 8, msg: (n: number) => `Meta description trop courte (${n} car. — idéal 140-160)` },
   H1_MISSING: { sev: "critical" as Severity, pts: 15, msg: "H1 manquant" },
   H1_DUPLICATE: { sev: "warning" as Severity, pts: 10, msg: (n: number) => `${n} balises H1 présentes (doit être unique)` },
+  NO_H2: { sev: "warning" as Severity, pts: 8, msg: "Aucun H2 — structure de contenu à améliorer" },
   NO_CANONICAL: { sev: "warning" as Severity, pts: 5, msg: "Lien canonical manquant" },
   NO_OG_TITLE: { sev: "warning" as Severity, pts: 5, msg: "og:title manquant (partage réseaux sociaux)" },
   NO_OG_DESC: { sev: "warning" as Severity, pts: 5, msg: "og:description manquant" },
@@ -229,6 +239,10 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
   if (result.h1Count === 0) add("H1_MISSING");
   else if (result.h1Count > 1) add("H1_DUPLICATE", result.h1Count);
 
+  // H2 structure required on content-heavy pages
+  const needsH2: PageType[] = ["home", "blog", "location", "destination", "conciergerie"];
+  if (result.h2Count === 0 && needsH2.includes(result.pageType)) add("NO_H2");
+
   if (!result.canonical && result.pageType !== "home") add("NO_CANONICAL");
   if (!result.ogTitle) add("NO_OG_TITLE");
   if (!result.ogDescription) add("NO_OG_DESC");
@@ -239,8 +253,11 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
 
   if (result.imagesWithoutAlt > 0) add("IMG_ALT", result.imagesWithoutAlt);
 
-  const contentTypes: PageType[] = ["home", "blog", "location", "destination", "conciergerie", "static"];
-  if (result.wordCount < 300 && contentTypes.includes(result.pageType)) add("THIN_CONTENT", result.wordCount);
+  // Thin content: stricter threshold for SEO pages, relaxed for utility pages
+  const richTypes: PageType[] = ["home", "blog", "location", "destination", "conciergerie"];
+  const lightTypes: PageType[] = ["static", "blog-index"];
+  if (richTypes.includes(result.pageType) && result.wordCount < 400) add("THIN_CONTENT", result.wordCount);
+  else if (lightTypes.includes(result.pageType) && result.wordCount < 150) add("THIN_CONTENT", result.wordCount);
 
   return { issues, score: Math.max(0, 100 - deduct) };
 }
