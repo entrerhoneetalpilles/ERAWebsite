@@ -5,7 +5,6 @@ import {
   Play, StopCircle, RefreshCw, ExternalLink,
   CheckCircle2, XCircle, AlertTriangle, AlertCircle,
   ChevronDown, ChevronUp, BarChart2, FileSearch, Shield, Zap,
-  Copy, Check,
 } from "lucide-react";
 
 // ── Types ────────────────────────────────────────────────────────
@@ -145,7 +144,6 @@ export default function SeoReport() {
   const [sortKey, setSortKey] = useState<SortKey>("score");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [expanded, setExpanded] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
 
   function handleEvent(event: Record<string, unknown>) {
@@ -252,66 +250,6 @@ export default function SeoReport() {
 
   const pct = progress.total > 0 ? Math.round((progress.done / progress.total) * 100) : 0;
 
-  function buildClipboardText(): string {
-    const date = new Date().toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
-    const lines: string[] = [];
-    lines.push(`RAPPORT SEO — entre-rhone-alpilles.fr — ${date}`);
-    lines.push("=".repeat(60));
-
-    if (infra) {
-      lines.push(`\nINFRASTRUCTURE`);
-      lines.push(`  Sitemap XML : ${infra.sitemap ? "✓ OK" : "✗ ABSENT"}`);
-      lines.push(`  robots.txt  : ${infra.robots ? "✓ OK" : "✗ ABSENT"}`);
-    }
-
-    if (avgScore !== null) {
-      lines.push(`\nRÉSUMÉ`);
-      lines.push(`  Pages analysées     : ${pages.length}`);
-      lines.push(`  Score moyen         : ${avgScore}/100 (${scoreGrade(avgScore)})`);
-      lines.push(`  Problèmes critiques : ${criticalCount}`);
-      lines.push(`  Avertissements      : ${warningCount}`);
-    }
-
-    if (topIssues.length > 0) {
-      lines.push(`\nPROBLÈMES GLOBAUX`);
-      for (const iss of topIssues) {
-        const tag = iss.severity === "critical" ? "[CRITIQUE]" : "[ALERTE]  ";
-        lines.push(`  ${tag} ${iss.message} — ${iss.count}/${pages.length} pages`);
-      }
-    }
-
-    lines.push(`\nDÉTAIL PAR PAGE`);
-    const sorted = [...pages].sort((a, b) => a.score - b.score);
-    for (const p of sorted) {
-      lines.push(`\n  ${p.path} — Score ${p.score}/100 (${scoreGrade(p.score)})`);
-      if (p.title) lines.push(`    Titre (${p.titleLength} car.) : ${p.title}`);
-      if (p.h1) lines.push(`    H1 : ${p.h1}`);
-      if (p.issues.length === 0) {
-        lines.push(`    ✓ Aucun problème`);
-      } else {
-        for (const iss of p.issues) {
-          const tag = iss.severity === "critical" ? "✗" : "△";
-          lines.push(`    ${tag} ${iss.message}`);
-        }
-      }
-    }
-
-    if (psiList.length > 0) {
-      lines.push(`\nPAGESPEED INSIGHTS (mobile)`);
-      for (const e of psiList) {
-        lines.push(`  ${e.path} — Perf. ${e.data.performance} / SEO ${e.data.seo} / Access. ${e.data.accessibility}${e.data.lcp !== null ? ` / LCP ${e.data.lcp}s` : ""}`);
-      }
-    }
-
-    return lines.join("\n");
-  }
-
-  function copyReport() {
-    navigator.clipboard.writeText(buildClipboardText());
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
-  }
-
   return (
     <div className="space-y-6">
 
@@ -350,28 +288,13 @@ export default function SeoReport() {
                 <StopCircle className="w-4 h-4" /> Arrêter
               </button>
             ) : (
-              <>
-                {runStatus === "done" && pages.length > 0 && (
-                  <button
-                    onClick={copyReport}
-                    className={`flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-xl border transition-colors ${
-                      copied
-                        ? "bg-emerald-50 border-emerald-300 text-emerald-700"
-                        : "bg-white border-gray-200 text-gray-600 hover:border-gray-400"
-                    }`}
-                  >
-                    {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    {copied ? "Copié !" : "Copier le rapport"}
-                  </button>
-                )}
-                <button
-                  onClick={startAnalysis}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-[var(--color-rhone)] hover:bg-[var(--color-rhone-dark)] text-white text-sm font-semibold rounded-xl transition-colors"
-                >
-                  {runStatus === "done" ? <RefreshCw className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                  {runStatus === "done" ? "Relancer" : "Lancer l'analyse"}
-                </button>
-              </>
+              <button
+                onClick={startAnalysis}
+                className="flex items-center gap-1.5 px-4 py-2 bg-[var(--color-rhone)] hover:bg-[var(--color-rhone-dark)] text-white text-sm font-semibold rounded-xl transition-colors"
+              >
+                {runStatus === "done" ? <RefreshCw className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                {runStatus === "done" ? "Relancer" : "Lancer l'analyse"}
+              </button>
             )}
           </div>
         </div>

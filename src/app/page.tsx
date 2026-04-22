@@ -11,7 +11,7 @@ import { communes, testimonials, blogPosts } from "@/lib/data";
 export const metadata: Metadata = {
   title: {
     absolute:
-      "Conciergerie Location Saisonnière Provence | Alpilles, Arles, Eygalières",
+      "Conciergerie Location Saisonnière Provence — Alpilles",
   },
   description:
     "Conciergerie de locations saisonnières dans les Alpilles et en Provence. Mas, villas, bastides entre Arles et Eygalières. Estimation gratuite en 2 min.",
