@@ -20,6 +20,8 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
           { key: "X-DNS-Prefetch-Control", value: "on" },
+          { key: "TDM-Reservation", value: "1" },
+          { key: "TDM-Policy", value: "https://entre-rhone-alpilles.fr/mentions-legales" },
         ],
       },
       {

@@ -61,6 +61,10 @@ export const metadata: Metadata = {
     description:
       "Conciergerie de locations saisonnières haut de gamme en Provence. Mas, villas, bastides entre Arles et Eygalières.",
   },
+  other: {
+    "tdm-reservation": "1",
+    "tdm-policy": "https://entre-rhone-alpilles.fr/mentions-legales",
+  },
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

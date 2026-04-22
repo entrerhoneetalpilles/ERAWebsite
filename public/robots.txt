@@ -9,4 +9,7 @@ Disallow: /cgv
 # Next.js internals
 Disallow: /_next/
 
+# TDM rights reserved — EU Copyright Directive Art. 4
+Content-Signal: all-content-reserved
+
 Sitemap: https://entre-rhone-alpilles.fr/sitemap.xml
