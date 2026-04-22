@@ -272,17 +272,24 @@ type Block =
 function parseMd(text: string): string {
   return text
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(
-      /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" class="text-[var(--color-rhone)] underline underline-offset-2 hover:opacity-80" target="_blank" rel="noopener noreferrer">$1</a>'
-    );
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url: string) => {
+      // Only render internal links or ERA domain — strip all other external links
+      if (!url.startsWith("/") && !url.includes("entre-rhone-alpilles.fr")) return label;
+      const isExternal = url.startsWith("http");
+      return `<a href="${url}" class="text-[var(--color-rhone)] underline underline-offset-2 hover:opacity-80"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ""}>${label}</a>`;
+    });
 }
 
 function toBlocks(content: string[]): Block[] {
   const blocks: Block[] = [];
+  let inCode = false;
   for (const raw of content) {
     const t = raw.trim();
-    if (!t || t === "---" || t.startsWith("```")) continue;
+    if (t.startsWith("```")) { inCode = !inCode; continue; }
+    if (inCode) continue;
+    if (!t || t === "---") continue;
+    // Skip "Données structurées" heading and anything that looks like JSON
+    if (/^##\s+Données structurées/i.test(t)) break;
     if (t.startsWith("## ")) {
       blocks.push({ kind: "h2", text: t.slice(3) });
     } else if (t.startsWith("### ")) {

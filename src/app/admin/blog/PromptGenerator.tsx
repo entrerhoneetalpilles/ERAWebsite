@@ -366,7 +366,7 @@ export default function PromptGenerator({ onImport }: Props) {
         <div className="mt-4 p-3 bg-[#F5F0E8] rounded-xl text-xs text-gray-600 leading-relaxed">
           <span className="font-semibold text-[#6E8052]">Étape 1 :</span>{" "}
           Copie ce prompt <ArrowRight className="inline w-3 h-3 mx-1" />
-          colle-le dans Claude, ChatGPT ou Gemini <ArrowRight className="inline w-3 h-3 mx-1" />
+          colle-le dans ton IA favorite <ArrowRight className="inline w-3 h-3 mx-1" />
           récupère le Markdown généré <ArrowRight className="inline w-3 h-3 mx-1" />
           colle-le dans <strong>l&apos;Étape 2</strong> ci-dessous.
         </div>

@@ -35,8 +35,11 @@ function buildDataEntry(v: ArticleData): string {
 }
 
 function buildContentEntry(v: ArticleData): string {
-  // Strip code blocks (JSON-LD, etc.) then parse line by line
-  const clean = v.content.replace(/```[\s\S]*?```/gi, "").trim();
+  const clean = v.content
+    .replace(/```[\s\S]*?```/gi, "")                          // blocs de code
+    .replace(/---\s*\n+##\s+Données structurées[\s\S]*/i, "") // section JSON-LD avec ---
+    .replace(/\n##\s+Données structurées[\s\S]*/i, "")        // section JSON-LD sans ---
+    .trim();
 
   const entries: string[] = [];
   for (const block of clean.split(/\n{2,}/)) {

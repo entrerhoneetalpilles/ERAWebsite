@@ -13,8 +13,11 @@ function slugify(str: string): string {
 }
 
 function stripJsonLd(md: string): string {
-  // Remove ```json ... ``` blocks (JSON-LD schema)
-  return md.replace(/```json[\s\S]*?```/gi, "").trim();
+  return md
+    .replace(/```[\s\S]*?```/gi, "")                          // tous les blocs de code
+    .replace(/---\s*\n+##\s+Données structurées[\s\S]*/i, "") // section avec séparateur ---
+    .replace(/\n##\s+Données structurées[\s\S]*/i, "")        // section sans séparateur
+    .trim();
 }
 
 function extractTitle(md: string): string {

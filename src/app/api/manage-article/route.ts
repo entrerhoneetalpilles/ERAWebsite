@@ -127,7 +127,11 @@ function buildDataEntry(v: ArticleData): string {
 }
 
 function buildContentEntry(v: ArticleData): string {
-  const clean = v.content.replace(/```[\s\S]*?```/gi, "").trim();
+  const clean = v.content
+    .replace(/```[\s\S]*?```/gi, "")
+    .replace(/---\s*\n+##\s+Données structurées[\s\S]*/i, "")
+    .replace(/\n##\s+Données structurées[\s\S]*/i, "")
+    .trim();
   const entries: string[] = [];
   for (const block of clean.split(/\n{2,}/)) {
     const trimmed = block.trim();
