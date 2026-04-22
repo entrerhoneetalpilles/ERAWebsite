@@ -8,7 +8,7 @@ import { OG_IMG } from "@/lib/og";
 export const metadata: Metadata = {
   title: "Foire aux questions — Conciergerie Provence",
   description:
-    "Tarifs, gestion Airbnb, réservations, assurances et fiscalité location courte durée en Provence. Toutes les réponses.",
+    "Tarifs, gestion Airbnb, réservations, assurances et fiscalité location courte durée en Provence. Retrouvez toutes les réponses.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/faq" },
   openGraph: {
     title: "Foire aux questions — Conciergerie Provence",

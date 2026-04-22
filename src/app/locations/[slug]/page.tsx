@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (commune) {
     return {
       title: `Locations ${commune.name}`,
-      description: `Locations de vacances à ${commune.name} : mas, villas et hébergements de charme sélectionnés en Provence. Réservez en direct avec ERA, votre conciergerie locale.`,
+      description: `Locations de vacances à ${commune.name} : mas, villas et hébergements de charme en Provence. Réservez en direct avec ERA, votre conciergerie locale.`,
       alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/${commune.slug}` },
       openGraph: { title: `Location vacances ${commune.name}`, description: commune.description, images: OG_IMG },
     };
@@ -251,8 +251,20 @@ export default async function LocationsSlugPage({ params, searchParams }: Props)
               de recommandations d&apos;initiés sur les meilleurs restaurants, marchés et activités,
               et d&apos;une assistance disponible 7j/7 tout au long de votre séjour.
             </p>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed mb-4">
               <strong>Point fort :</strong> {commune.atout}
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              La région bénéficie de plus de 300 jours d&apos;ensoleillement par an et d&apos;un microclimat
+              exceptionnel, propice aux séjours en toute saison. Le printemps et l&apos;automne offrent
+              chaleur douce, marchés animés et paysages colorés — souvent préférés des connaisseurs à la
+              haute saison (juillet-août), plus chargée mais aussi la plus festive.
+            </p>
+            <p className="text-gray-600 leading-relaxed">
+              Nos hébergements à {commune.name} sont disponibles en courts séjours ou à la semaine.
+              À votre arrivée, un guide d&apos;accueil personnalisé vous attend avec nos meilleures adresses
+              locales : marchés, restaurants, producteurs et activités à découvrir dans les environs.
+              Notre équipe reste disponible 7j/7 pendant tout votre séjour.
             </p>
           </div>
         </section>

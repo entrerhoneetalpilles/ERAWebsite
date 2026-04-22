@@ -8,7 +8,7 @@ import { OG_IMG } from "@/lib/og";
 export const metadata: Metadata = {
   title: "Avis Clients — Conciergerie Provence 4,7/5",
   description:
-    "40 avis vérifiés de propriétaires et voyageurs. Note moyenne 4,7/5. Témoignages de nos clients en Alpilles et Provence.",
+    "40 avis vérifiés de propriétaires et voyageurs. Note moyenne 4,7/5. Tous les témoignages de nos clients en Alpilles et Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/avis" },
   openGraph: {
     title: "Avis Clients — Conciergerie Provence 4,9/5",

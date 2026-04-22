@@ -382,6 +382,36 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* TERRITOIRE */}
+      <section className="py-20 bg-[var(--color-cream)]" aria-labelledby="territoire-heading">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 id="territoire-heading" className="font-serif font-normal text-2xl sm:text-3xl text-[var(--color-encre)] mb-8">
+            La Provence entre Rhône et Alpilles
+          </h2>
+          <div className="space-y-5 leading-relaxed" style={{ color: "var(--texte-leger)" }}>
+            <p>
+              Le triangle Saint-Rémy-de-Provence, Les Baux et Eygalières concentre certaines des propriétés
+              les plus prisées de France. Mas provençaux, bastides et villas avec piscine s&apos;y égrènent entre
+              oliveraies centenaires et panoramas sur le massif des Alpilles. C&apos;est ici qu&apos;Entre Rhône et
+              Alpilles a établi son ancrage principal, avec une connaissance fine du marché par commune.
+            </p>
+            <p>
+              Plus à l&apos;ouest, Arles et son patrimoine UNESCO attirent une clientèle internationale venue
+              pour la Feria, les Rencontres de la Photographie et la Fondation LUMA. Fontvieille, Maussane
+              et Paradou complètent l&apos;offre avec des mas familiaux au cœur des oliveraies AOP. Au nord,
+              Villeneuve-lès-Avignon, Barbentane et Tarascon offrent un accès rapide à Avignon et aux festivals.
+            </p>
+            <p>
+              Notre connaissance fine de chaque commune — marchés hebdomadaires, artisans locaux, pics de
+              demande, profils de voyageurs — permet d&apos;adapter la stratégie de chaque bien à son territoire.
+              Un mas à Eygalières n&apos;a pas la même clientèle ni la même saisonnalité qu&apos;un appartement à Arles
+              ou qu&apos;un gîte à Fontvieille. Cette expertise terrain se traduit directement en revenus
+              optimisés pour nos propriétaires, avec un taux d&apos;occupation moyen de 78% sur l&apos;année.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* TÉMOIGNAGES */}
       <section className="py-24 bg-white" aria-labelledby="testimonials-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

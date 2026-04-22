@@ -88,9 +88,17 @@ export default async function ConciergerieVillePage({ params }: Props) {
               <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">
                 Pourquoi confier votre bien à {commune.name} à ERA ?
               </h2>
-              <p className="text-gray-600 leading-relaxed mb-6">
+              <p className="text-gray-600 leading-relaxed mb-4">
                 {commune.description} Notre connaissance intime du marché locatif à {commune.name}
-                nous permet d'optimiser chaque réservation et de maximiser votre taux d'occupation.
+                nous permet d&apos;optimiser chaque réservation et de maximiser votre taux d&apos;occupation.
+              </p>
+              <p className="text-gray-600 leading-relaxed mb-6">
+                La demande locative à {commune.name} est soutenue tout au long de l&apos;année, avec un
+                pic en juillet-août où le taux d&apos;occupation dépasse régulièrement 90%. Notre tarification
+                dynamique ajuste les prix chaque jour en fonction des événements locaux — Feria, marchés de
+                Noël, Rencontres Photo — et de la concurrence, pour rentabiliser chaque créneau disponible.
+                Nos propriétaires génèrent en moyenne entre 15 000 € et 45 000 € de revenus annuels selon
+                la capacité de leur bien.
               </p>
               <ul className="space-y-3 mb-8">
                 {services.map((s) => (
