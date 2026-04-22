@@ -35,14 +35,21 @@ function buildDataEntry(v: ArticleData): string {
 }
 
 function buildContentEntry(v: ArticleData): string {
-  const paragraphs = v.content
-    .split(/\n{2,}/)
-    .map((p) => p.trim())
-    .filter(Boolean);
-  const lines = paragraphs
-    .map((p) => `    "${esc(p.replace(/\n/g, " "))}",`)
-    .join("\n");
-  return `  "${esc(v.slug)}": [\n${lines}\n  ],`;
+  // Strip code blocks (JSON-LD, etc.) then parse line by line
+  const clean = v.content.replace(/```[\s\S]*?```/gi, "").trim();
+
+  const entries: string[] = [];
+  for (const block of clean.split(/\n{2,}/)) {
+    const trimmed = block.trim();
+    if (!trimmed || trimmed === "---") continue;
+    for (const line of trimmed.split("\n").map((l) => l.trim()).filter(Boolean)) {
+      if (/^# (?!#)/.test(line)) continue; // skip H1
+      entries.push(line);
+    }
+  }
+
+  const encoded = entries.map((e) => `    "${esc(e)}",`).join("\n");
+  return `  "${esc(v.slug)}": [\n${encoded}\n  ],`;
 }
 
 function defaultLinks(category: string): Array<{ label: string; href: string }> {

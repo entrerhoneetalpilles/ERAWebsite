@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, Clock, Tag } from "lucide-react";
@@ -214,6 +215,44 @@ const internalLinks: Record<string, { label: string; href: string }[]> = {
   ],
 };
 
+// ── Markdown renderer ──────────────────────────────────────────
+
+type Block =
+  | { kind: "p"; text: string }
+  | { kind: "h2"; text: string }
+  | { kind: "h3"; text: string }
+  | { kind: "ul"; items: string[] };
+
+function parseMd(text: string): string {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      '<a href="$2" class="text-[var(--color-rhone)] underline underline-offset-2 hover:opacity-80" target="_blank" rel="noopener noreferrer">$1</a>'
+    );
+}
+
+function toBlocks(content: string[]): Block[] {
+  const blocks: Block[] = [];
+  for (const raw of content) {
+    const t = raw.trim();
+    if (!t || t === "---" || t.startsWith("```")) continue;
+    if (t.startsWith("## ")) {
+      blocks.push({ kind: "h2", text: t.slice(3) });
+    } else if (t.startsWith("### ")) {
+      blocks.push({ kind: "h3", text: t.slice(4) });
+    } else if (t.startsWith("- ") || t.startsWith("* ")) {
+      const item = t.slice(2);
+      const last = blocks.at(-1);
+      if (last?.kind === "ul") last.items.push(item);
+      else blocks.push({ kind: "ul", items: [item] });
+    } else {
+      blocks.push({ kind: "p", text: t });
+    }
+  }
+  return blocks;
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
@@ -283,27 +322,55 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Content */}
         <div className="space-y-6">
-          {content.map((paragraph, i) => (
-            <>
-              <p key={i} className="text-gray-700 leading-relaxed text-base"
-                dangerouslySetInnerHTML={{
-                  __html: paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                }}
-              />
-              {i === 2 && content.length > 4 && (
-                <div key="mid-cta" className="my-8 p-6 bg-[var(--color-cream)] rounded-xl border-l-4 border-[var(--color-or)] flex flex-col sm:flex-row sm:items-center gap-4">
-                  <div className="flex-1">
-                    <p className="font-serif text-lg font-light mb-1">Quel revenu peut générer votre bien ?</p>
-                    <p className="text-sm text-gray-600">Estimez gratuitement en 2 minutes avec notre simulateur.</p>
-                  </div>
-                  <Link href="/conciergerie/estimer-mes-revenus"
-                    className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-3 bg-[var(--color-rhone)] text-white text-sm font-semibold rounded-lg hover:bg-[var(--color-rhone-light)] transition-colors whitespace-nowrap">
-                    Simuler mes revenus <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                  </Link>
-                </div>
-              )}
-            </>
-          ))}
+          {(() => {
+            const blocks = toBlocks(content);
+            let pCount = 0;
+            return blocks.map((block, i) => {
+              if (block.kind === "h2") {
+                return (
+                  <h2 key={i} className="font-serif text-2xl font-light mt-10 mb-3 text-[var(--color-encre)] border-b border-gray-100 pb-2">
+                    {block.text}
+                  </h2>
+                );
+              }
+              if (block.kind === "h3") {
+                return (
+                  <h3 key={i} className="font-semibold text-lg mt-6 mb-2 text-gray-800">
+                    {block.text}
+                  </h3>
+                );
+              }
+              if (block.kind === "ul") {
+                return (
+                  <ul key={i} className="list-disc list-inside space-y-1.5 text-gray-700 leading-relaxed pl-1">
+                    {block.items.map((item, j) => (
+                      <li key={j} dangerouslySetInnerHTML={{ __html: parseMd(item) }} />
+                    ))}
+                  </ul>
+                );
+              }
+              pCount += 1;
+              const showCta = pCount === 3 && blocks.length > 5;
+              return (
+                <Fragment key={i}>
+                  <p className="text-gray-700 leading-relaxed text-base"
+                    dangerouslySetInnerHTML={{ __html: parseMd(block.text) }} />
+                  {showCta && (
+                    <div className="my-8 p-6 bg-[var(--color-cream)] rounded-xl border-l-4 border-[var(--color-or)] flex flex-col sm:flex-row sm:items-center gap-4">
+                      <div className="flex-1">
+                        <p className="font-serif text-lg font-light mb-1">Quel revenu peut générer votre bien ?</p>
+                        <p className="text-sm text-gray-600">Estimez gratuitement en 2 minutes avec notre simulateur.</p>
+                      </div>
+                      <Link href="/conciergerie/estimer-mes-revenus"
+                        className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-3 bg-[var(--color-rhone)] text-white text-sm font-semibold rounded-lg hover:bg-[var(--color-rhone-light)] transition-colors whitespace-nowrap">
+                        Simuler mes revenus <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                      </Link>
+                    </div>
+                  )}
+                </Fragment>
+              );
+            });
+          })()}
         </div>
 
         {/* Internal links */}
