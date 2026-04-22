@@ -2,16 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle, Clock, TrendingUp, Users, Wrench, Star } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
+import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
-  title: "Conciergerie Airbnb Provence — Gestion Locative",
+  title: "Conciergerie Airbnb Provence",
   description:
     "Déléguez la gestion de votre bien en Alpilles. Check-in, ménage, tarification dynamique, 85% d'occupation. ERA gère tout.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie" },
   openGraph: {
-    title: "Conciergerie Airbnb Provence — Gestion Locative",
+    title: "Conciergerie Airbnb Provence",
     description: "Déléguez la gestion de votre bien en Alpilles. Check-in, ménage, tarification dynamique, 85% d'occupation.",
     url: "https://entre-rhone-alpilles.fr/conciergerie",
+    images: OG_IMG,
   },
 };
 
@@ -183,7 +185,24 @@ export default function ConciergerieHubPage() {
         </div>
       </section>
 
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">Une conciergerie ancrée dans les Alpilles</h2>
+          <div className="space-y-4 text-gray-600 leading-relaxed">
+            <p>
+              Entre Rhône et Alpilles intervient exclusivement dans un périmètre géographique maîtrisé — de Saint-Rémy-de-Provence à Arles, d&apos;Eygalières à Fontvieille — pour garantir une réactivité terrain inégalée. Chaque bien bénéficie d&apos;un suivi individualisé, pas d&apos;une gestion industrielle à distance.
+            </p>
+            <p>
+              Contrairement aux grandes plateformes nationales, notre équipe vit et travaille dans les Alpilles. Nous connaissons chaque artisan local, chaque spécificité du marché par commune et chaque période de demande intense — Feria d&apos;Arles, Rencontres Photo, marchés de Noël des Baux, transhumance de Saint-Rémy. Cette connaissance intime du terrain se traduit directement en revenus supplémentaires pour nos propriétaires.
+            </p>
+            <p>
+              Nos propriétaires génèrent en moyenne entre 15 000 € et 45 000 € de revenus annuels selon la capacité et la localisation de leur bien. Le taux d&apos;occupation moyen de notre portefeuille atteint 78% sur l&apos;année, avec des pics à 95% en juillet-août.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-[var(--color-cream)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
