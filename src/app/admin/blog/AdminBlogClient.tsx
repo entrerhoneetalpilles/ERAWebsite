@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Copy, Check, Lock, Eye, EyeOff, FileText, Sparkles } from "lucide-react";
+import { Check, Lock, Eye, EyeOff, FileText, Sparkles, Rocket, CheckCircle, AlertCircle, ExternalLink, RefreshCw } from "lucide-react";
 import BlogForm, { type FormValues } from "./BlogForm";
 import SeoPanel from "./SeoPanel";
 import PromptGenerator from "./PromptGenerator";
@@ -86,61 +86,16 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
   );
 }
 
-// ── Code output ────────────────────────────────────────────────
-function generateDataEntry(v: FormValues): string {
-  const readTime = Math.max(1, Math.round(v.content.trim().split(/\s+/).filter(Boolean).length / 200));
-  return `  {
-    slug: "${v.slug}",
-    title: "${v.title.replace(/"/g, '\\"')}",
-    excerpt:
-      "${v.excerpt.replace(/"/g, '\\"')}",
-    date: "${v.date}",
-    category: "${v.category}",
-    image: "${v.image || `/images/blog/${v.slug}.jpg`}",
-    readTime: ${readTime},
-  },`;
-}
-
-function generateContentEntry(v: FormValues): string {
-  const paragraphs = v.content
-    .split(/\n{2,}/)
-    .map((p) => p.trim())
-    .filter(Boolean);
-  const lines = paragraphs.map((p) => `    "${p.replace(/"/g, '\\"').replace(/\n/g, " ")}",`).join("\n");
-  return `  "${v.slug}": [\n${lines}\n  ],`;
-}
-
-function CopyBlock({ label, code }: { label: string; code: string }) {
-  const [copied, setCopied] = useState(false);
-  function copy() {
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
-  return (
-    <div className="mb-4">
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{label}</span>
-        <button
-          onClick={copy}
-          className="flex items-center gap-1 text-xs text-[var(--color-rhone)] hover:text-[var(--color-rhone-dark)] transition-colors"
-        >
-          {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-          {copied ? "Copié !" : "Copier"}
-        </button>
-      </div>
-      <pre className="bg-gray-900 text-gray-100 rounded-xl p-4 text-xs overflow-x-auto leading-relaxed whitespace-pre-wrap break-words">
-        {code}
-      </pre>
-    </div>
-  );
-}
+type PublishStatus = "idle" | "loading" | "success" | "error";
 
 // ── Main component ─────────────────────────────────────────────
 export default function AdminBlogClient() {
   const [authed, setAuthed] = useState(false);
   const [values, setValues] = useState<FormValues>(EMPTY);
-  const [tab, setTab] = useState<"form" | "prompt" | "export">("form");
+  const [tab, setTab] = useState<"form" | "prompt">("form");
+  const [publishStatus, setPublishStatus] = useState<PublishStatus>("idle");
+  const [publishError, setPublishError] = useState("");
+  const [publishedSlug, setPublishedSlug] = useState("");
 
   useEffect(() => {
     if (sessionStorage.getItem(SESSION_KEY) === "1") setAuthed(true);
@@ -159,6 +114,39 @@ export default function AdminBlogClient() {
     setTab("form");
   }
 
+  async function handlePublish() {
+    if (!values.slug || !values.title || !values.content) return;
+    setPublishStatus("loading");
+    setPublishError("");
+    try {
+      const res = await fetch("/api/publish-article", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishStatus("error");
+        setPublishError(data.error ?? "Erreur lors de la publication.");
+      } else {
+        setPublishedSlug(data.slug);
+        setPublishStatus("success");
+      }
+    } catch {
+      setPublishStatus("error");
+      setPublishError("Impossible de contacter le serveur.");
+    }
+  }
+
+  function handleReset() {
+    setValues(EMPTY);
+    setPublishStatus("idle");
+    setPublishError("");
+    setPublishedSlug("");
+  }
+
+  const canPublish = !!(values.slug && values.title && values.content.trim());
+
   if (!authed) return <PasswordGate onSuccess={() => setAuthed(true)} />;
 
   return (
@@ -171,7 +159,7 @@ export default function AdminBlogClient() {
             Créer un article de blog
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            Le compteur SEO se met à jour en temps réel — visez le grade <strong>A</strong> ou <strong>S</strong> pour dominer les Alpilles.
+            Le compteur SEO se met à jour en temps réel — visez le grade <strong>A</strong> ou <strong>S</strong> avant de publier.
           </p>
         </div>
 
@@ -189,62 +177,123 @@ export default function AdminBlogClient() {
           >
             <Sparkles className="w-4 h-4" /> Générer un prompt IA
           </button>
-          <button
-            onClick={() => setTab("export")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === "export" ? "bg-[var(--color-rhone)] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}
-          >
-            <Copy className="w-4 h-4" /> Exporter le code
-          </button>
         </div>
 
         {tab === "form" && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Form — 2/3 */}
-            <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-              <BlogForm values={values} onChange={setValues} />
+          <>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Form — 2/3 */}
+              <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+                <BlogForm values={values} onChange={setValues} />
+              </div>
+              {/* SEO panel — 1/3 */}
+              <div className="lg:col-span-1">
+                <SeoPanel result={seoResult} />
+              </div>
             </div>
-            {/* SEO panel — 1/3 */}
-            <div className="lg:col-span-1">
-              <SeoPanel result={seoResult} />
+
+            {/* ── Publication ─────────────────────────────────────── */}
+            <div className="mt-6">
+              {publishStatus === "success" ? (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+                  <CheckCircle className="w-8 h-8 text-emerald-500 shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-semibold text-emerald-800">Article publié avec succès !</p>
+                    <p className="text-sm text-emerald-700 mt-0.5">
+                      L&apos;article <strong>{values.title}</strong> est maintenant en ligne.
+                    </p>
+                  </div>
+                  <div className="flex gap-3 shrink-0">
+                    <a
+                      href={`/blog/${publishedSlug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition-colors"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Voir l&apos;article
+                    </a>
+                    <button
+                      onClick={handleReset}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-emerald-300 hover:border-emerald-500 text-emerald-700 text-sm font-semibold rounded-xl transition-colors"
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                      Nouvel article
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div className="flex-1">
+                      <p className="font-semibold text-gray-900">Publier l&apos;article</p>
+                      <p className="text-sm text-gray-500 mt-0.5">
+                        L&apos;article sera ajouté directement au site — pas de copier-coller nécessaire.
+                      </p>
+                    </div>
+                    <button
+                      onClick={handlePublish}
+                      disabled={!canPublish || publishStatus === "loading"}
+                      className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-colors shrink-0 ${
+                        canPublish && publishStatus !== "loading"
+                          ? "bg-[var(--color-rhone)] hover:bg-[var(--color-rhone-dark)] text-white"
+                          : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      }`}
+                    >
+                      {publishStatus === "loading" ? (
+                        <>
+                          <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                          </svg>
+                          Publication…
+                        </>
+                      ) : publishStatus === "error" ? (
+                        <>
+                          <RefreshCw className="w-4 h-4" />
+                          Réessayer
+                        </>
+                      ) : (
+                        <>
+                          <Rocket className="w-4 h-4" />
+                          Publier sur le site
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {publishStatus === "error" && (
+                    <div className="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-50 rounded-xl px-4 py-3">
+                      <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                      {publishError}
+                    </div>
+                  )}
+
+                  {!canPublish && (
+                    <p className="mt-3 text-xs text-gray-400">
+                      Remplis au minimum le titre, le slug et le contenu pour activer la publication.
+                    </p>
+                  )}
+
+                  {canPublish && seoResult.grade !== "S" && seoResult.grade !== "A" && (
+                    <p className="mt-3 text-xs text-amber-600">
+                      <strong>Conseil :</strong> ton score SEO est <strong>{seoResult.grade}</strong> — améliore-le avant de publier pour maximiser ta visibilité Google.
+                    </p>
+                  )}
+
+                  {canPublish && (seoResult.grade === "S" || seoResult.grade === "A") && (
+                    <p className="mt-3 text-xs text-emerald-600 flex items-center gap-1">
+                      <Check className="w-3 h-3" />
+                      Score SEO <strong>{seoResult.grade}</strong> — prêt à publier !
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
-          </div>
+          </>
         )}
 
         {tab === "prompt" && <PromptGenerator onImport={handleImport} />}
-
-        {tab === "export" && (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-            <p className="text-sm text-gray-500 mb-6">
-              Copie ces deux blocs et colle-les dans les fichiers correspondants.
-            </p>
-
-            <div className="mb-3 p-3 bg-blue-50 rounded-xl text-xs text-blue-700">
-              <strong>1.</strong> Colle le bloc ci-dessous dans{" "}
-              <code className="bg-blue-100 px-1 rounded">src/lib/data.ts</code>{" "}
-              à l&apos;intérieur du tableau <code className="bg-blue-100 px-1 rounded">blogPosts</code>.
-            </div>
-            <CopyBlock
-              label="Entrée dans data.ts → blogPosts[]"
-              code={generateDataEntry(values)}
-            />
-
-            <div className="mt-6 mb-3 p-3 bg-amber-50 rounded-xl text-xs text-amber-700">
-              <strong>2.</strong> Colle le bloc ci-dessous dans{" "}
-              <code className="bg-amber-100 px-1 rounded">src/app/blog/[slug]/page.tsx</code>{" "}
-              à l&apos;intérieur de l&apos;objet <code className="bg-amber-100 px-1 rounded">articleContent</code>.
-            </div>
-            <CopyBlock
-              label="Entrée dans blog/[slug]/page.tsx → articleContent{}"
-              code={generateContentEntry(values)}
-            />
-
-            <div className="mt-6 p-4 bg-[#F5F0E8] rounded-xl text-xs text-gray-600">
-              <strong className="text-[#6E8052]">Rappel :</strong> l&apos;image doit être placée dans{" "}
-              <code className="bg-white px-1 rounded">/public{values.image || `/images/blog/${values.slug}.jpg`}</code>{" "}
-              — format 1200×630px, nommée exactement comme le slug.
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
