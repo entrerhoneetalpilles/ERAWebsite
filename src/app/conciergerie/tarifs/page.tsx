@@ -3,16 +3,18 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle, X, Info } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import FAQAccordion from "@/components/FAQAccordion";
+import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
   title: "Tarifs Conciergerie Provence — 3 Formules",
   description:
-    "Essentiel 18%, Premium 22%, Prestige 28% HT. Commission sur revenus nets, sans frais fixes. Estimation gratuite en 24h.",
+    "Essentiel 18%, Premium 22%, Prestige 28% HT. Commission sur revenus nets, sans frais fixes. Devis et estimation gratuite en 24h.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie/tarifs" },
   openGraph: {
     title: "Tarifs Conciergerie Provence — 3 Formules",
     description: "Essentiel 18%, Premium 22%, Prestige 28% HT. Commission sur revenus nets, sans frais fixes.",
     url: "https://entre-rhone-alpilles.fr/conciergerie/tarifs",
+    images: OG_IMG,
   },
 };
 

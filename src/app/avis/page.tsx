@@ -3,16 +3,18 @@ import { Star } from "lucide-react";
 import TestimonialCard from "@/components/TestimonialCard";
 import Breadcrumb from "@/components/Breadcrumb";
 import { testimonials } from "@/lib/data";
+import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
   title: "Avis Clients — Conciergerie Provence 4,7/5",
   description:
-    "40 avis vérifiés de propriétaires. Note moyenne 4,7/5. Témoignages de nos clients en Alpilles et Provence.",
+    "40 avis vérifiés de propriétaires et voyageurs. Note moyenne 4,7/5. Témoignages de nos clients en Alpilles et Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/avis" },
   openGraph: {
     title: "Avis Clients — Conciergerie Provence 4,9/5",
     description: "40 avis vérifiés. Note moyenne 4,7/5 — propriétaires en Provence.",
     url: "https://entre-rhone-alpilles.fr/avis",
+    images: OG_IMG,
   },
 };
 
@@ -57,7 +59,7 @@ export default function AvisPage() {
                 <Star key={i} className="w-8 h-8 fill-[var(--color-or)] text-[var(--color-or)]" aria-hidden="true" />
               ))}
             </div>
-            <h1 className="font-serif text-4xl sm:text-5xl font-light mb-4">Ils nous font confiance</h1>
+            <h1 className="font-serif text-4xl sm:text-5xl font-light mb-4">Avis clients : ils nous font confiance</h1>
             <p className="text-xl text-gray-600">Propriétaires et voyageurs témoignent de leur expérience avec Entre Rhône et Alpilles.</p>
           </div>
         </div>

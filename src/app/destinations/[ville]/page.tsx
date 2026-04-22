@@ -5,6 +5,7 @@ import { ArrowRight, MapPin, Calendar } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import PropertyCard from "@/components/PropertyCard";
 import { communes, getCommuneBySlug } from "@/lib/data";
+import { OG_IMG } from "@/lib/og";
 
 export async function generateStaticParams() {
   return communes.map((c) => ({ ville: c.slug }));
@@ -17,12 +18,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const commune = getCommuneBySlug(ville);
   if (!commune) return {};
   return {
-    title: `${commune.name} — Guide de voyage Provence`,
+    title: `${commune.name} — Guide de voyage`,
     description: `Guide complet de ${commune.name} en Provence : incontournables, restaurants, activités et hébergements de caractère. ${commune.atout}.`,
     alternates: { canonical: `https://entre-rhone-alpilles.fr/destinations/${commune.slug}` },
     openGraph: {
       title: `Guide ${commune.name} — Entre Rhône et Alpilles`,
       description: commune.description,
+      images: OG_IMG,
     },
   };
 }

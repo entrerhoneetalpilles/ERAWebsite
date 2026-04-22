@@ -7,6 +7,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import BlogCard from "@/components/BlogCard";
 import { blogPosts } from "@/lib/data";
 import { formatDate as fmtDate } from "@/lib/utils";
+import { OG_IMG } from "@/lib/og";
 
 export async function generateStaticParams() {
   return blogPosts.map((p) => ({ slug: p.slug }));
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) return {};
   return {
-    title: post.title,
+    title: { absolute: `${post.title} | ERA` },
     description: post.excerpt,
     alternates: { canonical: `https://entre-rhone-alpilles.fr/blog/${slug}` },
     openGraph: {
@@ -29,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.date.length === 10 ? `${post.date}T00:00:00Z` : post.date,
       authors: ["Entre Rhône et Alpilles"],
       tags: [post.category, "Provence", "Alpilles"],
+      images: OG_IMG,
     },
   };
 }

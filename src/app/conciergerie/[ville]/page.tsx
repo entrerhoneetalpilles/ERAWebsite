@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import FAQAccordion from "@/components/FAQAccordion";
 import { communes, getCommuneBySlug } from "@/lib/data";
+import { OG_IMG } from "@/lib/og";
 
 export async function generateStaticParams() {
   return communes.map((c) => ({ ville: c.slug }));
@@ -17,13 +18,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const commune = getCommuneBySlug(ville);
   if (!commune) return {};
   return {
-    title: `Conciergerie ${commune.name} — Gestion Locative`,
+    title: `Conciergerie ${commune.name}`,
     description: `Conciergerie de location saisonnière à ${commune.name}. Gestion complète, tarification dynamique, maximisation des revenus. Devis gratuit.`,
     alternates: { canonical: `https://entre-rhone-alpilles.fr/conciergerie/${commune.slug}` },
     openGraph: {
       title: `Conciergerie ${commune.name} — Gestion Locative`,
       description: `Gestion locative complète à ${commune.name}. Tarification dynamique, maximisation des revenus. Devis gratuit.`,
       url: `https://entre-rhone-alpilles.fr/conciergerie/${commune.slug}`,
+      images: OG_IMG,
     },
   };
 }

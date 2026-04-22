@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import CommuneCard from "@/components/CommuneCard";
 import Breadcrumb from "@/components/Breadcrumb";
 import { communes, getCommunesByCircle } from "@/lib/data";
+import { OG_IMG } from "@/lib/og";
 
 const schemaOrg = {
   "@context": "https://schema.org",
@@ -22,14 +23,15 @@ const schemaOrg = {
 };
 
 export const metadata: Metadata = {
-  title: "Destinations Provence — 20 Communes Alpilles & Rhône",
+  title: "Destinations Provence — Alpilles et Rhône",
   description:
     "Guides de 20 communes entre le Rhône et les Alpilles : Saint-Rémy-de-Provence, Arles, Les Baux-de-Provence, Eygalières, Maussane et bien d'autres.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/destinations" },
   openGraph: {
-    title: "Destinations Provence — 20 Communes entre Rhône et Alpilles",
+    title: "Destinations Provence — Alpilles et Rhône",
     description: "Guides complets de 20 communes en Provence : Saint-Rémy-de-Provence, Arles, Les Baux-de-Provence, Eygalières, Maussane et bien d'autres.",
     url: "https://entre-rhone-alpilles.fr/destinations",
+    images: OG_IMG,
   },
 };
 

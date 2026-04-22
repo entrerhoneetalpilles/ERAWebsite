@@ -89,7 +89,7 @@ function getPages(mode: "quick" | "full"): Array<{ path: string; pageType: PageT
 // ── HTML helpers ───────────────────────────────────────────────
 
 function dHtml(s: string) {
-  return s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&apos;/g, "'");
+  return s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x27;/g, "'").replace(/&apos;/g, "'");
 }
 
 /** Returns main/article content or full page minus nav/header/footer/aside */

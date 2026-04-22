@@ -3,15 +3,18 @@ import Link from "next/link";
 import PropertyCard from "@/components/PropertyCard";
 import Breadcrumb from "@/components/Breadcrumb";
 import { communes, propertyTypes, activityTags } from "@/lib/data";
+import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
-  title: "Locations de Vacances en Provence — Mas, Villas",
+  title: "Locations de Vacances en Provence",
   description:
     "Hébergements de caractère entre le Rhône et les Alpilles : mas provençaux, villas avec piscine, bastides. 20 communes en Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/locations" },
   openGraph: {
     title: "Locations de Vacances en Provence — Mas, Villas, Bastides",
     description: "Hébergements d'exception sélectionnés dans 20 communes entre le Rhône et les Alpilles.",
+    url: "https://entre-rhone-alpilles.fr/locations",
+    images: OG_IMG,
   },
 };
 

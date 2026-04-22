@@ -5,6 +5,7 @@ import BlogCard from "@/components/BlogCard";
 import Breadcrumb from "@/components/Breadcrumb";
 import NewsletterForm from "@/components/NewsletterForm";
 import { blogPosts } from "@/lib/data";
+import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
   title: "Blog — Conseils Location & Guides Provence",
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
     title: "Blog Provence — Conseils Conciergerie & Guides de Voyage",
     description: "Conseils pour propriétaires, guides Provence, actualités du marché locatif. Le blog d'Entre Rhône et Alpilles.",
     url: "https://entre-rhone-alpilles.fr/blog",
+    images: OG_IMG,
   },
 };
 

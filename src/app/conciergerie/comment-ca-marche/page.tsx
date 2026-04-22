@@ -2,15 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
+import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
-  title: "Comment ça marche — Gestion Locative Provence",
+  title: "Comment ça marche — Gestion Locative",
   description: "Notre processus en 3 étapes : estimation gratuite, mise en ligne professionnelle, gestion complète de votre location saisonnière en Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie/comment-ca-marche" },
   openGraph: {
-    title: "Comment ça marche — Gestion Locative Provence",
+    title: "Comment ça marche — Gestion Locative",
     description: "Estimation, mise en ligne, gestion complète : notre processus en 3 étapes pour les propriétaires en Provence.",
     url: "https://entre-rhone-alpilles.fr/conciergerie/comment-ca-marche",
+    images: OG_IMG,
   },
 };
 

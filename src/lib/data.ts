@@ -404,7 +404,7 @@ export const activityTags: ActivityTag[] = [
 export const blogPosts: BlogPost[] = [
   {
     slug: "alpilles-dynamique-economique-tourisme-quelques-conseils",
-    title: "Alpilles : dynamique économique tourisme, quelques conseils ",
+    title: "Alpilles : dynamique économique tourisme, quelques conseils",
     excerpt:
       "La Provence attire depuis toujours les voyageurs en quête d’authenticité, de lumière et d’art de vivre. Au cœur de cette région emblématique, les Alpilles…",
     date: "2026-04-22",
@@ -416,7 +416,7 @@ export const blogPosts: BlogPost[] = [
     slug: "preparer-location-estivale-provence",
     title: "Comment préparer votre location estivale en Provence",
     excerpt:
-      "Nos conseils pour maximiser vos revenus locatifs pendant la haute saison en Alpilles.",
+      "Nos conseils pour maximiser vos revenus locatifs pendant la haute saison en Alpilles et préparer votre bien avant l'afflux estival.",
     date: "2025-04-15",
     category: "Conseils propriétaires",
     image: "/images/blog/location-estivale-provence-preparer.jpg",
@@ -426,7 +426,7 @@ export const blogPosts: BlogPost[] = [
     slug: "guide-feria-arles",
     title: "Feria d'Arles 2025 : guide complet pour les visiteurs",
     excerpt:
-      "Dates, programme, hébergements et conseils pour profiter pleinement de la Feria d'Arles.",
+      "Dates, programme, hébergements et conseils pratiques pour profiter pleinement de la Feria de Pâques et de la Vendange à Arles.",
     date: "2025-04-08",
     category: "Guides de voyage",
     image: "/images/blog/feria-arles-guide-visiteurs.jpg",
@@ -436,7 +436,7 @@ export const blogPosts: BlogPost[] = [
     slug: "printemps-alpilles-que-faire",
     title: "Printemps aux Alpilles : nos 10 incontournables",
     excerpt:
-      "Randonnées fleuries, marchés colorés et douceur provençale — le printemps aux Alpilles est magique.",
+      "Randonnées fleuries, marchés colorés et douceur provençale — le printemps aux Alpilles est magique. Nos 10 activités incontournables.",
     date: "2025-03-28",
     category: "Guides de voyage",
     image: "/images/blog/printemps-alpilles-que-faire.jpg",
@@ -456,7 +456,7 @@ export const blogPosts: BlogPost[] = [
     slug: "saint-remy-de-provence-guide-complet",
     title: "Saint-Rémy-de-Provence : le guide complet du voyageur",
     excerpt:
-      "Marché provençal, Glanum, Van Gogh, restaurants étoilés — tout ce qu'il faut savoir pour séjourner à Saint-Rémy.",
+      "Marché provençal, Glanum, Van Gogh, restaurants étoilés — tout ce qu'il faut savoir pour réussir votre séjour à Saint-Rémy-de-Provence.",
     date: "2025-02-20",
     category: "Guides de voyage",
     image: "/images/blog/saint-remy-de-provence-guide-voyage.jpg",
@@ -466,7 +466,7 @@ export const blogPosts: BlogPost[] = [
     slug: "optimiser-annonce-airbnb-provence",
     title: "Comment optimiser son annonce Airbnb pour la Provence",
     excerpt:
-      "Photos, titre, description, tarification — les 7 leviers qui font passer une annonce de la page 3 à la page 1.",
+      "Photos, titre, description, tarification — les 7 leviers qui font passer une annonce Airbnb de la page 3 à la page 1 en Provence.",
     date: "2025-02-05",
     category: "Conseils propriétaires",
     image: "/images/blog/optimiser-annonce-airbnb-provence.jpg",
@@ -476,7 +476,7 @@ export const blogPosts: BlogPost[] = [
     slug: "marches-provencaux-alpilles",
     title: "Les marchés provençaux des Alpilles : notre sélection",
     excerpt:
-      "Saint-Rémy, Maussane, Eygalières, Arles… Chaque marché a son âme. Notre guide pour ne rater aucun incontournable.",
+      "Saint-Rémy, Maussane, Eygalières, Arles… Chaque marché provençal a son âme. Notre guide pour ne rater aucun incontournable de la région.",
     date: "2025-01-15",
     category: "Guides de voyage",
     image: "/images/blog/marches-provencaux-alpilles.jpg",

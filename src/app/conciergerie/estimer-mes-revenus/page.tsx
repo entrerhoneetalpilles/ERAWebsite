@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EstimerForm from "@/components/EstimerForm";
+import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
   title: "Simulateur Revenus Locatifs Provence",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     title: "Simulateur Revenus Locatifs Provence",
     description: "Estimez gratuitement vos revenus Airbnb en Provence. Résultat en 30 secondes.",
     url: "https://entre-rhone-alpilles.fr/conciergerie/estimer-mes-revenus",
+    images: OG_IMG,
   },
 };
 

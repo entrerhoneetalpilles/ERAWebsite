@@ -14,6 +14,7 @@ import {
   getCommuneBySlug,
   getPropertyTypeBySlug,
 } from "@/lib/data";
+import { OG_IMG } from "@/lib/og";
 
 export async function generateStaticParams() {
   return [
@@ -31,10 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const commune = getCommuneBySlug(slug);
   if (commune) {
     return {
-      title: `Locations ${commune.name} — Mas, Villas`,
-      description: `Locations de vacances à ${commune.name} : mas provençaux, villas avec piscine et hébergements de caractère sélectionnés par Entre Rhône et Alpilles. Réservez directement.`,
+      title: `Locations ${commune.name}`,
+      description: `Locations de vacances à ${commune.name} : mas, villas et hébergements de charme sélectionnés en Provence. Réservez en direct avec ERA, votre conciergerie locale.`,
       alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/${commune.slug}` },
-      openGraph: { title: `Location vacances ${commune.name}`, description: commune.description },
+      openGraph: { title: `Location vacances ${commune.name}`, description: commune.description, images: OG_IMG },
     };
   }
 
