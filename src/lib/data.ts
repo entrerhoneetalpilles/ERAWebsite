@@ -403,6 +403,16 @@ export const activityTags: ActivityTag[] = [
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "rentabilite-dune-a-frame-dans-les-alpilles-en-provence",
+    title: "Rentabilité d'une A-Frame dans les Alpilles en Provence",
+    excerpt:
+      "Les Alpilles font partie des rares territoires où le tourisme haut de gamme ne faiblit pas, même hors saison. Entre Saint-Rémy-de-Provence, Les…",
+    date: "2026-04-22",
+    category: "Guides de voyage",
+    image: "/images/blog/rentabilite-dune-a-frame-dans-les-alpilles-en-provence.jpg",
+    readTime: 7,
+  },
+  {
     slug: "preparer-location-estivale-provence",
     title: "Comment préparer votre location estivale en Provence",
     excerpt:
