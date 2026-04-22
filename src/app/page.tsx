@@ -197,8 +197,10 @@ export default function HomePage() {
             id="hero-heading"
             className="font-serif font-light text-5xl sm:text-6xl lg:text-7xl text-[var(--color-encre)] leading-[1.1] mb-6"
           >
-            La conciergerie<br />
-            <em className="not-italic text-[var(--color-rhone-dark)] italic">de référence</em><br />
+            La conciergerie{" "}
+            <br />
+            <em className="not-italic text-[var(--color-rhone-dark)] italic">de référence</em>{" "}
+            <br />
             en Provence
           </h1>
 
