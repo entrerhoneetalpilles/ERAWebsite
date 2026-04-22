@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
 
-const ROOT = process.cwd();
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_REPO = process.env.GITHUB_REPO ?? "entrerhoneetalpilles/ERAWebsite";
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH ?? "main";
+const GH_API = `https://api.github.com/repos/${GITHUB_REPO}/contents`;
 
 interface ArticleData {
   slug: string;
@@ -74,7 +75,57 @@ function buildLinksEntry(slug: string, category: string): string {
   return `  "${esc(slug)}": [\n${entries}\n  ],`;
 }
 
+// ── GitHub helpers ─────────────────────────────────────────────
+
+function ghHeaders() {
+  return {
+    Authorization: `Bearer ${GITHUB_TOKEN}`,
+    Accept: "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+  };
+}
+
+async function ghGet(filePath: string): Promise<{ content: string; sha: string }> {
+  const res = await fetch(`${GH_API}/${filePath}?ref=${GITHUB_BRANCH}`, {
+    headers: ghHeaders(),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    const err = await res.json() as { message?: string };
+    throw new Error(`GitHub GET ${filePath}: ${err.message ?? res.statusText}`);
+  }
+  const data = await res.json() as { content: string; sha: string };
+  const decoded = Buffer.from(data.content, "base64").toString("utf8");
+  return { content: decoded, sha: data.sha };
+}
+
+async function ghPut(filePath: string, content: string, sha: string, message: string) {
+  const res = await fetch(`${GH_API}/${filePath}`, {
+    method: "PUT",
+    headers: ghHeaders(),
+    body: JSON.stringify({
+      message,
+      content: Buffer.from(content, "utf8").toString("base64"),
+      sha,
+      branch: GITHUB_BRANCH,
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json() as { message?: string };
+    throw new Error(`GitHub PUT ${filePath}: ${err.message ?? res.statusText}`);
+  }
+}
+
+// ── Handler ────────────────────────────────────────────────────
+
 export async function POST(req: NextRequest) {
+  if (!GITHUB_TOKEN) {
+    return NextResponse.json(
+      { error: "Variable d'environnement GITHUB_TOKEN manquante." },
+      { status: 500 }
+    );
+  }
+
   try {
     const body = (await req.json()) as ArticleData;
     const { slug, title, content } = body;
@@ -86,13 +137,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const dataPath = path.join(ROOT, "src/lib/data.ts");
-    const pagePath = path.join(ROOT, "src/app/blog/[slug]/page.tsx");
+    // ── 1. data.ts — insérer dans blogPosts[] ──────────────────
+    const dataFile = await ghGet("src/lib/data.ts");
 
-    // ── 1. data.ts — insérer dans blogPosts[] ──────────────────────
-    let dataSource = await fs.readFile(dataPath, "utf8");
-
-    if (dataSource.includes(`slug: "${slug}"`)) {
+    if (dataFile.content.includes(`slug: "${slug}"`)) {
       return NextResponse.json(
         { error: `Un article avec le slug "${slug}" existe déjà.` },
         { status: 409 }
@@ -100,47 +148,58 @@ export async function POST(req: NextRequest) {
     }
 
     const DATA_MARKER = "export const blogPosts: BlogPost[] = [";
-    if (!dataSource.includes(DATA_MARKER)) {
+    if (!dataFile.content.includes(DATA_MARKER)) {
       return NextResponse.json(
         { error: "Marqueur blogPosts[] introuvable dans data.ts." },
         { status: 500 }
       );
     }
-    dataSource = dataSource.replace(
+    const newDataSource = dataFile.content.replace(
       DATA_MARKER,
       `${DATA_MARKER}\n${buildDataEntry(body)}`
     );
-    await fs.writeFile(dataPath, dataSource, "utf8");
+    await ghPut(
+      "src/lib/data.ts",
+      newDataSource,
+      dataFile.sha,
+      `content: add blog post "${slug}"`
+    );
 
-    // ── 2. blog/[slug]/page.tsx — contenu + liens internes ─────────
-    let pageSource = await fs.readFile(pagePath, "utf8");
+    // ── 2. blog/[slug]/page.tsx — contenu + liens internes ─────
+    const pageFile = await ghGet("src/app/blog/[slug]/page.tsx");
 
     const CONTENT_MARKER = "const articleContent: Record<string, string[]> = {";
-    if (!pageSource.includes(CONTENT_MARKER)) {
+    const LINKS_MARKER =
+      "const internalLinks: Record<string, { label: string; href: string }[]> = {";
+
+    if (!pageFile.content.includes(CONTENT_MARKER)) {
       return NextResponse.json(
         { error: "Marqueur articleContent{} introuvable dans page.tsx." },
         { status: 500 }
       );
     }
-    pageSource = pageSource.replace(
-      CONTENT_MARKER,
-      `${CONTENT_MARKER}\n${buildContentEntry(body)}`
-    );
-
-    const LINKS_MARKER =
-      "const internalLinks: Record<string, { label: string; href: string }[]> = {";
-    if (!pageSource.includes(LINKS_MARKER)) {
+    if (!pageFile.content.includes(LINKS_MARKER)) {
       return NextResponse.json(
         { error: "Marqueur internalLinks{} introuvable dans page.tsx." },
         { status: 500 }
       );
     }
-    pageSource = pageSource.replace(
+
+    let newPageSource = pageFile.content.replace(
+      CONTENT_MARKER,
+      `${CONTENT_MARKER}\n${buildContentEntry(body)}`
+    );
+    newPageSource = newPageSource.replace(
       LINKS_MARKER,
       `${LINKS_MARKER}\n${buildLinksEntry(slug, body.category)}`
     );
 
-    await fs.writeFile(pagePath, pageSource, "utf8");
+    await ghPut(
+      "src/app/blog/[slug]/page.tsx",
+      newPageSource,
+      pageFile.sha,
+      `content: add article content for "${slug}"`
+    );
 
     return NextResponse.json({ success: true, slug, url: `/blog/${slug}` });
   } catch (err) {
