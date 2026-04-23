@@ -408,7 +408,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "La location saisonnière dans les Alpilles connaît une croissance spectaculaire. Consultez notre guide complet, trouvez le meilleur partenaire ",
     date: "2026-04-24",
-    category: "Guides de voyage",
+    category: "Conseils propriétaires",
     image: "/images/blog/gestionnaire-airbnb-aux-alpilles-choisir-le-bon-partenaire.jpg",
     readTime: 7,
   },
