@@ -10,6 +10,16 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.entre-rhone-alpilles.fr" }],
+        destination: "https://entre-rhone-alpilles.fr/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     const isProduction = process.env.VERCEL_ENV === "production";
 
