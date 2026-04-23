@@ -192,20 +192,23 @@ function countLinks(html: string): { internal: number; external: number; interna
   let internal = 0;
   let external = 0;
   const internalPaths: string[] = [];
+  const siteHost = (() => { try { return new URL(SITE).hostname; } catch { return ""; } })();
   let m;
   while ((m = re.exec(zone)) !== null) {
     const href = m[1];
-    if (href.startsWith("http") && !href.includes(SITE.replace(/https?:\/\//, ""))) {
-      external++;
+    if (href.startsWith("http")) {
+      try {
+        const u = new URL(href);
+        if (u.hostname !== siteHost) {
+          external++;
+        } else {
+          internal++;
+          internalPaths.push((u.pathname.split("?")[0].split("#")[0]) || "/");
+        }
+      } catch { external++; }
     } else if (!href.startsWith("mailto:") && !href.startsWith("tel:") && !href.startsWith("#")) {
       internal++;
-      // Normalize: strip query string and hash, keep only the path
-      const path = href.startsWith("/")
-        ? href.split("?")[0].split("#")[0]
-        : href.startsWith("http")
-          ? (() => { try { const u = new URL(href); return u.pathname; } catch { return href; } })()
-          : href;
-      internalPaths.push(path);
+      internalPaths.push(href.split("?")[0].split("#")[0] || "/");
     }
   }
   return { internal, external, internalPaths };
@@ -386,7 +389,7 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
     home: ["WebSite", "LocalBusiness"],
     blog: ["Article"],
     conciergerie: ["LocalBusiness", "ProfessionalService", "Service"],
-    location: ["LodgingBusiness", "Accommodation", "Hotel"],
+    location: ["LodgingBusiness", "Accommodation", "Hotel", "ItemList"],
     destination: ["TouristDestination", "City", "Place", "TouristAttraction"],
   };
   if (result.hasJsonLd && expectedTypes[result.pageType]) {
@@ -401,8 +404,11 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
   const communePageTypes: PageType[] = ["conciergerie", "location", "destination"];
   if (communePageTypes.includes(result.pageType) && result.title) {
     const pathParts = result.path.split("/").filter(Boolean);
-    // commune slug is typically the last path segment (e.g. /locations/saint-remy-de-provence)
-    const communeSlug = pathParts.length >= 2 ? pathParts[pathParts.length - 1] : null;
+    // For /locations/[commune]/[type] paths, the type is the last segment — commune is second-to-last
+    const LOCATION_TYPES = new Set(["mas", "villa", "bastide", "gite", "appartement", "maison-village"]);
+    const lastPart = pathParts[pathParts.length - 1];
+    const communeIdx = LOCATION_TYPES.has(lastPart) ? pathParts.length - 2 : pathParts.length - 1;
+    const communeSlug = pathParts.length >= 2 ? pathParts[communeIdx] : null;
     if (communeSlug) {
       const communeReadable = communeSlug.replace(/-/g, " ");
       const titleLower = result.title.toLowerCase();
@@ -585,6 +591,10 @@ function crossPageCannibalization(results: PageResult[]): CannibalizationPair[] 
     for (let j = i + 1; j < results.length; j++) {
       const a = results[i]; const b = results[j];
       if (!a.title || !b.title) continue;
+      // Skip sibling pages (same parent path = same commune, different property type — not true cannibalization)
+      const parentA = a.path.split("/").slice(0, -1).join("/");
+      const parentB = b.path.split("/").slice(0, -1).join("/");
+      if (parentA === parentB && parentA !== "") continue;
       const kwA = kw(a.title); const kwB = new Set(kw(b.title));
       const shared = kwA.filter(w => kwB.has(w));
       const overlap = shared.length / Math.min(kwA.length, kwB.size);
