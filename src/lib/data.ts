@@ -403,6 +403,16 @@ export const activityTags: ActivityTag[] = [
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "gestionnaire-airbnb-aux-alpilles-choisir-le-bon-partenaire",
+    title: "Gestionnaire Airbnb aux Alpilles : choisir le bon partenaire",
+    excerpt:
+      "La location saisonnière dans les Alpilles connaît une croissance spectaculaire. Consultez notre guide complet, trouvez le meilleur partenaire ",
+    date: "2026-04-24",
+    category: "Guides de voyage",
+    image: "/images/blog/gestionnaire-airbnb-aux-alpilles-choisir-le-bon-partenaire.jpg",
+    readTime: 7,
+  },
+  {
     slug: "alpilles-dynamique-economique-tourisme-quelques-conseils",
     title: "Alpilles : dynamique économique tourisme, quelques conseils",
     excerpt:
