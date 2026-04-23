@@ -317,9 +317,9 @@ const articleContent: Record<string, string[]> = {
 
 const internalLinks: Record<string, { label: string; href: string }[]> = {
   "gestionnaire-airbnb-aux-alpilles-choisir-le-bon-partenaire": [
-    { label: "Tous nos hébergements entre Rhône et Alpilles", href: "/locations" },
-    { label: "Découvrir les destinations en Provence", href: "/destinations" },
-    { label: "Estimer mes revenus Airbnb en Provence", href: "/conciergerie/estimer-mes-revenus" },
+    { label: "Notre service de conciergerie Provence", href: "/conciergerie" },
+    { label: "Nos services de gestion locative", href: "/conciergerie/nos-services" },
+    { label: "Estimer mes revenus locatifs gratuitement", href: "/conciergerie/estimer-mes-revenus" },
   ],
   "alpilles-dynamique-economique-tourisme-quelques-conseils": [
     { label: "Tous nos hébergements entre Rhône et Alpilles", href: "/locations" },
