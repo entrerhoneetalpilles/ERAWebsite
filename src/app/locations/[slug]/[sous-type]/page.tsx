@@ -6,6 +6,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import PropertyCard from "@/components/PropertyCard";
 import FAQAccordion from "@/components/FAQAccordion";
 import { communes, getCommuneBySlug, getPropertyTypeBySlug } from "@/lib/data";
+import { OG_IMG } from "@/lib/og";
 
 export async function generateStaticParams() {
   const params: { slug: string; "sous-type": string }[] = [];
@@ -25,13 +26,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pt = getPropertyTypeBySlug(sousType);
   if (!commune || !pt) return {};
   return {
-    title: `${pt.plural} à ${commune.name} — Location Provence`,
+    title: `${pt.plural} à ${commune.name}`,
     description: `${pt.plural} à louer à ${commune.name} en Provence. Hébergements de caractère sélectionnés par Entre Rhône et Alpilles. Réservation directe.`,
     alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/${commune.slug}/${sousType}` },
     openGraph: {
       title: `${pt.plural} à ${commune.name} — Location Provence`,
       description: `${pt.plural} de caractère à ${commune.name} sélectionnés par Entre Rhône et Alpilles.`,
       url: `https://entre-rhone-alpilles.fr/locations/${commune.slug}/${sousType}`,
+      images: OG_IMG,
     },
   };
 }
@@ -62,8 +64,24 @@ export default async function LocationsVilleTypePage({ params }: Props) {
     },
   ];
 
+  const schemaOrg = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `${pt.plural} à ${commune.name}`,
+    description: `${pt.plural} de caractère à ${commune.name} en Provence — Entre Rhône et Alpilles`,
+    url: `https://entre-rhone-alpilles.fr/locations/${slug}/${sousType}`,
+    numberOfItems: mockProperties.length,
+    itemListElement: mockProperties.map((p, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: { "@type": "LodgingBusiness", name: p.title, address: { "@type": "PostalAddress", addressLocality: commune.name, addressCountry: "FR" } },
+    })),
+  };
+
   return (
     <div className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
+
       <div className="bg-[var(--color-cream)] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[
@@ -94,6 +112,29 @@ export default async function LocationsVilleTypePage({ params }: Props) {
       </section>
 
       <section className="py-16 bg-[var(--color-cream)]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">
+            Louer un {pt.name.toLowerCase()} à {commune.name}
+          </h2>
+          <div className="space-y-4 text-gray-600 leading-relaxed">
+            <p>
+              {pt.description}. À {commune.name}, ce type d&apos;hébergement s&apos;intègre
+              parfaitement dans le paysage provençal : {commune.description.charAt(0).toLowerCase()}{commune.description.slice(1)}
+            </p>
+            <p>
+              Notre équipe locale sélectionne chaque {pt.name.toLowerCase()} pour son authenticité
+              et son confort. Chaque bien est vérifié et géré par notre conciergerie présente
+              sur place — accueil personnalisé, recommandations d&apos;adresses locales et assistance
+              disponible 7 jours sur 7 tout au long de votre séjour en Provence.
+            </p>
+            <p>
+              <strong>Atout de {commune.name} :</strong> {commune.atout}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-serif text-2xl font-bold text-gray-900 mb-8">
             FAQ — {pt.plural} à {commune.name}

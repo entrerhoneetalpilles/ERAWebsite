@@ -6,12 +6,12 @@ import { OG_IMG } from "@/lib/og";
 import { communes } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Conciergerie & Gestion Locative Saisonnière en Provence",
+  title: "Conciergerie & Gestion Locative Provence",
   description:
     "Déléguez la gestion locative de votre bien en Provence — Alpilles. Check-in, ménage, tarification dynamique, 85% d'occupation. Estimation gratuite en 2 min.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie" },
   openGraph: {
-    title: "Conciergerie & Gestion Locative Saisonnière en Provence",
+    title: "Conciergerie & Gestion Locative Provence",
     description: "Déléguez la gestion locative de votre bien en Provence — Alpilles. Check-in, ménage, tarification dynamique, 85% d'occupation.",
     url: "https://entre-rhone-alpilles.fr/conciergerie",
     images: OG_IMG,

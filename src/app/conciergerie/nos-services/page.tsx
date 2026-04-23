@@ -5,12 +5,12 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
-  title: "Services de Gestion Locative Courte Durée — Conciergerie Provence",
+  title: "Nos services de conciergerie en Provence",
   description:
     "Check-in/out, ménage, tarification dynamique IA, communication voyageurs 24h/24, déclarations légales. 3 formules de gestion locative courte durée en Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie/nos-services" },
   openGraph: {
-    title: "Services de Gestion Locative Courte Durée — Conciergerie Provence",
+    title: "Nos services de conciergerie en Provence",
     description: "Check-in/out, ménage, tarification dynamique IA, maintenance. 3 formules de gestion locative courte durée en Provence.",
     url: "https://entre-rhone-alpilles.fr/conciergerie/nos-services",
     images: OG_IMG,

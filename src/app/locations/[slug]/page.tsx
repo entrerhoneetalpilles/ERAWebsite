@@ -43,8 +43,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (pt) {
     return {
       title: `${pt.plural} à louer en Provence`,
-      description: `Trouvez votre ${pt.name.toLowerCase()} de vacances en Provence. ${pt.description}. Sélection exclusive Entre Rhône et Alpilles.`,
+      description: `${pt.plural} en Provence : ${pt.description}. Sélection Entre Rhône et Alpilles.`,
       alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/${pt.slug}` },
+      openGraph: {
+        title: `${pt.plural} à louer en Provence — ERA`,
+        description: `${pt.plural} de caractère en Provence sélectionnés par Entre Rhône et Alpilles.`,
+        images: OG_IMG,
+      },
     };
   }
 
@@ -367,8 +372,18 @@ export default async function LocationsSlugPage({ params, searchParams }: Props)
       { question: `Quel est le prix d'un ${pt.name.toLowerCase()} en Provence ?`, answer: `Les prix varient selon la localisation, la capacité et la période. Comptez entre 100€ et 600€/nuit selon les biens.` },
     ];
 
+    const ptSchema = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: `${pt.plural} en Provence`,
+      description: `${pt.description}`,
+      url: `https://entre-rhone-alpilles.fr/locations/${slug}`,
+      numberOfItems: communesWithType.length,
+    };
+
     return (
       <div className="pt-20">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ptSchema) }} />
         <div className="bg-[var(--color-cream)] py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Breadcrumb items={[{ label: "Locations", href: "/locations" }, { label: pt.plural }]} />

@@ -172,8 +172,16 @@ function getJsonLdTypes(html: string): string[] {
   while ((m = re.exec(html)) !== null) {
     try {
       const obj = JSON.parse(m[1]);
-      const t = obj["@type"] ?? obj.type;
-      if (t) types.push(Array.isArray(t) ? t.join(", ") : String(t));
+      // Handle @graph pattern (array of typed nodes)
+      if (Array.isArray(obj["@graph"])) {
+        for (const node of obj["@graph"]) {
+          const t = node["@type"] ?? node.type;
+          if (t) types.push(Array.isArray(t) ? t.join(", ") : String(t));
+        }
+      } else {
+        const t = obj["@type"] ?? obj.type;
+        if (t) types.push(Array.isArray(t) ? t.join(", ") : String(t));
+      }
     } catch { /* skip invalid JSON */ }
   }
   return types;
@@ -417,7 +425,8 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
     const lastPart = pathParts[pathParts.length - 1];
     const communeIdx = LOCATION_TYPES.has(lastPart) ? pathParts.length - 2 : pathParts.length - 1;
     const communeSlug = pathParts.length >= 2 ? pathParts[communeIdx] : null;
-    if (communeSlug) {
+    // Skip type aggregator pages like /locations/mas where the parent segment is "locations"
+    if (communeSlug && communeSlug !== "locations" && communeSlug !== "avec-piscine") {
       // Normalize accents so "chateaurenard" matches "Châteaurenard", "eygalieres" matches "Eygalières", etc.
       const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
       const communeNorm = norm(communeSlug.replace(/-/g, " "));

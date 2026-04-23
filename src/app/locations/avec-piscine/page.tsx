@@ -7,9 +7,9 @@ import FAQAccordion from "@/components/FAQAccordion";
 import { communes } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Location avec Piscine en Provence — Alpilles & Rhône",
+  title: "Location avec Piscine Provence — Alpilles",
   description:
-    "Locations de vacances avec piscine privée en Provence : mas, villas et bastides entre le Rhône et les Alpilles. Piscine chauffée, vue Alpilles. Réservation directe.",
+    "Mas, villas et bastides avec piscine privée en Provence. Piscine chauffée disponible entre le Rhône et les Alpilles. Réservation directe.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/locations/avec-piscine" },
   keywords: ["location avec piscine provence", "villa piscine alpilles", "mas piscine saint-rémy", "location piscine privée provence"],
   openGraph: {
