@@ -425,6 +425,36 @@ export default async function LocationsSlugPage({ params, searchParams }: Props)
 
         <section className="py-16 bg-white">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">
+              Louer {pt.plural.toLowerCase()} en Provence
+            </h2>
+            <div className="space-y-4 text-gray-600 leading-relaxed">
+              <p>
+                {pt.description}. En Provence, entre le Rhône et les Alpilles, {pt.plural.toLowerCase()} bénéficient
+                d&apos;un environnement exceptionnel : lumière du Midi, paysages de garrigues et d&apos;oliveraies,
+                villages perchés et marchés provençaux animés. Notre sélection couvre {communesWithType.length} communes,
+                de Saint-Rémy-de-Provence à Arles en passant par Eygalières et Maussane-les-Alpilles.
+              </p>
+              <p>
+                Chaque {pt.name.toLowerCase()} de notre portefeuille est inspecté par notre équipe locale avant
+                d&apos;être proposé à la location. Nous vérifions la conformité des équipements, l&apos;état général
+                du bien et la qualité des prestations pour garantir un séjour à la hauteur des attentes. La grande
+                majorité de nos {pt.plural.toLowerCase()} disposent d&apos;un espace extérieur — terrasse, jardin ou
+                piscine — pour profiter pleinement du climat provençal et de ses longues soirées d&apos;été.
+              </p>
+              <p>
+                Propriétaire d&apos;un {pt.name.toLowerCase()} en Provence ? Notre service de conciergerie prend
+                en charge la gestion complète de votre bien : publication des annonces sur Airbnb, Booking.com et
+                VRBO, accueil personnalisé des voyageurs, ménage professionnel, linge hôtelier et tarification
+                dynamique quotidienne. Nos propriétaires atteignent en moyenne 78 % de taux d&apos;occupation annuel.
+                Contactez-nous pour une estimation gratuite de vos revenus locatifs.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16 bg-[var(--color-cream)]">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="font-serif text-2xl font-bold text-gray-900 mb-8">
               FAQ — {pt.plural} en Provence
             </h2>

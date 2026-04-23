@@ -403,6 +403,22 @@ export default function HomePage() {
               ou qu&apos;un gîte à Fontvieille. Cette expertise terrain se traduit directement en revenus
               optimisés pour nos propriétaires, avec un taux d&apos;occupation moyen de 78% sur l&apos;année.
             </p>
+            <p>
+              La conciergerie Entre Rhône et Alpilles intervient exclusivement dans ce périmètre géographique
+              maîtrisé pour garantir une réactivité terrain inégalée. Chaque bien bénéficie d&apos;un suivi
+              individualisé : check-in personnalisé, ménage professionnel après chaque séjour, contrôle qualité
+              photographique avant chaque arrivée et tarification dynamique quotidienne pilotée par intelligence
+              artificielle. Contrairement aux grandes plateformes nationales, notre équipe vit et travaille dans
+              les Alpilles — une proximité qui se traduit concrètement en revenus supplémentaires pour nos
+              propriétaires et en expériences authentiques pour nos voyageurs.
+            </p>
+            <p>
+              Nos hébergements accueillent des voyageurs français et internationaux tout au long de l&apos;année :
+              familles cherchant un mas avec piscine en été, couples en escapade printanière dans les Baux,
+              professionnels en déplacement à Arles pour les Rencontres Photo, amateurs de randonnée dans
+              les Alpilles en automne. Cette diversité de clientèles, combinée à une tarification dynamique
+              adaptée aux événements locaux, permet d&apos;atteindre des taux d&apos;occupation élevés même hors saison.
+            </p>
           </div>
         </div>
       </section>
