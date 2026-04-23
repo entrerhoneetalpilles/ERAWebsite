@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { blogPosts, communes } from "@/lib/data";
+import { blogPosts, communes, propertyTypes } from "@/lib/data";
 
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://entre-rhone-alpilles.fr").replace(/\/$/, "");
 const PSI_KEY = process.env.GOOGLE_PAGESPEED_API_KEY ?? "";
@@ -92,7 +92,15 @@ function getPages(mode: "quick" | "full"): Array<{ path: string; pageType: PageT
     .filter((c) => c.circle <= 2)
     .map((c) => ({ path: `/locations/avec-piscine/${c.slug}`, pageType: "location" as PageType }));
 
-  return [...statics, ...blogs, ...communePages, ...sousTypePages, ...avecPiscinePages];
+  // Type aggregator pages (/locations/mas, /locations/villa, …) — these link to
+  // sousTypePages, so they must be crawled for orphan detection to work correctly.
+  // /locations/avec-piscine is also a propertyType slug and handled by its own page.
+  const typeAggregatorPages: Array<{ path: string; pageType: PageType }> = propertyTypes.map((pt) => ({
+    path: `/locations/${pt.slug}`,
+    pageType: "location" as PageType,
+  }));
+
+  return [...statics, ...blogs, ...communePages, ...typeAggregatorPages, ...sousTypePages, ...avecPiscinePages];
 }
 
 // ── HTML helpers ───────────────────────────────────────────────
