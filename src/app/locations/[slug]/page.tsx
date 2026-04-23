@@ -132,11 +132,6 @@ const communePropertyData: Record<string, { name: string; type: string; guests: 
     { name: "Villa Olympe — Famille spacieuse", type: "Villa", guests: 10, price: 295, rating: 4.8, reviewCount: 19, hasPiscine: true, adjective: "Grand espace" },
     { name: "Gîte de la Via Aurelia — Authenticité", type: "Gîte", guests: 4, price: 155, rating: 4.7, reviewCount: 34, hasPiscine: false, adjective: "Voie romaine" },
   ],
-  "eygalieres": [
-    { name: "Bastide Eygalières — Discrétion absolue", type: "Bastide", guests: 12, price: 650, rating: 5.0, reviewCount: 14, hasPiscine: true, adjective: "Exclusivité", image: "/images/properties/bastide-location-eygalieres-alpilles.jpg" },
-    { name: "Villa des Célébrités — Piscine privée", type: "Villa", guests: 8, price: 520, rating: 5.0, reviewCount: 11, hasPiscine: true, adjective: "Ultra-luxe" },
-    { name: "Mas Garrigue — Vue Alpilles Est", type: "Mas", guests: 6, price: 380, rating: 4.9, reviewCount: 22, hasPiscine: true, adjective: "Vue imprenable" },
-  ],
   "aureille": [
     { name: "Mas de la Garrigue — Alpilles Est", type: "Mas", guests: 6, price: 255, rating: 4.9, reviewCount: 15, hasPiscine: true, adjective: "Nature préservée" },
     { name: "Villa Aureille — Calme & panorama", type: "Villa", guests: 8, price: 285, rating: 4.8, reviewCount: 17, hasPiscine: true, adjective: "Vue Alpilles" },
