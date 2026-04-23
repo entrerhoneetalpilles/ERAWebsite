@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     "40 avis vérifiés de propriétaires et voyageurs. Note moyenne 4,7/5. Tous les témoignages de nos clients en Alpilles et Provence.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/avis" },
   openGraph: {
-    title: "Avis Clients — Conciergerie Provence 4,9/5",
+    title: "Avis Clients — Conciergerie Provence 4,7/5",
     description: "40 avis vérifiés. Note moyenne 4,7/5 — propriétaires en Provence.",
     url: "https://entre-rhone-alpilles.fr/avis",
     images: OG_IMG,
@@ -54,7 +54,7 @@ export default function AvisPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[{ label: "Avis clients" }]} />
           <div className="mt-8 text-center max-w-2xl mx-auto">
-            <div className="flex items-center justify-center gap-1 mb-4" role="img" aria-label="Note 4,9 étoiles sur 5">
+            <div className="flex items-center justify-center gap-1 mb-4" role="img" aria-label="Note 4,7 étoiles sur 5">
               {[1,2,3,4,5].map((i) => (
                 <Star key={i} className="w-8 h-8 fill-[var(--color-or)] text-[var(--color-or)]" aria-hidden="true" />
               ))}

@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${BASE}/conciergerie`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE}/conciergerie/gestion-locative-courte-duree`, lastModified: now, changeFrequency: "monthly", priority: 0.88 },
     { url: `${BASE}/conciergerie/comment-ca-marche`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/conciergerie/nos-services`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/conciergerie/tarifs`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },

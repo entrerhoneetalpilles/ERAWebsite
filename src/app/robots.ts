@@ -6,7 +6,16 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/admin/", "/*?utm_*", "/*?ref=*"],
+        disallow: [
+          "/api/",
+          "/admin/",
+          "/_next/",
+          "/mentions-legales",
+          "/politique-confidentialite",
+          "/cgv",
+          "/*?utm_*",
+          "/*?ref=*",
+        ],
       },
     ],
     sitemap: "https://entre-rhone-alpilles.fr/sitemap.xml",

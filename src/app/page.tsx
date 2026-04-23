@@ -145,11 +145,6 @@ const schemaOrg = {
       url: "https://entre-rhone-alpilles.fr",
       name: "Entre Rhône et Alpilles",
       inLanguage: "fr-FR",
-      potentialAction: {
-        "@type": "SearchAction",
-        target: { "@type": "EntryPoint", urlTemplate: "https://entre-rhone-alpilles.fr/locations?q={search_term_string}" },
-        "query-input": "required name=search_term_string",
-      },
     },
     {
       "@type": "BreadcrumbList",

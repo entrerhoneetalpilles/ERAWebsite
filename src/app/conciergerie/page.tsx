@@ -5,13 +5,13 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
-  title: "Conciergerie Airbnb Provence",
+  title: "Conciergerie & Gestion Locative Saisonnière en Provence",
   description:
-    "Déléguez la gestion de votre bien en Alpilles. Check-in, ménage, tarification dynamique, 85% d'occupation. ERA gère tout.",
+    "Déléguez la gestion locative de votre bien en Provence — Alpilles. Check-in, ménage, tarification dynamique, 85% d'occupation. Estimation gratuite en 2 min.",
   alternates: { canonical: "https://entre-rhone-alpilles.fr/conciergerie" },
   openGraph: {
-    title: "Conciergerie Airbnb Provence",
-    description: "Déléguez la gestion de votre bien en Alpilles. Check-in, ménage, tarification dynamique, 85% d'occupation.",
+    title: "Conciergerie & Gestion Locative Saisonnière en Provence",
+    description: "Déléguez la gestion locative de votre bien en Provence — Alpilles. Check-in, ménage, tarification dynamique, 85% d'occupation.",
     url: "https://entre-rhone-alpilles.fr/conciergerie",
     images: OG_IMG,
   },
