@@ -331,7 +331,37 @@ export default function SeoReport() {
     if (psiList.length > 0) {
       lines.push(`\nPAGESPEED INSIGHTS (mobile)`);
       for (const e of psiList) {
-        lines.push(`  ${e.path} — Perf. ${e.data.performance} / SEO ${e.data.seo} / Access. ${e.data.accessibility}${e.data.lcp !== null ? ` / LCP ${e.data.lcp}s` : ""}`);
+        lines.push(`  ${e.path} — Perf. ${e.data.performance} / SEO ${e.data.seo} / Access. ${e.data.accessibility}${e.data.lcp !== null ? ` / LCP ${e.data.lcp}s` : ""}${e.data.cls !== null ? ` / CLS ${e.data.cls.toFixed(3)}` : ""}`);
+      }
+    }
+
+    if (cannibalization.length > 0) {
+      lines.push(`\nCANNIBALISATION DE MOTS-CLÉS (${cannibalization.length} paires)`);
+      for (const pair of cannibalization) {
+        lines.push(`  ${pair.pathA}  ↔  ${pair.pathB}`);
+        lines.push(`    Mots-clés partagés : ${pair.shared.join(", ")} (${Math.round(pair.overlap * 100)}% overlap)`);
+      }
+    }
+
+    if (brokenLinks.length > 0) {
+      lines.push(`\nLIENS INTERNES CASSÉS (${brokenLinks.length})`);
+      for (const link of brokenLinks) {
+        lines.push(`  [${link.httpStatus || "ERR"}] ${link.path}`);
+        lines.push(`    Lié depuis : ${link.sources.slice(0, 5).join(", ")}${link.sources.length > 5 ? ` +${link.sources.length - 5}` : ""}`);
+      }
+    }
+
+    if (orphans.length > 0) {
+      lines.push(`\nPAGES ORPHELINES — aucun lien entrant (${orphans.length})`);
+      for (const p of orphans) lines.push(`  ${p}`);
+    }
+
+    const pagesWithDepth = Object.entries(depths).sort((a, b) => b[1] - a[1]);
+    if (pagesWithDepth.length > 0) {
+      lines.push(`\nPROFONDEUR DE CRAWL`);
+      for (const [path, depth] of pagesWithDepth) {
+        const flag = depth > 6 ? " ⚠ trop profond" : depth > 4 ? " △ à surveiller" : "";
+        lines.push(`  ${path} — profondeur ${depth}${flag}`);
       }
     }
 
