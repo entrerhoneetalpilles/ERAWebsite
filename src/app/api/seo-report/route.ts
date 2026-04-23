@@ -101,12 +101,13 @@ function dHtml(s: string) {
   return s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x27;/g, "'").replace(/&apos;/g, "'");
 }
 
-/** Returns main/article content or full page minus nav/header/footer/aside */
+/** Returns content inside <main> tag, or full page minus nav/header/footer/aside */
 function contentZone(html: string): string {
-  return (
-    html.match(/<(?:main|article)[^>]*>([\s\S]*?)<\/(?:main|article)>/i)?.[1] ??
-    html.replace(/<(?:nav|header|footer|aside)[^>]*>[\s\S]*?<\/(?:nav|header|footer|aside)>/gi, "")
-  );
+  // Match <main> only — using <article> as alternative stops at the first </article>
+  // inside <main>, missing everything after (commune grids, blog lists, etc.)
+  const mainMatch = html.match(/<main[^>]*>([\s\S]*)<\/main>/i);
+  if (mainMatch) return mainMatch[1];
+  return html.replace(/<(?:nav|header|footer|aside)[^>]*>[\s\S]*?<\/(?:nav|header|footer|aside)>/gi, "");
 }
 
 function getMeta(html: string, name: string): string | null {
@@ -404,17 +405,17 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
   const communePageTypes: PageType[] = ["conciergerie", "location", "destination"];
   if (communePageTypes.includes(result.pageType) && result.title) {
     const pathParts = result.path.split("/").filter(Boolean);
-    // For /locations/[commune]/[type] paths, the type is the last segment — commune is second-to-last
     const LOCATION_TYPES = new Set(["mas", "villa", "bastide", "gite", "appartement", "maison-village"]);
     const lastPart = pathParts[pathParts.length - 1];
     const communeIdx = LOCATION_TYPES.has(lastPart) ? pathParts.length - 2 : pathParts.length - 1;
     const communeSlug = pathParts.length >= 2 ? pathParts[communeIdx] : null;
     if (communeSlug) {
-      const communeReadable = communeSlug.replace(/-/g, " ");
-      const titleLower = result.title.toLowerCase();
-      // Check if any part (length>3) of the commune name appears in the title
-      const communeParts = communeReadable.split(" ").filter((p) => p.length > 3);
-      const communeInTitle = communeParts.length > 0 && communeParts.some((p) => titleLower.includes(p));
+      // Normalize accents so "chateaurenard" matches "Châteaurenard", "eygalieres" matches "Eygalières", etc.
+      const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+      const communeNorm = norm(communeSlug.replace(/-/g, " "));
+      const titleNorm = norm(result.title);
+      const communeParts = communeNorm.split(" ").filter((p) => p.length > 3);
+      const communeInTitle = communeParts.length > 0 && communeParts.some((p) => titleNorm.includes(p));
       if (!communeInTitle && communeParts.length > 0) {
         add("COMMUNE_NOT_IN_TITLE", communeSlug);
       }
@@ -583,7 +584,8 @@ interface CannibalizationPair { pathA: string; pathB: string; shared: string[]; 
 
 function crossPageCannibalization(results: PageResult[]): CannibalizationPair[] {
   const pairs: CannibalizationPair[] = [];
-  const STOP = new Set(["de","du","des","le","la","les","un","une","et","en","sur","pour","par","avec","dans","au","aux","qui","que","son","ses"]);
+  // Generic site-wide words present in almost every title — not indicative of cannibalization
+  const STOP = new Set(["de","du","des","le","la","les","un","une","et","en","sur","pour","par","avec","dans","au","aux","qui","que","son","ses","location","provence","alpilles","entre","rhone","gestion","locative","proven","locations"]);
   function kw(text: string): string[] {
     return [...new Set(text.toLowerCase().split(/\W+/).filter(w => w.length > 3 && !STOP.has(w)))];
   }

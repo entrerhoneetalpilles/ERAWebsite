@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Clock, TrendingUp, Users, Wrench, Star } from "lucide-react";
+import { ArrowRight, CheckCircle, Clock, TrendingUp, Users, Wrench, Star, MapPin } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { OG_IMG } from "@/lib/og";
+import { communes } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Conciergerie & Gestion Locative Saisonnière en Provence",
@@ -215,6 +216,29 @@ export default function ConciergerieHubPage() {
                 <p className="font-semibold text-gray-900 group-hover:text-[var(--color-rhone)] transition-colors mb-1">{l.label}</p>
                 <p className="text-sm text-gray-500">{l.desc}</p>
                 <ArrowRight className="w-4 h-4 text-[var(--color-rhone)] mt-3 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-white" aria-labelledby="zones-heading">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 mb-8">
+            <MapPin className="w-5 h-5 text-[var(--color-rhone)]" aria-hidden="true" />
+            <h2 id="zones-heading" className="text-xl font-semibold text-gray-900">
+              Nos zones d&apos;intervention
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            {communes.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/conciergerie/${c.slug}`}
+                className="group flex items-center gap-2 px-4 py-3 rounded-xl border border-gray-100 hover:border-[var(--color-rhone)] hover:shadow-sm transition-all text-sm text-gray-700 hover:text-[var(--color-rhone)]"
+              >
+                <ArrowRight className="w-3.5 h-3.5 shrink-0 text-gray-300 group-hover:text-[var(--color-rhone)] transition-colors" aria-hidden="true" />
+                {c.name}
               </Link>
             ))}
           </div>
