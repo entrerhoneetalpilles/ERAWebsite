@@ -112,6 +112,18 @@ function scoreContent(content: string): SeoItem {
   const hasInternalLink = /entre-rhone-alpilles\.fr|\/blog\/|\/locations\/|\/conciergerie/i.test(content);
   const hasCTA = /contactez|réservez|estimez|découvrez|appelez|contactez-nous/i.test(content);
 
+  // New checks
+  const first100Words = content.trim().split(/\s+/).slice(0, 100).join(" ").toLowerCase();
+  const keywordInFirst100 = LOCAL_KEYWORDS.some((kw) => first100Words.includes(kw));
+
+  const h2Lines = content.split("\n").filter((line) => line.startsWith("## "));
+  const keywordInH2 = h2Lines.some((line) => {
+    const lower = line.toLowerCase();
+    return LOCAL_KEYWORDS.some((kw) => lower.includes(kw));
+  });
+
+  const hasImage = /\/images\/blog\//.test(content) || /!\[/.test(content);
+
   let score = 0;
   let tip = "";
 
@@ -131,8 +143,18 @@ function scoreContent(content: string): SeoItem {
 
   if (hasCTA) score += 2;
 
-  const status = score >= 24 ? "good" : score >= 15 ? "warn" : "bad";
-  return { label: "Contenu & structure", score, max: 30, tip: tip || "Excellent contenu !", status };
+  // New scoring
+  if (keywordInFirst100) score += 4;
+  else tip = (tip || "") + " Glisse un mot-clé local dans les 100 premiers mots.";
+
+  if (keywordInH2) score += 3;
+  else tip = (tip || "") + " Inclus un mot-clé local dans au moins un H2.";
+
+  if (hasImage) score += 3;
+  else tip = (tip || "") + " Ajoute une image (chemin /images/blog/ ou syntaxe ![…]).";
+
+  const status = score >= 32 ? "good" : score >= 20 ? "warn" : "bad";
+  return { label: "Contenu & structure", score, max: 40, tip: tip || "Excellent contenu !", status };
 }
 
 function scoreLocalSeo(input: SeoInput): SeoItem {
@@ -179,7 +201,7 @@ function scoreLocalSeo(input: SeoInput): SeoItem {
   };
 }
 
-function scoreSlug(slug: string): SeoItem {
+function scoreSlug(slug: string, title: string): SeoItem {
   const len = slug.length;
   const hasLocal = LOCAL_KEYWORDS.some((kw) =>
     slug.toLowerCase().replace(/-/g, " ").includes(kw.replace(/-/g, " "))
@@ -187,16 +209,112 @@ function scoreSlug(slug: string): SeoItem {
   const isClean = /^[a-z0-9-]+$/.test(slug);
   const noDouble = !/-{2,}/.test(slug);
 
+  // Slug coherence with title: slug shares ≥2 words (length>3) with title after normalization
+  const normalizeToWords = (text: string) =>
+    text.toLowerCase().replace(/[^a-z0-9\s-]/g, "").split(/[-\s]+/).filter((w) => w.length > 3);
+  const slugWords = new Set(normalizeToWords(slug));
+  const titleWords = normalizeToWords(title);
+  const sharedWords = titleWords.filter((w) => slugWords.has(w));
+  const slugCoherent = sharedWords.length >= 2;
+
   let score = 0;
   let tip = "";
 
   if (len >= 20 && len <= 60) score += 2; else tip = "URL idéale : 20-60 caractères.";
-  if (hasLocal) score += 1;
+  if (hasLocal) score += 2; else tip = (tip || "") + " Ajoute un mot-clé local dans l'URL.";
   if (isClean && noDouble) score += 2;
   else tip = (tip || "") + " L'URL doit être en minuscules sans caractères spéciaux.";
+  if (slugCoherent) score += 2;
+  else tip = (tip || "") + " L'URL devrait refléter le titre (partager ≥2 mots communs).";
 
-  const status = score >= 4 ? "good" : score >= 2 ? "warn" : "bad";
-  return { label: "URL (slug)", score, max: 5, tip: tip || "URL propre !", status };
+  const status = score >= 6 ? "good" : score >= 3 ? "warn" : "bad";
+  return { label: "URL (slug)", score, max: 8, tip: tip || "URL propre !", status };
+}
+
+function scoreReadability(content: string): SeoItem {
+  let score = 0;
+  const tips: string[] = [];
+
+  // Keyword density: find the most used LOCAL_KEYWORD
+  const lower = content.toLowerCase();
+  const totalWords = countWords(content);
+
+  let bestKw = "";
+  let bestCount = 0;
+  for (const kw of LOCAL_KEYWORDS) {
+    // Count non-overlapping occurrences
+    let count = 0;
+    let pos = 0;
+    while ((pos = lower.indexOf(kw, pos)) !== -1) {
+      count++;
+      pos += kw.length;
+    }
+    if (count > bestCount) {
+      bestCount = count;
+      bestKw = kw;
+    }
+  }
+
+  if (totalWords > 0 && bestKw) {
+    const density = (bestCount / totalWords) * 100;
+    if (density >= 1 && density <= 3) {
+      score += 5;
+    } else if (density > 3 && density <= 5) {
+      score += 2;
+      tips.push(`Densité de "${bestKw}" élevée (${density.toFixed(1)}% — idéal 1-3%).`);
+    } else if (density < 1) {
+      tips.push(`Densité de mots-clés trop faible (${density.toFixed(1)}% — vise 1-3%).`);
+    } else {
+      tips.push(`Sur-optimisation détectée : densité de "${bestKw}" = ${density.toFixed(1)}% (max 5%).`);
+    }
+  } else {
+    tips.push("Aucun mot-clé local détecté dans le contenu.");
+  }
+
+  // Paragraph count: split by \n{2,} excluding headings
+  const paragraphs = content.split(/\n{2,}/).filter((block) => {
+    const trimmed = block.trim();
+    return trimmed.length > 0 && !trimmed.startsWith("#");
+  });
+  const paraCount = paragraphs.length;
+  if (paraCount >= 5) {
+    score += 4;
+  } else if (paraCount >= 3) {
+    score += 2;
+    tips.push(`Seulement ${paraCount} paragraphes — vise 5+ pour une bonne structure.`);
+  } else {
+    tips.push(`Trop peu de paragraphes (${paraCount}) — structure le contenu en blocs distincts.`);
+  }
+
+  // Average paragraph length
+  if (paragraphs.length > 0) {
+    const avgLen = paragraphs.reduce((sum, p) => sum + countWords(p), 0) / paragraphs.length;
+    if (avgLen <= 80) {
+      score += 3;
+    } else if (avgLen <= 120) {
+      score += 1;
+      tips.push(`Paragraphes longs en moyenne (${Math.round(avgLen)} mots — idéal ≤80).`);
+    } else {
+      tips.push(`Paragraphes trop longs (moy. ${Math.round(avgLen)} mots) — découpe en blocs plus courts.`);
+    }
+  }
+
+  // External authority link
+  const hasExternalAuthority = /https?:\/\/(?!(?:www\.)?entre-rhone-alpilles\.fr)[^\s"'<>]+/.test(content);
+  if (hasExternalAuthority) {
+    score += 3;
+  } else {
+    tips.push("Ajoute un lien vers une source externe autoritaire (Wikipedia, source officielle…).");
+  }
+
+  const status = score >= 12 ? "good" : score >= 7 ? "warn" : "bad";
+  return {
+    label: "Lisibilité & densité",
+    score,
+    max: 15,
+    tip: tips.length === 0 ? "Excellent équilibre de lisibilité !" : tips.join(" "),
+    status,
+  };
 }
 
 function toGrade(pct: number): SeoResult["grade"] {
@@ -213,7 +331,8 @@ export function computeSeoScore(input: SeoInput): SeoResult {
     scoreExcerpt(input.excerpt),
     scoreContent(input.content),
     scoreLocalSeo(input),
-    scoreSlug(input.slug),
+    scoreSlug(input.slug, input.title),
+    scoreReadability(input.content),
   ];
   const total = items.reduce((s, i) => s + i.score, 0);
   const max = items.reduce((s, i) => s + i.max, 0);

@@ -41,6 +41,7 @@ export interface PageResult {
   wordCount: number;
   internalLinks: number;
   externalLinks: number;
+  internalLinkPaths: string[];
   viewport: string | null;
   htmlLang: string | null;
   responseTimeMs: number;
@@ -83,7 +84,15 @@ function getPages(mode: "quick" | "full"): Array<{ path: string; pageType: PageT
     { path: `/conciergerie/${c.slug}`, pageType: "conciergerie" as PageType },
   ]);
 
-  return [...statics, ...blogs, ...communePages];
+  const sousTypePages: Array<{ path: string; pageType: PageType }> = communes.flatMap((c) =>
+    c.propertyTypes.map((type) => ({ path: `/locations/${c.slug}/${type}`, pageType: "location" as PageType }))
+  );
+
+  const avecPiscinePages: Array<{ path: string; pageType: PageType }> = communes
+    .filter((c) => c.circle <= 2)
+    .map((c) => ({ path: `/locations/avec-piscine/${c.slug}`, pageType: "location" as PageType }));
+
+  return [...statics, ...blogs, ...communePages, ...sousTypePages, ...avecPiscinePages];
 }
 
 // ── HTML helpers ───────────────────────────────────────────────
@@ -177,18 +186,29 @@ function countImages(html: string): { total: number; withoutAlt: number } {
   return { total, withoutAlt };
 }
 
-function countLinks(html: string): { internal: number; external: number } {
+function countLinks(html: string): { internal: number; external: number; internalPaths: string[] } {
   const zone = contentZone(html);
   const re = /<a[^>]+href=["']([^"']+)["']/gi;
   let internal = 0;
   let external = 0;
+  const internalPaths: string[] = [];
   let m;
   while ((m = re.exec(zone)) !== null) {
     const href = m[1];
-    if (href.startsWith("http") && !href.includes(SITE.replace(/https?:\/\//, ""))) external++;
-    else if (!href.startsWith("mailto:") && !href.startsWith("tel:") && !href.startsWith("#")) internal++;
+    if (href.startsWith("http") && !href.includes(SITE.replace(/https?:\/\//, ""))) {
+      external++;
+    } else if (!href.startsWith("mailto:") && !href.startsWith("tel:") && !href.startsWith("#")) {
+      internal++;
+      // Normalize: strip query string and hash, keep only the path
+      const path = href.startsWith("/")
+        ? href.split("?")[0].split("#")[0]
+        : href.startsWith("http")
+          ? (() => { try { const u = new URL(href); return u.pathname; } catch { return href; } })()
+          : href;
+      internalPaths.push(path);
+    }
   }
-  return { internal, external };
+  return { internal, external, internalPaths };
 }
 
 function getWordCount(html: string): number {
@@ -252,6 +272,10 @@ const SW: Record<string, { sev: Severity; pts: number; msg: string | ((...a: any
   NO_OG_TITLE:           { sev: "warning",  pts: 4,  msg: "og:title manquant" },
   NO_OG_DESC:            { sev: "warning",  pts: 3,  msg: "og:description manquant" },
   IMG_ALT:               { sev: "warning",  pts: 3,  msg: (n: number) => `${n} image${n > 1 ? "s" : ""} sans attribut alt` },
+  DUPLICATE_JSON_LD:     { sev: "critical", pts: 15, msg: (types: string) => `Schema JSON-LD en double : ${types}` },
+  JSON_LD_WRONG_TYPE:    { sev: "warning",  pts: 8,  msg: (got: string, expected: string) => `JSON-LD type incorrect pour cette page (${got} → attendu ${expected})` },
+  COMMUNE_NOT_IN_TITLE:  { sev: "warning",  pts: 6,  msg: (slug: string) => `Commune "${slug}" absente du titre (SEO local faible)` },
+  NO_PSI:                { sev: "info",     pts: 0,  msg: "PageSpeed Insights non disponible pour cette page" },
 };
 
 const THIN_MIN: Partial<Record<PageType, number>> = {
@@ -350,6 +374,46 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
   // ── JSON-LD ───────────────────────────────────────────────
   const needsJsonLd: PageType[] = ["home", "blog", "location", "destination", "conciergerie"];
   if (!result.hasJsonLd && needsJsonLd.includes(result.pageType)) add("NO_JSON_LD");
+
+  // ── Duplicate JSON-LD types ───────────────────────────────
+  const typeCounts = new Map<string, number>();
+  for (const t of result.jsonLdTypes) typeCounts.set(t, (typeCounts.get(t) ?? 0) + 1);
+  const dupTypes = [...typeCounts.entries()].filter(([, c]) => c > 1).map(([t]) => t);
+  if (dupTypes.length > 0) add("DUPLICATE_JSON_LD", dupTypes.join(", "));
+
+  // ── JSON-LD type coherence per page type ──────────────────
+  const expectedTypes: Partial<Record<PageType, string[]>> = {
+    home: ["WebSite", "LocalBusiness"],
+    blog: ["Article"],
+    conciergerie: ["LocalBusiness", "ProfessionalService", "Service"],
+    location: ["LodgingBusiness", "Accommodation", "Hotel"],
+    destination: ["TouristDestination", "City", "Place", "TouristAttraction"],
+  };
+  if (result.hasJsonLd && expectedTypes[result.pageType]) {
+    const expected = expectedTypes[result.pageType]!;
+    const hasExpected = result.jsonLdTypes.some((t) => expected.some((e) => t.includes(e)));
+    if (!hasExpected) {
+      add("JSON_LD_WRONG_TYPE", result.jsonLdTypes.join(", "), expected.join("/"));
+    }
+  }
+
+  // ── Commune name in title ─────────────────────────────────
+  const communePageTypes: PageType[] = ["conciergerie", "location", "destination"];
+  if (communePageTypes.includes(result.pageType) && result.title) {
+    const pathParts = result.path.split("/").filter(Boolean);
+    // commune slug is typically the last path segment (e.g. /locations/saint-remy-de-provence)
+    const communeSlug = pathParts.length >= 2 ? pathParts[pathParts.length - 1] : null;
+    if (communeSlug) {
+      const communeReadable = communeSlug.replace(/-/g, " ");
+      const titleLower = result.title.toLowerCase();
+      // Check if any part (length>3) of the commune name appears in the title
+      const communeParts = communeReadable.split(" ").filter((p) => p.length > 3);
+      const communeInTitle = communeParts.length > 0 && communeParts.some((p) => titleLower.includes(p));
+      if (!communeInTitle && communeParts.length > 0) {
+        add("COMMUNE_NOT_IN_TITLE", communeSlug);
+      }
+    }
+  }
 
   // ── Images (content zone) ─────────────────────────────────
   if (result.imagesWithoutAlt > 0) add("IMG_ALT", result.imagesWithoutAlt);
@@ -467,7 +531,7 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
     ogTitle, ogDescription, ogImage,
     hasJsonLd: jsonLdTypes.length > 0, jsonLdTypes,
     imagesTotal: imgs.total, imagesWithoutAlt: imgs.withoutAlt,
-    wordCount, internalLinks: links.internal, externalLinks: links.external,
+    wordCount, internalLinks: links.internal, externalLinks: links.external, internalLinkPaths: links.internalPaths,
     viewport, htmlLang,
     responseTimeMs, pageSizeKb, textHtmlRatio,
   };
@@ -505,6 +569,108 @@ async function fetchPsi(url: string): Promise<PageResult["psi"] | undefined> {
   } catch {
     return undefined;
   }
+}
+
+// ── Cross-page cannibalization ─────────────────────────────────
+
+interface CannibalizationPair { pathA: string; pathB: string; shared: string[]; overlap: number; }
+
+function crossPageCannibalization(results: PageResult[]): CannibalizationPair[] {
+  const pairs: CannibalizationPair[] = [];
+  const STOP = new Set(["de","du","des","le","la","les","un","une","et","en","sur","pour","par","avec","dans","au","aux","qui","que","son","ses"]);
+  function kw(text: string): string[] {
+    return [...new Set(text.toLowerCase().split(/\W+/).filter(w => w.length > 3 && !STOP.has(w)))];
+  }
+  for (let i = 0; i < results.length; i++) {
+    for (let j = i + 1; j < results.length; j++) {
+      const a = results[i]; const b = results[j];
+      if (!a.title || !b.title) continue;
+      const kwA = kw(a.title); const kwB = new Set(kw(b.title));
+      const shared = kwA.filter(w => kwB.has(w));
+      const overlap = shared.length / Math.min(kwA.length, kwB.size);
+      if (overlap > 0.6 && shared.length >= 3) pairs.push({ pathA: a.path, pathB: b.path, shared, overlap });
+    }
+  }
+  return pairs.sort((a,b) => b.overlap - a.overlap).slice(0, 20);
+}
+
+// ── Orphan pages detection ─────────────────────────────────────
+
+function detectOrphans(results: PageResult[], crawledPaths: Set<string>): string[] {
+  void crawledPaths; // used for filtering (parameter kept for API clarity)
+  const linked = new Set<string>();
+  for (const page of results) {
+    for (const lp of page.internalLinkPaths) {
+      const clean = lp.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
+      linked.add(clean);
+    }
+  }
+  linked.add("/"); // homepage is never an orphan
+  return results
+    .filter(p => p.httpStatus === 200 && !linked.has(p.path.replace(/\/$/, "") || "/"))
+    .map(p => p.path);
+}
+
+// ── Crawl depth calculation ────────────────────────────────────
+
+function calcCrawlDepths(results: PageResult[]): Record<string, number> {
+  const depths: Record<string, number> = { "/": 0 };
+  const queue: string[] = ["/"];
+  const pageMap = new Map(results.map(p => [p.path, p]));
+  while (queue.length > 0) {
+    const current = queue.shift()!;
+    const page = pageMap.get(current);
+    if (!page) continue;
+    const currentDepth = depths[current] ?? 0;
+    for (const lp of page.internalLinkPaths) {
+      const clean = lp.split("?")[0].split("#")[0].replace(/\/$/,"") || "/";
+      if (depths[clean] === undefined) {
+        depths[clean] = currentDepth + 1;
+        queue.push(clean);
+      }
+    }
+  }
+  return depths;
+}
+
+// ── Broken internal links detection ───────────────────────────
+
+async function detectBrokenLinks(
+  results: PageResult[],
+  site: string
+): Promise<Array<{ path: string; httpStatus: number; sources: string[] }>> {
+  // collect unique internal paths and their sources
+  const linkSources = new Map<string, string[]>();
+  for (const page of results) {
+    for (const lp of page.internalLinkPaths) {
+      const clean = lp.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
+      if (!clean.startsWith("/") || clean === page.path) continue;
+      const existing = linkSources.get(clean) ?? [];
+      if (!existing.includes(page.path)) existing.push(page.path);
+      linkSources.set(clean, existing);
+    }
+  }
+  // only check paths not already crawled or known-good
+  const crawledOk = new Set(results.filter(p => p.httpStatus === 200).map(p => p.path));
+  const toCheck = [...linkSources.keys()].filter(p => !crawledOk.has(p));
+
+  const broken: Array<{ path: string; httpStatus: number; sources: string[] }> = [];
+  const BATCH = 8;
+  for (let i = 0; i < toCheck.length; i += BATCH) {
+    const batch = toCheck.slice(i, i + BATCH);
+    const checks = await Promise.all(batch.map(async (p) => {
+      try {
+        const res = await fetch(`${site}${p}`, { method: "HEAD", signal: AbortSignal.timeout(8000), cache: "no-store" });
+        return { path: p, httpStatus: res.status, sources: linkSources.get(p) ?? [] };
+      } catch {
+        return { path: p, httpStatus: 0, sources: linkSources.get(p) ?? [] };
+      }
+    }));
+    for (const c of checks) {
+      if (c.httpStatus === 404 || c.httpStatus === 0) broken.push(c);
+    }
+  }
+  return broken;
 }
 
 // ── SSE handler ────────────────────────────────────────────────
@@ -556,9 +722,24 @@ export async function POST(req: NextRequest) {
           send({ type: "corrections", corrections });
         }
 
-        // PageSpeed for homepage + first blog post
+        // Phase 3 — cannibalization
+        const cannibalization = crossPageCannibalization(allResults);
+        if (cannibalization.length > 0) send({ type: "cannibalization", pairs: cannibalization });
+
+        // Phase 4 — crawl depths + orphans
+        const depths = calcCrawlDepths(allResults);
+        send({ type: "depths", depths });
+        const orphans = detectOrphans(allResults, new Set(allResults.map(p => p.path)));
+        if (orphans.length > 0) send({ type: "orphans", paths: orphans });
+
+        // Phase 5 — broken internal links
+        const brokenLinks = await detectBrokenLinks(allResults, SITE);
+        if (brokenLinks.length > 0) send({ type: "broken_links", links: brokenLinks });
+
+        // PageSpeed for top 5 pages
         if (PSI_KEY || process.env.PSI_ALLOW_NO_KEY) {
-          const psiTargets = ["/", blogPosts[0] ? `/blog/${blogPosts[0].slug}` : null].filter(Boolean) as string[];
+          const psiTargets = ["/", "/conciergerie", "/locations", "/conciergerie/estimer-mes-revenus",
+            blogPosts[0] ? `/blog/${blogPosts[0].slug}` : null].filter(Boolean) as string[];
           for (const path of psiTargets) {
             const psi = await fetchPsi(`${SITE}${path}`);
             if (psi) send({ type: "psi", path, data: psi });

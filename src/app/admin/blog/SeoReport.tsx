@@ -21,6 +21,9 @@ interface Issue {
   message: string;
 }
 
+interface CannibalizationPair { pathA: string; pathB: string; shared: string[]; overlap: number; }
+interface BrokenLink { path: string; httpStatus: number; sources: string[] }
+
 interface PageResult {
   path: string;
   url: string;
@@ -47,6 +50,7 @@ interface PageResult {
   wordCount: number;
   internalLinks: number;
   externalLinks: number;
+  internalLinkPaths: string[];
   viewport: string | null;
   htmlLang: string | null;
   responseTimeMs: number;
@@ -152,6 +156,10 @@ export default function SeoReport() {
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [cannibalization, setCannibalization] = useState<CannibalizationPair[]>([]);
+  const [orphans, setOrphans] = useState<string[]>([]);
+  const [brokenLinks, setBrokenLinks] = useState<BrokenLink[]>([]);
+  const [depths, setDepths] = useState<Record<string, number>>({});
   const abortRef = useRef<AbortController | null>(null);
 
   function handleEvent(event: Record<string, unknown>) {
@@ -173,6 +181,14 @@ export default function SeoReport() {
       }));
     } else if (type === "psi") {
       setPsiList((prev) => [...prev, { path: event.path as string, data: event.data as PsiEntry["data"] }]);
+    } else if (type === "cannibalization") {
+      setCannibalization(event.pairs as CannibalizationPair[]);
+    } else if (type === "orphans") {
+      setOrphans(event.paths as string[]);
+    } else if (type === "broken_links") {
+      setBrokenLinks(event.links as BrokenLink[]);
+    } else if (type === "depths") {
+      setDepths(event.depths as Record<string, number>);
     } else if (type === "done") {
       setRunStatus("done");
     } else if (type === "error") {
@@ -191,6 +207,10 @@ export default function SeoReport() {
     setPsiList([]);
     setErrorMsg("");
     setExpanded(null);
+    setCannibalization([]);
+    setOrphans([]);
+    setBrokenLinks([]);
+    setDepths({});
 
     try {
       const res = await fetch("/api/seo-report", {
@@ -546,6 +566,67 @@ export default function SeoReport() {
             </div>
           )}
 
+          {/* Cannibalization */}
+          {cannibalization.length > 0 && (
+            <div className="bg-white rounded-2xl border border-orange-200 shadow-sm p-6">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-4 flex items-center gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 text-orange-500" />
+                Cannibalisation de mots-clés ({cannibalization.length} paires)
+              </p>
+              <div className="space-y-2">
+                {cannibalization.map((pair, i) => (
+                  <div key={i} className="flex items-start gap-3 py-2 border-b border-gray-50 last:border-0 text-xs">
+                    <div className="flex-1 min-w-0">
+                      <span className="font-mono text-gray-700">{pair.pathA}</span>
+                      <span className="text-gray-400 mx-2">↔</span>
+                      <span className="font-mono text-gray-700">{pair.pathB}</span>
+                      <p className="text-gray-400 mt-0.5">Mots-clés partagés : <span className="text-orange-600 font-medium">{pair.shared.join(", ")}</span> ({Math.round(pair.overlap*100)}% overlap)</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Broken links */}
+          {brokenLinks.length > 0 && (
+            <div className="bg-white rounded-2xl border border-red-200 shadow-sm p-6">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-4 flex items-center gap-1.5">
+                <XCircle className="w-3.5 h-3.5 text-red-500" />
+                Liens internes cassés ({brokenLinks.length})
+              </p>
+              <div className="space-y-2">
+                {brokenLinks.map((link, i) => (
+                  <div key={i} className="flex items-start gap-3 py-2 border-b border-gray-50 last:border-0 text-xs">
+                    <span className="font-semibold text-red-600 shrink-0">{link.httpStatus || "ERR"}</span>
+                    <div className="flex-1 min-w-0">
+                      <span className="font-mono text-gray-700">{link.path}</span>
+                      <p className="text-gray-400 mt-0.5 truncate">Lié depuis : {link.sources.slice(0,3).join(", ")}{link.sources.length > 3 ? ` +${link.sources.length-3}` : ""}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Orphan pages */}
+          {orphans.length > 0 && (
+            <div className="bg-white rounded-2xl border border-amber-200 shadow-sm p-6">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-4 flex items-center gap-1.5">
+                <AlertCircle className="w-3.5 h-3.5 text-amber-500" />
+                Pages orphelines — aucun lien entrant ({orphans.length})
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {orphans.map((p) => (
+                  <a key={p} href={`https://entre-rhone-alpilles.fr${p}`} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-mono text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-2 py-1 hover:bg-amber-100 transition-colors">
+                    {p} <ExternalLink className="w-2.5 h-2.5" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Per-page table */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
@@ -573,6 +654,7 @@ export default function SeoReport() {
                     <th className="px-3 py-2.5">
                       <SortBtn thisKey="issues" label="Prob." sortKey={sortKey} sortDir={sortDir} onToggle={toggleSort} />
                     </th>
+                    <th className="px-3 py-2.5 text-center text-gray-400 font-semibold">Prof.</th>
                     <th className="w-8" />
                   </tr>
                 </thead>
@@ -649,6 +731,17 @@ export default function SeoReport() {
                                 {page.issues.length}
                               </span>}
                         </td>
+                        <td className="px-3 py-2.5 text-center tabular-nums">
+                          {depths[page.path] !== undefined ? (
+                            <span className={
+                              depths[page.path] > 6 ? "text-red-600 font-semibold"
+                              : depths[page.path] > 4 ? "text-amber-500 font-semibold"
+                              : "text-gray-500"
+                            }>
+                              {depths[page.path]}
+                            </span>
+                          ) : <span className="text-gray-300">—</span>}
+                        </td>
                         <td className="px-2 py-2.5 text-center">
                           {expanded === page.path
                             ? <ChevronUp className="w-3.5 h-3.5 text-gray-400 mx-auto" />
@@ -658,7 +751,7 @@ export default function SeoReport() {
 
                       {expanded === page.path && (
                         <tr>
-                          <td colSpan={9} className="bg-slate-50 px-6 py-4 border-b border-gray-100">
+                          <td colSpan={10} className="bg-slate-50 px-6 py-4 border-b border-gray-100">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                               {/* Issues */}
                               <div>
