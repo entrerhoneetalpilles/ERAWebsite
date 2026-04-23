@@ -9,7 +9,8 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           "/api/",
           "/admin/",
-          "/_next/",
+          "/_next/static/",
+          "/_next/data/",
           "/mentions-legales",
           "/politique-confidentialite",
           "/cgv",
