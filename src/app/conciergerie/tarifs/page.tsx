@@ -341,7 +341,7 @@ export default function TarifsPage() {
       <section className="py-16 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-serif text-2xl font-bold text-gray-900 mb-8">Questions sur nos tarifs</h2>
-          <FAQAccordion items={faqItems} />
+          <FAQAccordion items={faqItems} schema={false} />
           <div className="mt-12 text-center">
             <Link href="/conciergerie/estimer-mes-revenus"
               className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-rhone)] text-white font-bold rounded-full hover:bg-[var(--color-rhone-light)] transition-colors text-lg">

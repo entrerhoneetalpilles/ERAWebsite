@@ -478,7 +478,7 @@ export default function HomePage() {
             </h2>
             <p style={{ color: "var(--texte-leger)" }}>Tout ce que vous devez savoir sur notre service de conciergerie.</p>
           </div>
-          <FAQAccordion items={faqItems} />
+          <FAQAccordion items={faqItems} schema={false} />
           <div className="mt-10 text-center">
             <p className="mb-4" style={{ color: "var(--texte-leger)" }}>Vous avez d&apos;autres questions ?</p>
             <Link
