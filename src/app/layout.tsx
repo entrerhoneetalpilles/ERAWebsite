@@ -95,6 +95,9 @@ export default function RootLayout({
       className={`${cormorant.variable} ${dmSans.variable} h-full`}
     >
       <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <Script
           id="gtm-script"
           strategy="afterInteractive"

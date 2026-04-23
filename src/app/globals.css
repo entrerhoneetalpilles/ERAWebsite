@@ -123,6 +123,14 @@ button[class*="border-[var(--color-rhone"] {
   transition: background 0.2s ease, color 0.2s ease;
 }
 
+/* Remove native disclosure triangle from <summary> */
+summary {
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+
 /* Skip link */
 .skip-link {
   position: absolute;
