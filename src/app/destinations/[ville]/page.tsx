@@ -51,6 +51,86 @@ const getLocalInfo = (slug: string) => {
       events: ["Marché estival", "Fête du village (août)"],
       bestTime: "Juin et septembre pour la douceur et moins de monde",
     },
+    "maussane-les-alpilles": {
+      highlights: ["Capitale AOP Huile d'olive des Alpilles", "Moulin coopératif de la Vallée des Baux (visite & dégustation)", "Route des oliviers (vélo ou randonnée)", "Marché du jeudi sous les platanes", "Restaurants gastronomiques en terrasse", "Vignoble AOP Baux-de-Provence à 5 min"],
+      events: ["Fête de l'Olive (décembre)", "Journées de l'huile nouvelle (novembre)", "Marchés thématiques estivaux"],
+      bestTime: "Décembre pour la récolte et l'huile nouvelle, mai-juin pour le printemps provençal sans foule",
+    },
+    "fontvieille": {
+      highlights: ["Moulin d'Alphonse Daudet & musée dédié", "Aqueduc romain de Barbegal (IVe s.)", "Abbaye de Montmajour à 5 km", "Sentiers VTT et vélo dans les Alpilles", "Carrière romaine de la Gayolle", "Marché provençal du mardi"],
+      events: ["Rendez-vous de Fontvieille — cyclisme (septembre)", "Fête de la Saint-Éloi (artisans)", "Festival estival en plein air"],
+      bestTime: "Avril-juin pour les randonnées, septembre-octobre pour les couleurs dorées des Alpilles",
+    },
+    "paradou": {
+      highlights: ["Hameau du Destet — ruines médiévales en pleine nature", "Oliviers millénaires du plateau", "Sentiers de crête des Alpilles au départ du village", "Mas Sainte-Berthe — domaine viticole AOP", "Atelier d'artiste — Petit Mas de la Garrigue", "Silence et lumière : le village préservé du tourisme de masse"],
+      events: ["Marché estival du jeudi", "Vins & Saveurs du Paradou (automne)", "Fête du village (août)"],
+      bestTime: "Mai, juin et septembre — calme absolu, lumière provençale magnifique, réservations faciles",
+    },
+    "villeneuve-les-avignon": {
+      highlights: ["Tour Philippe le Bel — panorama sur le Rhône et Avignon", "Chartreuse du Val de Bénédiction (XIVe s.)", "Fort Saint-André (remparts médiévaux)", "Musée Pierre de Luxembourg", "Vue iconique sur le Palais des Papes depuis la rive du Gard", "Collégiale Notre-Dame"],
+      events: ["Festival d'Avignon (juillet — à 5 min)", "Festival Off Avignon", "Villeneuve en scène (été)"],
+      bestTime: "Juillet pour le Festival d'Avignon, septembre-octobre pour la douceur et les marchés",
+    },
+    "tarascon": {
+      highlights: ["Château du roi René (XVe s.) — forteresse médiévale sur le Rhône", "Collégiale Sainte-Marthe", "Musée Souleiado — tissus provençaux imprimés", "Marché du mardi et du samedi", "Musée Charles Deméry", "Bac de Beaucaire — traversée en bac"],
+      events: ["Fête de la Tarasque (juin)", "Les Nuits du Château (été)", "Marché de Noël provençal"],
+      bestTime: "Juin pour la Fête de la Tarasque, avril-mai pour visiter le château sans foule",
+    },
+    "boulbon": {
+      highlights: ["Ruines du château médiéval perché sur l'éperon rocheux", "Panorama exceptionnel sur la plaine du Rhône et les Alpilles", "Chapelle Saint-Marcellin (XIe s.)", "Bord du Rhône — pêche, baignade, promenades", "Sentiers de randonnée dans les garrigues sauvages", "Un des secrets les mieux gardés de Provence"],
+      events: ["Procession de la bouteille (1er juin — tradition unique)", "Fête du village (été)", "Journées du Patrimoine"],
+      bestTime: "Mai-juin pour la procession et la garrigue en fleurs, septembre pour la douceur et les vendanges alentour",
+    },
+    "graveson": {
+      highlights: ["Musée Auguste Chabaud (peintre fauviste né à Graveson)", "Abbaye de Frigolet à 5 km (bénédictine)", "Vignoble des Coteaux des Baux — visites de caves", "Vergers et maraîchages — vente directe", "Château de Barbentane à 6 km", "Marché hebdomadaire pittoresque"],
+      events: ["Foire de la Saint-Martin (novembre)", "Fête des vendanges (septembre-octobre)", "Marché de producteurs estival"],
+      bestTime: "Vendanges (fin septembre) pour l'œnotourisme, mai pour les cerisiers et les premières chaleurs",
+    },
+    "barbentane": {
+      highlights: ["Château de Barbentane (XVIIe s.) — visite guidée des appartements", "Tour Anglica — panorama sur la Durance", "Vieilles halles médiévales", "Promenades au bord de la Durance", "Moulin à vent restauré", "Marché hebdomadaire"],
+      events: ["Visites nocturnes du château (juillet-août)", "Journées du Patrimoine (septembre)", "Fête patronale"],
+      bestTime: "Juin-septembre pour le jardin du château, automne pour les couleurs de la Durance et les vendanges",
+    },
+    "chateaurenard": {
+      highlights: ["Château Féodal — deux tours médiévales avec panorama", "Marché d'Intérêt National (MIN) — visite matinale unique", "Canal des Alpines — promenades à vélo", "Marché du jeudi et samedi (produits locaux)", "Musée municipal", "Point central entre Avignon et les Alpilles"],
+      events: ["Corso fleuri (juillet)", "Fête de la Saint-Éloi (confrérie des forgerons)", "Marché de Noël"],
+      bestTime: "Juillet pour le corso fleuri, printemps pour le marché et les premières récoltes locales",
+    },
+    "saint-etienne-du-gres": {
+      highlights: ["Porte d'entrée ouest des Alpilles", "Voie Aurélienne — ancienne voie romaine balisée", "Montagne des Cordes — randonnée panoramique", "Sentiers VTT et vélo vers Fontvieille et les Baux", "Abbaye de Montmajour à 8 km", "Calme absolu à 20 min d'Arles"],
+      events: ["Fête locale d'été", "Rencontres cyclistes — Alpilles à vélo (printemps)", "Journées du Patrimoine"],
+      bestTime: "Avril-juin pour les randonnées et le vélo, septembre pour l'automne en Provence",
+    },
+    "aureille": {
+      highlights: ["Village typique préservé du tourisme de masse", "Sentier des crêtes des Alpilles — GR au départ du village", "Panorama sur la plaine de la Crau depuis le castelas", "Oliveraies et garrigues sauvages intactes", "Moulin à vent restauré", "Accès direct au cœur du massif des Alpilles"],
+      events: ["Fête patronale de la Saint-Michel (septembre)", "Marché d'été du dimanche", "Journées du Patrimoine"],
+      bestTime: "Mars-mai pour les Alpilles fleuries et les randonnées, automne pour les couleurs et le calme absolu",
+    },
+    "mouries": {
+      highlights: ["Plus grande oliveraie de France (600 ha)", "Coopérative oléicole — dégustation et vente d'huile AOP", "Sentier des moulins à huile (pédestre)", "Vignoble AOP Baux-de-Provence autour du village", "Marché hebdomadaire sous les platanes", "Musée des Alpilles à Saint-Rémy (15 min)"],
+      events: ["Fête des Alpilles à Mouriès (été)", "Journées de l'Huile Nouvelle (novembre-décembre)", "Rando des Alpilles (octobre)"],
+      bestTime: "Novembre-décembre pour la récolte et la dégustation d'huile nouvelle, mai pour la floraison",
+    },
+    "molleges": {
+      highlights: ["Village-rue provençal authentique entouré de vergers", "Cultures maraîchères — vente directe chez les producteurs", "Canal de la Durance — promenades cyclables", "À équidistance des Alpilles et du Luberon (30 min chacun)", "Vue lointaine sur le Mont Ventoux", "Base idéale pour explorer deux massifs en une semaine"],
+      events: ["Fête du village (juillet)", "Marché paysan estival (dimanche)", "Vendanges chez les vignerons locaux"],
+      bestTime: "Toute saison — idéal pour explorer les Alpilles et le Luberon depuis une base tranquille et abordable",
+    },
+    "noves": {
+      highlights: ["Église Notre-Dame de Noves (romane, XIIe s.)", "Bord de la Durance — baignade, pêche, promenades", "Moulin à vent panoramique", "Marché du lundi matin (produits du terroir)", "Vergers de cerisiers et d'abricotiers — cueillette", "Chaîne des Côtes — randonnée au départ du village"],
+      events: ["Fête des cerisiers (mai-juin)", "Journées du Patrimoine", "Fête patronale (août)"],
+      bestTime: "Mai-juin pour les cerisiers en fleurs et la cueillette, septembre pour la vendange et les couleurs",
+    },
+    "verquieres": {
+      highlights: ["Village agricole authentique au cœur du Comtat Venaissin", "Maraîchage et vente de produits locaux à la ferme", "Route des vins Coteaux d'Aix à 15 min", "Vue sur le Mont Ventoux par temps clair", "À mi-chemin entre Saint-Rémy-de-Provence et Avignon", "Calme absolu et paysages agricoles préservés"],
+      events: ["Marché de producteurs (été)", "Fête du village (août)", "Balades dans les vignes (automne)"],
+      bestTime: "Printemps et automne — calme total, prix avantageux, accès rapide à Avignon et aux Alpilles",
+    },
+    "orgon": {
+      highlights: ["Village perché sur un éperon rocheux dominant la Durance", "Chapelle Notre-Dame de Beauregard — panorama 360° exceptionnel", "Gorges de la Durance — kayak, canoë, pêche", "Porte d'entrée du Parc Naturel du Luberon", "Randonnée au sommet du village (vue sur Alpilles et Luberon)", "Marché du mercredi"],
+      events: ["Fête du village et brocante (août)", "Journées Nature du Luberon (printemps)", "Fêtes de la Durance (été)"],
+      bestTime: "Mai-juin pour les randonnées vers le Luberon, automne pour les couleurs de la Durance",
+    },
   };
   return info[slug] ?? {
     highlights: ["Village provençal authentique", "Marchés locaux", "Patrimoine architectural", "Nature et randonnées", "Gastronomie provençale"],
