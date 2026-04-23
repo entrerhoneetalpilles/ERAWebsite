@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Politique de confidentialité",
   description: "Politique de confidentialité et traitement des données personnelles de la conciergerie Entre Rhône et Alpilles. Conformité RGPD.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "https://entre-rhone-alpilles.fr/politique-confidentialite" },
 };
 
 export default function PolitiqueConfidentialitePage() {

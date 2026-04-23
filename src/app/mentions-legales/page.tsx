@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Mentions légales",
   description: "Mentions légales de la conciergerie Entre Rhône et Alpilles : éditeur, hébergeur, propriété intellectuelle.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "https://entre-rhone-alpilles.fr/mentions-legales" },
 };
 
 export default function MentionsLegalesPage() {

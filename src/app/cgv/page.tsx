@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Conditions Générales de Vente",
   description: "Conditions générales de vente de la conciergerie Entre Rhône et Alpilles. Modalités de réservation, annulation, paiement.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "https://entre-rhone-alpilles.fr/cgv" },
 };
 
 export default function CGVPage() {
