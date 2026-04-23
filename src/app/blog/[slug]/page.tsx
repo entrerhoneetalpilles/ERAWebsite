@@ -9,8 +9,13 @@ import { blogPosts } from "@/lib/data";
 import { formatDate as fmtDate } from "@/lib/utils";
 import { OG_IMG } from "@/lib/og";
 
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
-  return blogPosts.map((p) => ({ slug: p.slug }));
+  const today = new Date().toISOString().slice(0, 10);
+  return blogPosts
+    .filter((p) => p.date <= today)
+    .map((p) => ({ slug: p.slug }));
 }
 
 type Props = { params: Promise<{ slug: string }> };
@@ -312,6 +317,9 @@ export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) notFound();
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+  if (post.date > todayStr) notFound();
 
   const content = articleContent[slug] ?? [post.excerpt];
   const related = blogPosts.filter((p) => p.slug !== slug).slice(0, 2);

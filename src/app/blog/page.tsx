@@ -7,6 +7,8 @@ import NewsletterForm from "@/components/NewsletterForm";
 import { blogPosts } from "@/lib/data";
 import { OG_IMG } from "@/lib/og";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Blog — Conseils Location & Guides Provence",
   description:
@@ -23,6 +25,9 @@ export const metadata: Metadata = {
 const categories = ["Tous", "Conseils propriétaires", "Guides de voyage", "Actualités région"];
 
 export default function BlogPage() {
+  const today = new Date().toISOString().slice(0, 10);
+  const publishedPosts = blogPosts.filter((p) => p.date <= today);
+
   return (
     <div className="pt-20">
       <div className="bg-[var(--color-cream)] py-12">
@@ -55,7 +60,7 @@ export default function BlogPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 id="articles-heading" className="sr-only">Articles du blog</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogPosts.map((p) => <BlogCard key={p.slug} post={p} />)}
+            {publishedPosts.map((p) => <BlogCard key={p.slug} post={p} />)}
           </div>
         </div>
       </section>

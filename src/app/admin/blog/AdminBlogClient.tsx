@@ -5,6 +5,7 @@ import {
   Check, Lock, Eye, EyeOff, FileText, Sparkles, Rocket,
   CheckCircle, AlertCircle, ExternalLink, RefreshCw,
   LayoutList, Pencil, Trash2, X, Loader2, BarChart2,
+  Calendar, Clock,
 } from "lucide-react";
 import BlogForm, { type FormValues } from "./BlogForm";
 import SeoPanel from "./SeoPanel";
@@ -116,17 +117,27 @@ function ArticleList({
     "Actualités région": "bg-amber-50 text-amber-700",
   };
 
+  const todayStr = new Date().toISOString().slice(0, 10);
+
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm divide-y divide-gray-100">
       {posts.length === 0 && (
         <p className="text-sm text-gray-400 text-center py-12">Aucun article publié.</p>
       )}
-      {posts.map((post) => (
+      {posts.map((post) => {
+        const isScheduled = post.date > todayStr;
+        return (
         <div key={post.slug} className="flex items-start gap-4 p-5">
           <div className="flex-1 min-w-0">
             <p className="font-semibold text-gray-900 truncate">{post.title}</p>
             <div className="flex items-center gap-2 mt-1 flex-wrap">
               <span className="text-xs text-gray-400">{post.date}</span>
+              {isScheduled && (
+                <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-medium border border-amber-100">
+                  <Clock className="w-3 h-3" aria-hidden="true" />
+                  Planifié
+                </span>
+              )}
               <span className="text-gray-200">·</span>
               <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${categoryColor[post.category] ?? "bg-gray-100 text-gray-600"}`}>
                 {post.category}
@@ -186,13 +197,15 @@ function ArticleList({
             )}
           </div>
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
 
 // ── Types ──────────────────────────────────────────────────────
 type PublishStatus = "idle" | "loading" | "success" | "error";
+type Tab = "form" | "prompt" | "manage" | "seo" | "calendar";
 type Mode = "create" | "edit";
 
 interface Props {
@@ -203,7 +216,7 @@ interface Props {
 export default function AdminBlogClient({ initialPosts }: Props) {
   const [authed, setAuthed] = useState(false);
   const [values, setValues] = useState<FormValues>(EMPTY);
-  const [tab, setTab] = useState<"form" | "prompt" | "manage" | "seo">("form");
+  const [tab, setTab] = useState<Tab>("form");
   const [mode, setMode] = useState<Mode>("create");
 
   const [publishStatus, setPublishStatus] = useState<PublishStatus>("idle");
@@ -371,6 +384,22 @@ export default function AdminBlogClient({ initialPosts }: Props) {
           >
             <BarChart2 className="w-4 h-4" /> Rapports SEO
           </button>
+          {(() => {
+            const scheduled = initialPosts.filter((p) => p.date > new Date().toISOString().slice(0, 10));
+            return (
+              <button
+                onClick={() => setTab("calendar")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === "calendar" ? "bg-[var(--color-rhone)] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[var(--color-rhone)]"}`}
+              >
+                <Calendar className="w-4 h-4" /> Calendrier
+                {scheduled.length > 0 && (
+                  <span className={`text-xs rounded-full px-1.5 py-0.5 font-bold ${tab === "calendar" ? "bg-white/20 text-white" : "bg-amber-100 text-amber-700"}`}>
+                    {scheduled.length}
+                  </span>
+                )}
+              </button>
+            );
+          })()}
         </div>
 
         {/* ── Form / Edit tab ── */}
@@ -485,6 +514,78 @@ export default function AdminBlogClient({ initialPosts }: Props) {
 
         {/* ── SEO report tab ── */}
         {tab === "seo" && <SeoReport />}
+
+        {/* ── Calendar tab ── */}
+        {tab === "calendar" && (() => {
+          const todayStr = new Date().toISOString().slice(0, 10);
+          const sorted = [...initialPosts].sort((a, b) => a.date.localeCompare(b.date));
+          const scheduled = sorted.filter((p) => p.date > todayStr);
+          const published = sorted.filter((p) => p.date <= todayStr).reverse();
+          return (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-amber-500" />
+                  Articles planifiés ({scheduled.length})
+                </h2>
+                {scheduled.length === 0 ? (
+                  <p className="text-sm text-gray-400 py-6 text-center bg-white rounded-xl border border-gray-200">
+                    Aucun article planifié. Choisissez une date future dans le formulaire de rédaction.
+                  </p>
+                ) : (
+                  <div className="bg-white rounded-2xl border border-amber-200 shadow-sm divide-y divide-amber-50">
+                    {scheduled.map((p) => (
+                      <div key={p.slug} className="flex items-center gap-4 px-5 py-4">
+                        <div className="w-20 text-right shrink-0">
+                          <span className="text-xs font-mono text-amber-700 bg-amber-50 px-2 py-1 rounded-lg">{p.date}</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-gray-900 truncate text-sm">{p.title}</p>
+                          <p className="text-xs text-gray-400 truncate mt-0.5">{p.category}</p>
+                        </div>
+                        <button
+                          onClick={() => { handleEdit(p); setTab("form"); }}
+                          className="shrink-0 p-2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                          title="Modifier"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div>
+                <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-emerald-500" />
+                  Articles publiés ({published.length})
+                </h2>
+                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm divide-y divide-gray-100">
+                  {published.map((p) => (
+                    <div key={p.slug} className="flex items-center gap-4 px-5 py-4">
+                      <div className="w-20 text-right shrink-0">
+                        <span className="text-xs font-mono text-gray-500">{p.date}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-700 truncate text-sm">{p.title}</p>
+                        <p className="text-xs text-gray-400 truncate mt-0.5">{p.category}</p>
+                      </div>
+                      <a
+                        href={`/blog/${p.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 p-2 rounded-lg text-gray-400 hover:text-[var(--color-rhone)] hover:bg-[var(--color-rhone)]/5 transition-colors"
+                        title="Voir"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* ── Manage tab ── */}
         {tab === "manage" && (
