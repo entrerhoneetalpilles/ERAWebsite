@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { communes, propertyTypes, activityTags, blogPosts } from "@/lib/data";
 
+export const revalidate = 3600;
+
 const BASE = "https://entre-rhone-alpilles.fr";
 
 export default function sitemap(): MetadataRoute.Sitemap {
