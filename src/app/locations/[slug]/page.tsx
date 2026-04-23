@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (pt) {
     return {
       title: `${pt.plural} à louer en Provence`,
-      description: `${pt.plural} en Provence : ${pt.description}. Sélection Entre Rhône et Alpilles.`,
+      description: `${pt.plural} en Provence : ${pt.description}. Sélection ERA Provence — réservation directe.`,
       alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/${pt.slug}` },
       openGraph: {
         title: `${pt.plural} à louer en Provence — ERA`,

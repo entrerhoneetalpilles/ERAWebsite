@@ -232,7 +232,8 @@ function countLinks(html: string): { internal: number; external: number; interna
 }
 
 function getWordCount(html: string): number {
-  const main = html.match(/<(?:main|article)[^>]*>([\s\S]*?)<\/(?:main|article)>/i)?.[1] ?? html;
+  const mainMatch = html.match(/<main[^>]*>([\s\S]*)<\/main>/i);
+  const main = mainMatch ? mainMatch[1] : html;
   const text = main
     .replace(/<script[\s\S]*?<\/script>/gi, "")
     .replace(/<style[\s\S]*?<\/style>/gi, "")

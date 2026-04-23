@@ -5,6 +5,7 @@ import PropertyCard from "@/components/PropertyCard";
 import Breadcrumb from "@/components/Breadcrumb";
 import FAQAccordion from "@/components/FAQAccordion";
 import { communes } from "@/lib/data";
+import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
   title: "Location avec Piscine Provence — Alpilles",
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
     title: "Location avec Piscine en Provence — Mas, Villas & Bastides",
     description: "Locations de vacances avec piscine privée en Provence : mas, villas et bastides entre le Rhône et les Alpilles. Piscine chauffée disponible.",
     url: "https://entre-rhone-alpilles.fr/locations/avec-piscine",
+    images: OG_IMG,
   },
 };
 
