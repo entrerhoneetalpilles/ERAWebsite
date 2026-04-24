@@ -220,6 +220,7 @@ export default function HomePage() {
             <Link
               href="/conciergerie/estimer-mes-revenus"
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[var(--color-rhone)] text-white rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors text-sm"
+              title="Confier mon bien en gestion locative"
             >
               Confier mon bien <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
@@ -227,6 +228,7 @@ export default function HomePage() {
               href="/locations"
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-md border text-sm tracking-[0.1em] uppercase font-medium transition-colors hover:bg-[var(--color-lin)]"
               style={{ borderColor: "var(--color-gres-moyen)", color: "var(--texte-corps)" }}
+              title="Voir nos hébergements en Provence"
             >
               Nos hébergements
             </Link>
@@ -297,16 +299,18 @@ export default function HomePage() {
             <Link
               href="/conciergerie/estimer-mes-revenus"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
+              title="Estimer mes revenus locatifs gratuitement"
             >
               Estimer mes revenus <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
             <Link
               href="/conciergerie/nos-services"
               className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] rounded-md hover:bg-[var(--color-cream)] transition-colors"
+              title="Découvrir nos services de conciergerie"
             >
               Découvrir nos services
             </Link>
-            <Link href="/a-propos" className="inline-flex items-center gap-2 px-6 py-3 text-[var(--color-rhone)] font-semibold hover:underline transition-colors text-sm">
+            <Link href="/a-propos" className="inline-flex items-center gap-2 px-6 py-3 text-[var(--color-rhone)] font-semibold hover:underline transition-colors text-sm" title="Notre histoire — Entre Rhône et Alpilles">
               Notre histoire →
             </Link>
           </div>
@@ -332,6 +336,7 @@ export default function HomePage() {
               href="/locations"
               className="hidden sm:flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-[var(--color-rhone)]"
               style={{ color: "var(--color-rhone-dark)" }}
+              title="Voir tous les hébergements"
             >
               Voir tout <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
@@ -370,6 +375,7 @@ export default function HomePage() {
             <Link
               href="/destinations"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
+              title="Toutes les destinations en Provence"
             >
               Toutes les destinations <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
@@ -447,6 +453,7 @@ export default function HomePage() {
               href="/avis"
               className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
               style={{ color: "var(--color-rhone-dark)" }}
+              title="Lire tous les avis propriétaires"
             >
               Lire tous les avis <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
@@ -473,6 +480,7 @@ export default function HomePage() {
               href="/blog"
               className="hidden sm:flex items-center gap-1.5 text-sm font-medium transition-colors"
               style={{ color: "var(--color-rhone-dark)" }}
+              title="Voir tous les articles du blog"
             >
               Voir tout <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
@@ -500,6 +508,7 @@ export default function HomePage() {
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-rhone)] text-white rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
+              title="Nous contacter"
             >
               Nous contacter <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
@@ -528,6 +537,7 @@ export default function HomePage() {
             <Link
               href="/conciergerie/estimer-mes-revenus"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--color-rhone)] text-white rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
+              title="Estimer mes revenus locatifs gratuitement"
             >
               Estimer mes revenus gratuitement <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
@@ -535,6 +545,7 @@ export default function HomePage() {
               href="/contact"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-md border font-medium transition-colors hover:bg-white/10"
               style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.75)" }}
+              title="Parler à un expert ERA"
             >
               Parler à un expert
             </Link>

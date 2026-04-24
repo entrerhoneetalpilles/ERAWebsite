@@ -92,6 +92,7 @@ export default function CommuneCard({ commune, showCircle }: CommuneCardProps) {
           <Link
             href={`/locations/${commune.slug}`}
             className="flex-1 text-center px-3 py-2 bg-[var(--color-rhone)] text-white text-xs font-medium rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
+            title={`Hébergements à ${commune.name}`}
           >
             Hébergements
           </Link>
@@ -99,6 +100,7 @@ export default function CommuneCard({ commune, showCircle }: CommuneCardProps) {
             href={`/destinations/${commune.slug}`}
             className="flex items-center gap-1 px-3 py-2 border text-xs font-medium rounded-md transition-colors hover:bg-[var(--color-cream)]"
             style={{ borderColor: "var(--color-gres-clair)", color: "var(--texte-leger)" }}
+            title={`Guide de destination — ${commune.name}`}
           >
             Guide
             <ArrowRight className="w-3 h-3" aria-hidden="true" />

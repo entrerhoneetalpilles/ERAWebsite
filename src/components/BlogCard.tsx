@@ -14,7 +14,7 @@ export default function BlogCard({ post }: BlogCardProps) {
       className="group bg-white rounded-xl overflow-hidden border shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
       style={{ borderColor: "var(--color-gres-clair)" }}
     >
-      <Link href={`/blog/${post.slug}`} className="block relative aspect-[16/9] overflow-hidden">
+      <Link href={`/blog/${post.slug}`} className="block relative aspect-[16/9] overflow-hidden" title={post.title}>
         {post.image ? (
           <Image
             src={post.image}
@@ -48,7 +48,7 @@ export default function BlogCard({ post }: BlogCardProps) {
           </span>
         </div>
 
-        <Link href={`/blog/${post.slug}`}>
+        <Link href={`/blog/${post.slug}`} title={post.title}>
           <h3
             className="font-serif font-normal text-base text-[var(--color-encre)] group-hover:text-[var(--color-rhone-dark)] transition-colors leading-snug mb-2"
           >
@@ -64,6 +64,7 @@ export default function BlogCard({ post }: BlogCardProps) {
           href={`/blog/${post.slug}`}
           className="text-xs font-medium transition-colors inline-flex items-center gap-1 uppercase"
           style={{ color: "var(--color-rhone-dark)", letterSpacing: "0.06em" }}
+          title={`Lire l'article : ${post.title}`}
         >
           Lire l&apos;article
           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

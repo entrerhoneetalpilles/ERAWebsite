@@ -116,7 +116,7 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <a href="#main-content" className="skip-link">
+        <a href="#main-content" className="skip-link" title="Aller au contenu principal">
           Aller au contenu principal
         </a>
         <Header />

@@ -42,7 +42,7 @@ export default function PropertyCard({
       style={featured ? { borderColor: "var(--color-gres-moyen)" } : { borderColor: "var(--color-gres-clair)" }}
     >
       {/* Image */}
-      <Link href={cardHref} className="block relative overflow-hidden aspect-[4/3]">
+      <Link href={cardHref} className="block relative overflow-hidden aspect-[4/3]" title={title}>
         {image ? (
           <Image
             src={image}
@@ -83,7 +83,7 @@ export default function PropertyCard({
           <span>{type}</span>
         </div>
 
-        <Link href={cardHref}>
+        <Link href={cardHref} title={title}>
           <h3
             className="font-serif font-normal text-base text-[var(--color-encre)] group-hover:text-[var(--color-rhone-dark)] transition-colors line-clamp-2 leading-snug mb-3"
           >
@@ -115,6 +115,7 @@ export default function PropertyCard({
             href={cardHref}
             className="px-4 py-1.5 bg-[var(--color-rhone)] text-white text-xs font-medium rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
             style={{ letterSpacing: "0.04em" }}
+            title={`Voir le bien : ${title}`}
           >
             Voir le bien
           </Link>

@@ -72,6 +72,7 @@ export default function Header() {
             href="/"
             className="flex items-center gap-2 flex-shrink-0"
             aria-label="Entre Rhône et Alpilles — Accueil"
+            title="Accueil — Entre Rhône et Alpilles"
           >
             <span
               className="font-serif text-xl lg:text-2xl leading-tight text-[var(--color-rhone-dark)]"
@@ -98,6 +99,7 @@ export default function Header() {
                     className="px-3 py-2 text-xs tracking-widest uppercase transition-colors flex items-center gap-1"
                     style={{ color: "var(--texte-discret)", letterSpacing: "0.1em" }}
                     aria-expanded={activeDropdown === link.href}
+                    title={link.label}
                   >
                     {link.label}
                     <svg className="w-3 h-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -112,6 +114,7 @@ export default function Header() {
                           href={child.href}
                           className="block px-4 py-2.5 text-sm transition-colors hover:bg-[var(--color-cream)]"
                           style={{ color: "var(--texte-leger)" }}
+                          title={child.label}
                         >
                           {child.label}
                         </Link>
@@ -125,6 +128,7 @@ export default function Header() {
                   href={link.href}
                   className="px-3 py-2 text-xs transition-colors uppercase tracking-widest"
                   style={{ color: "var(--texte-discret)", letterSpacing: "0.1em" }}
+                  title={link.label}
                 >
                   {link.label}
                 </Link>
@@ -139,6 +143,7 @@ export default function Header() {
               className="flex items-center gap-1.5 text-xs transition-colors"
               style={{ color: "var(--texte-discret)" }}
               aria-label="Nous appeler"
+              title="Appeler le 07 52 90 78 68"
             >
               <Phone className="w-3.5 h-3.5" aria-hidden="true" />
               <span>07 52 90 78 68</span>
@@ -147,6 +152,7 @@ export default function Header() {
               href="/conciergerie/estimer-mes-revenus"
               className="px-5 py-2.5 bg-[var(--color-rhone)] text-white text-xs rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
               style={{ letterSpacing: "0.08em", textTransform: "uppercase" }}
+              title="Confier mon bien en gestion locative"
             >
               Confier mon bien
             </Link>
@@ -180,6 +186,7 @@ export default function Header() {
                     className="block px-4 py-2.5 text-xs font-medium rounded-lg transition-colors uppercase"
                     style={{ color: "var(--texte-corps)", letterSpacing: "0.1em" }}
                     onClick={() => setIsOpen(false)}
+                    title={link.label}
                   >
                     {link.label}
                   </Link>
@@ -192,6 +199,7 @@ export default function Header() {
                           className="block px-4 py-2 text-sm rounded-lg transition-colors"
                           style={{ color: "var(--texte-leger)" }}
                           onClick={() => setIsOpen(false)}
+                          title={child.label}
                         >
                           {child.label}
                         </Link>
@@ -208,6 +216,7 @@ export default function Header() {
                   href="tel:+33752907868"
                   className="flex items-center gap-2 text-xs"
                   style={{ color: "var(--texte-discret)" }}
+                  title="Appeler le 07 52 90 78 68"
                 >
                   <Phone className="w-4 h-4" aria-hidden="true" />
                   07 52 90 78 68
@@ -217,6 +226,7 @@ export default function Header() {
                   className="w-full text-center px-4 py-3 bg-[var(--color-rhone)] text-white text-xs rounded-md hover:bg-[var(--color-rhone-dark)] transition-colors"
                   style={{ letterSpacing: "0.08em", textTransform: "uppercase" }}
                   onClick={() => setIsOpen(false)}
+                  title="Confier mon bien en gestion locative"
                 >
                   Confier mon bien
                 </Link>
@@ -225,6 +235,7 @@ export default function Header() {
                   className="w-full text-center px-4 py-3 border border-[var(--color-rhone)] text-[var(--color-rhone)] text-xs rounded-md hover:bg-[var(--color-cream)] transition-colors"
                   style={{ letterSpacing: "0.08em", textTransform: "uppercase" }}
                   onClick={() => setIsOpen(false)}
+                  title="Trouver un hébergement en Provence"
                 >
                   Trouver un hébergement
                 </Link>

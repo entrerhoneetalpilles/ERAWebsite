@@ -212,7 +212,7 @@ export default function ConciergerieHubPage() {
               { href: "/conciergerie/tarifs", label: "Tarifs", desc: "Transparents et sans surprise" },
               { href: "/conciergerie/estimer-mes-revenus", label: "Estimer mes revenus", desc: "Simulateur gratuit" },
             ].map((l) => (
-              <Link key={l.href} href={l.href} className="group p-5 rounded-xl border border-gray-100 hover:border-[var(--color-rhone)] hover:shadow-sm transition-all">
+              <Link key={l.href} href={l.href} className="group p-5 rounded-xl border border-gray-100 hover:border-[var(--color-rhone)] hover:shadow-sm transition-all" title={l.label}>
                 <p className="font-semibold text-gray-900 group-hover:text-[var(--color-rhone)] transition-colors mb-1">{l.label}</p>
                 <p className="text-sm text-gray-500">{l.desc}</p>
                 <ArrowRight className="w-4 h-4 text-[var(--color-rhone)] mt-3 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
@@ -236,6 +236,7 @@ export default function ConciergerieHubPage() {
                 key={c.slug}
                 href={`/conciergerie/${c.slug}`}
                 className="group flex items-center gap-2 px-4 py-3 rounded-xl border border-gray-100 hover:border-[var(--color-rhone)] hover:shadow-sm transition-all text-sm text-gray-700 hover:text-[var(--color-rhone)]"
+                title={`Conciergerie à ${c.name}`}
               >
                 <ArrowRight className="w-3.5 h-3.5 shrink-0 text-gray-300 group-hover:text-[var(--color-rhone)] transition-colors" aria-hidden="true" />
                 {c.name}
