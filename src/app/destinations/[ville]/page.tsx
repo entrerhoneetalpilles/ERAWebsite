@@ -52,7 +52,7 @@ const getLocalInfo = (slug: string) => {
       bestTime: "Juin et septembre pour la douceur et moins de monde",
     },
     "maussane-les-alpilles": {
-      highlights: ["Capitale AOP Huile d'olive des Alpilles", "Moulin coopératif de la Vallée des Baux (visite & dégustation)", "Route des oliviers (vélo ou randonnée)", "Marché du dimanche sous les platanes", "Restaurants gastronomiques en terrasse", "Vignoble AOP Baux-de-Provence à 5 min"],
+      highlights: ["Capitale AOP Huile d'olive des Alpilles", "Moulin coopératif de la Vallée des Baux (visite & dégustation)", "Route des oliviers (vélo ou randonnée)", "Marché du jeudi sous les platanes", "Restaurants gastronomiques en terrasse", "Vignoble AOP Baux-de-Provence à 5 min"],
       events: ["Fête de l'Olive (décembre)", "Journées de l'huile nouvelle (novembre)", "Marchés thématiques estivaux"],
       bestTime: "Décembre pour la récolte et l'huile nouvelle, mai-juin pour le printemps provençal sans foule",
     },
