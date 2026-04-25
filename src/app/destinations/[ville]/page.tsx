@@ -52,12 +52,12 @@ const getLocalInfo = (slug: string) => {
       bestTime: "Juin et septembre pour la douceur et moins de monde",
     },
     "maussane-les-alpilles": {
-      highlights: ["Capitale AOP Huile d'olive des Alpilles", "Moulin coopératif de la Vallée des Baux (visite & dégustation)", "Route des oliviers (vélo ou randonnée)", "Marché du jeudi sous les platanes", "Restaurants gastronomiques en terrasse", "Vignoble AOP Baux-de-Provence à 5 min"],
+      highlights: ["Capitale AOP Huile d'olive des Alpilles", "Moulin coopératif de la Vallée des Baux (visite & dégustation)", "Route des oliviers (vélo ou randonnée)", "Marché du dimanche sous les platanes", "Restaurants gastronomiques en terrasse", "Vignoble AOP Baux-de-Provence à 5 min"],
       events: ["Fête de l'Olive (décembre)", "Journées de l'huile nouvelle (novembre)", "Marchés thématiques estivaux"],
       bestTime: "Décembre pour la récolte et l'huile nouvelle, mai-juin pour le printemps provençal sans foule",
     },
     "fontvieille": {
-      highlights: ["Moulin d'Alphonse Daudet & musée dédié", "Aqueduc romain de Barbegal (IVe s.)", "Abbaye de Montmajour à 5 km", "Sentiers VTT et vélo dans les Alpilles", "Carrière romaine de la Gayolle", "Marché provençal du mardi"],
+      highlights: ["Moulin d'Alphonse Daudet & musée dédié", "Aqueduc romain de Barbegal (IVe s.)", "Abbaye de Montmajour à 5 km", "Sentiers VTT et vélo dans les Alpilles", "Carrière romaine de la Gayolle", "Marché provençal du lundi"],
       events: ["Rendez-vous de Fontvieille — cyclisme (septembre)", "Fête de la Saint-Éloi (artisans)", "Festival estival en plein air"],
       bestTime: "Avril-juin pour les randonnées, septembre-octobre pour les couleurs dorées des Alpilles",
     },
