@@ -351,6 +351,11 @@ export default function SeoReport() {
       lines.push(`\n  ${p.path} — Score ${p.score}/100 (${scoreGrade(p.score)})`);
       if (p.title) lines.push(`    Titre (${p.titleLength} car.) : ${p.title}`);
       if (p.h1) lines.push(`    H1 : ${p.h1}`);
+      if (p.twitterCard) lines.push(`    Twitter Card : ${p.twitterCard}${p.twitterImage ? ` | image ${p.twitterImageWidth ?? "?"}×${p.twitterImageHeight ?? "?"}` : " | ✗ image manquante"}`);
+      if (p.redirectChain.length > 0) lines.push(`    Redirections : ${p.redirectChain.length} saut${p.redirectChain.length > 1 ? "s" : ""} → ${p.redirectChain.join(" → ")}`);
+      if (p.schemaIssues.length > 0) {
+        for (const si of p.schemaIssues) lines.push(`    △ Schema ${si.type} : "${si.missingProp}" manquant`);
+      }
       if (p.issues.length === 0) {
         lines.push(`    ✓ Aucun problème`);
       } else {
@@ -395,6 +400,53 @@ export default function SeoReport() {
       for (const [path, depth] of pagesWithDepth) {
         const flag = depth > 6 ? " ⚠ trop profond" : depth > 4 ? " △ à surveiller" : "";
         lines.push(`  ${path} — profondeur ${depth}${flag}`);
+      }
+    }
+
+    if (redirectChains.length > 0) {
+      lines.push(`\nCHAÎNES DE REDIRECTIONS (${redirectChains.length})`);
+      for (const r of redirectChains) {
+        lines.push(`  ${r.path} → ${r.chainLength} saut${r.chainLength > 1 ? "s" : ""}`);
+        lines.push(`    Chaîne : ${[...r.chain, r.finalUrl].join(" → ")}`);
+      }
+    }
+
+    if (securityHeaders) {
+      lines.push(`\nEN-TÊTES DE SÉCURITÉ — score ${securityHeaders.score}/100`);
+      lines.push(`  HSTS              : ${securityHeaders.hsts ?? "✗ absent"}`);
+      lines.push(`  CSP               : ${securityHeaders.csp ? "✓ présent" : "✗ absent"}`);
+      lines.push(`  X-Frame-Options   : ${securityHeaders.xFrameOptions ?? "✗ absent"}`);
+      lines.push(`  X-Content-Type    : ${securityHeaders.xContentTypeOptions ?? "✗ absent"}`);
+      lines.push(`  Referrer-Policy   : ${securityHeaders.referrerPolicy ?? "✗ absent"}`);
+    }
+
+    if (coverageDiff) {
+      lines.push(`\nCOUVERTURE SITEMAP vs CRAWL`);
+      lines.push(`  Dans les deux     : ${coverageDiff.inBoth}`);
+      lines.push(`  Sitemap seulement : ${coverageDiff.onlyInSitemap.length}${coverageDiff.onlyInSitemap.length > 0 ? " — " + coverageDiff.onlyInSitemap.slice(0, 10).join(", ") + (coverageDiff.onlyInSitemap.length > 10 ? ` +${coverageDiff.onlyInSitemap.length - 10}` : "") : ""}`);
+      lines.push(`  Crawl seulement   : ${coverageDiff.onlyInCrawl.length}${coverageDiff.onlyInCrawl.length > 0 ? " — " + coverageDiff.onlyInCrawl.slice(0, 10).join(", ") + (coverageDiff.onlyInCrawl.length > 10 ? ` +${coverageDiff.onlyInCrawl.length - 10}` : "") : ""}`);
+    }
+
+    if (duplicateGroups.length > 0) {
+      lines.push(`\nCONTENU DUPLIQUÉ — BODY (${duplicateGroups.length} groupe${duplicateGroups.length > 1 ? "s" : ""})`);
+      for (const g of duplicateGroups) {
+        lines.push(`  Similarité ${Math.round(g.similarity * 100)}% : ${g.paths.join(" ↔ ")}`);
+      }
+    }
+
+    if (crawlGraph.length > 0) {
+      const orphanNodes = crawlGraph.filter((n) => n.isOrphan);
+      const deepNodes = crawlGraph.filter((n) => n.depth > 6);
+      lines.push(`\nGRAPHE DE CRAWL — ${crawlGraph.length} pages`);
+      if (orphanNodes.length > 0) {
+        lines.push(`  Orphelines (aucun lien entrant) : ${orphanNodes.length}`);
+        for (const n of orphanNodes.slice(0, 10)) lines.push(`    ${n.path}`);
+        if (orphanNodes.length > 10) lines.push(`    … +${orphanNodes.length - 10} autres`);
+      }
+      if (deepNodes.length > 0) {
+        lines.push(`  Trop profondes (profondeur > 6) : ${deepNodes.length}`);
+        for (const n of deepNodes.slice(0, 10)) lines.push(`    ${n.path} (profondeur ${n.depth})`);
+        if (deepNodes.length > 10) lines.push(`    … +${deepNodes.length - 10} autres`);
       }
     }
 

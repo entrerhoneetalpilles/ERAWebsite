@@ -472,6 +472,10 @@ const SW: Record<string, { sev: Severity; pts: number; msg: string | ((...a: any
   JSON_LD_WRONG_TYPE:    { sev: "warning",  pts: 8,  msg: (got: string, expected: string) => `JSON-LD type incorrect pour cette page (${got} → attendu ${expected})` },
   COMMUNE_NOT_IN_TITLE:  { sev: "warning",  pts: 6,  msg: (slug: string) => `Commune "${slug}" absente du titre (SEO local faible)` },
   NO_PSI:                { sev: "info",     pts: 0,  msg: "PageSpeed Insights non disponible pour cette page" },
+  // Feature AAA
+  NO_TWITTER_CARD:       { sev: "warning",  pts: 4,  msg: "Twitter Card manquante (meta twitter:card)" },
+  SCHEMA_MISSING_PROP:   { sev: "warning",  pts: 5,  msg: (type: string, prop: string) => `Schema ${type} : propriété requise "${prop}" manquante` },
+  REDIRECT_CHAIN:        { sev: "warning",  pts: 5,  msg: (n: number) => `Chaîne de ${n} redirection${n > 1 ? "s" : ""} — utilise l'URL finale directement` },
 };
 
 const THIN_MIN: Partial<Record<PageType, number>> = {
@@ -632,6 +636,17 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
 
   // ── Text/HTML ratio ───────────────────────────────────────
   if (result.textHtmlRatio < 10 && result.pageSizeKb > 20) add("LOW_TEXT_RATIO", result.textHtmlRatio);
+
+  // ── Twitter Card ──────────────────────────────────────────
+  if (!result.twitterCard) add("NO_TWITTER_CARD");
+
+  // ── Schema required properties ───────────────────────────
+  for (const iss of result.schemaIssues) {
+    add("SCHEMA_MISSING_PROP", iss.type, iss.missingProp);
+  }
+
+  // ── Redirect chain ────────────────────────────────────────
+  if (result.redirectChain.length > 0) add("REDIRECT_CHAIN", result.redirectChain.length);
 
   return { issues, score: Math.max(0, 100 - deduct) };
 }
