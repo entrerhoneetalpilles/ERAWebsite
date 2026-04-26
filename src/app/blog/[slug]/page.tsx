@@ -440,6 +440,7 @@ export default async function BlogPostPage({ params }: Props) {
     publisher: {
       "@type": "Organization",
       name: "Entre Rhône et Alpilles",
+      url: "https://entre-rhone-alpilles.fr",
       logo: { "@type": "ImageObject", url: "https://entre-rhone-alpilles.fr/logo.png" },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": `https://entre-rhone-alpilles.fr/blog/${slug}` },

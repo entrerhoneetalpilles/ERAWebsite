@@ -84,6 +84,13 @@ export default async function ConciergerieVillePage({ params }: Props) {
     name: `Entre Rhône et Alpilles — Conciergerie ${commune.name}`,
     description: `Conciergerie de location saisonnière à ${commune.name}`,
     url: `https://entre-rhone-alpilles.fr/conciergerie/${commune.slug}`,
+    telephone: "+33752907868",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: commune.name,
+      addressRegion: "Provence-Alpes-Côte d'Azur",
+      addressCountry: "FR",
+    },
     geo: { "@type": "GeoCoordinates", latitude: commune.lat, longitude: commune.lng },
     areaServed: { "@type": "City", name: commune.name },
   };
@@ -124,6 +131,12 @@ export default async function ConciergerieVillePage({ params }: Props) {
                 locale, des événements de la région et de la concurrence. Les propriétaires que nous gérons
                 à {commune.name} génèrent en moyenne {market.revenusMoyens} par an selon le type et la
                 capacité de leur bien.
+              </p>
+              <p className="text-gray-600 leading-relaxed mb-6">
+                Taux d&apos;occupation moyen constaté : <strong className="text-gray-900">{market.tauxOccupation}</strong> sur l&apos;année,
+                avec un prix moyen par nuit de <strong className="text-gray-900">{market.prixNuit}</strong> en haute saison ({market.hauteSaison}).
+                Nos prestations couvrent l&apos;intégralité du cycle locatif : création et optimisation des annonces,
+                accueil personnalisé des voyageurs, ménage professionnel entre chaque séjour et maintenance préventive du bien.
               </p>
               <ul className="space-y-3 mb-8">
                 {services.map((s) => (

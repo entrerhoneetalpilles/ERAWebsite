@@ -29,6 +29,7 @@ const schemaOrg = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Entre Rhône et Alpilles",
+  url: "https://entre-rhone-alpilles.fr",
   aggregateRating: {
     "@type": "AggregateRating",
     ratingValue: "4.7",

@@ -294,9 +294,12 @@ export default function SeoReport() {
     const map = new Map<string, { message: string; severity: Severity; count: number }>();
     for (const p of pages)
       for (const iss of p.issues) {
-        const ex = map.get(iss.code);
+        // For schema issues the message encodes type+prop — group by message; for all
+        // other codes group by code so dynamic values (char counts, ms…) don't split groups.
+        const key = iss.code === "SCHEMA_MISSING_PROP" ? `${iss.code}::${iss.message}` : iss.code;
+        const ex = map.get(key);
         if (ex) ex.count++;
-        else map.set(iss.code, { message: iss.message, severity: iss.severity, count: 1 });
+        else map.set(key, { message: iss.message, severity: iss.severity, count: 1 });
       }
     const o = { critical: 0, warning: 1, info: 2 };
     return Array.from(map.values()).sort((a, b) =>

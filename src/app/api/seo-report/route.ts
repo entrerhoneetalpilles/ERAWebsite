@@ -635,7 +635,8 @@ function score(result: Omit<PageResult, "issues" | "score">): { issues: Issue[];
   }
 
   // ── Text/HTML ratio ───────────────────────────────────────
-  if (result.textHtmlRatio < 10 && result.pageSizeKb > 20) add("LOW_TEXT_RATIO", result.textHtmlRatio);
+  // React/Next.js pages include hydration scripts that inflate HTML size — threshold lowered to 7%
+  if (result.textHtmlRatio < 7 && result.pageSizeKb > 20) add("LOW_TEXT_RATIO", result.textHtmlRatio);
 
   // ── Twitter Card ──────────────────────────────────────────
   if (!result.twitterCard) add("NO_TWITTER_CARD");
