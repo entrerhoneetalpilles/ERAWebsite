@@ -13,8 +13,8 @@ import PromptGenerator from "./PromptGenerator";
 import SeoReport from "./SeoReport";
 import { computeSeoScore } from "./seoScorer";
 import type { BlogPost } from "@/lib/data";
+import { checkAdminPassword } from "./actions";
 
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? "ERA2026";
 const SESSION_KEY = "era_admin_auth";
 
 function today() {
@@ -36,10 +36,14 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
   const [pwd, setPwd] = useState("");
   const [show, setShow] = useState(false);
   const [err, setErr] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (pwd === ADMIN_PASSWORD) {
+    setLoading(true);
+    const ok = await checkAdminPassword(pwd);
+    setLoading(false);
+    if (ok) {
       sessionStorage.setItem(SESSION_KEY, "1");
       onSuccess();
     } else {
@@ -81,9 +85,10 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
           {err && <p className="text-xs text-red-500 text-center">Mot de passe incorrect.</p>}
           <button
             type="submit"
-            className="w-full bg-[var(--color-rhone)] hover:bg-[var(--color-rhone-dark)] text-white font-semibold rounded-xl py-3 text-sm transition-colors"
+            disabled={loading}
+            className="w-full bg-[var(--color-rhone)] hover:bg-[var(--color-rhone-dark)] text-white font-semibold rounded-xl py-3 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Accéder
+            {loading ? "Vérification…" : "Accéder"}
           </button>
         </form>
       </div>
