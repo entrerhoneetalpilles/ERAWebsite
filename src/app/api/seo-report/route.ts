@@ -47,10 +47,25 @@ export interface PageResult {
   responseTimeMs: number;
   pageSizeKb: number;
   textHtmlRatio: number;
+  twitterCard: string | null;
+  twitterTitle: string | null;
+  twitterImage: string | null;
+  twitterImageWidth: string | null;
+  twitterImageHeight: string | null;
+  schemaIssues: SchemaIssue[];
+  redirectChain: string[];
+  bodyText: string;
   issues: Issue[];
   score: number;
   psi?: { performance: number; seo: number; accessibility: number; lcp: number | null; cls: number | null };
 }
+
+export interface SchemaIssue { type: string; missingProp: string; }
+export interface DuplicateGroup { similarity: number; paths: string[]; }
+export interface RedirectChain { path: string; chain: string[]; finalUrl: string; chainLength: number; }
+export interface SecurityHeaders { hsts: string | null; csp: string | null; xFrameOptions: string | null; xContentTypeOptions: string | null; referrerPolicy: string | null; score: number; }
+export interface CoverageInfo { sitemapPaths: string[]; crawledPaths: string[]; onlyInSitemap: string[]; onlyInCrawl: string[]; inBoth: number; }
+export interface CrawlGraphNode { path: string; outbound: string[]; inbound: string[]; depth: number; isOrphan: boolean; }
 
 // ── Page list ──────────────────────────────────────────────────
 
@@ -256,6 +271,166 @@ function getTextHtmlRatio(html: string): number {
     .replace(/<style[\s\S]*?<\/style>/gi, "");
   const textLen = cleaned.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().length;
   return cleaned.length > 0 ? Math.round((textLen / cleaned.length) * 100) : 0;
+}
+
+// ── Feature AAA helpers ────────────────────────────────────────
+
+function getTwitterCard(html: string): { card: string | null; title: string | null; image: string | null; imageWidth: string | null; imageHeight: string | null } {
+  function tw(name: string): string | null {
+    const pats = [
+      new RegExp(`<meta[^>]+name=["']${name}["'][^>]+content=["']([^"']*?)["']`, "i"),
+      new RegExp(`<meta[^>]+content=["']([^"']*?)["'][^>]+name=["']${name}["']`, "i"),
+    ];
+    for (const re of pats) { const m = html.match(re); if (m) return m[1].trim(); }
+    return null;
+  }
+  return { card: tw("twitter:card"), title: tw("twitter:title"), image: tw("twitter:image"), imageWidth: tw("twitter:image:width"), imageHeight: tw("twitter:image:height") };
+}
+
+const SCHEMA_REQUIRED: Record<string, string[]> = {
+  Article: ["headline", "datePublished", "author"],
+  BlogPosting: ["headline", "datePublished", "author"],
+  Organization: ["name", "url"],
+  LocalBusiness: ["name", "address", "telephone"],
+  BreadcrumbList: ["itemListElement"],
+  FAQPage: ["mainEntity"],
+  WebSite: ["name", "url"],
+  LodgingBusiness: ["name", "address"],
+  TouristDestination: ["name"],
+};
+
+function validateSchemaRequired(html: string): SchemaIssue[] {
+  const re = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  const issues: SchemaIssue[] = [];
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    try {
+      const obj = JSON.parse(m[1]);
+      const items = Array.isArray(obj["@graph"]) ? obj["@graph"] : [obj];
+      for (const item of items) {
+        const type = item["@type"] as string;
+        if (!type) continue;
+        const required = SCHEMA_REQUIRED[type] ?? [];
+        for (const prop of required) {
+          if (!item[prop]) issues.push({ type, missingProp: prop });
+        }
+      }
+    } catch { /* skip invalid JSON */ }
+  }
+  return issues;
+}
+
+async function fetchWithRedirects(url: string): Promise<{ html: string; httpStatus: number; chain: string[]; finalUrl: string; headers: Record<string, string> }> {
+  const chain: string[] = [];
+  let current = url;
+  let httpStatus = 0;
+  let html = "";
+  let headers: Record<string, string> = {};
+  for (let i = 0; i < 5; i++) {
+    try {
+      const res = await fetch(current, { redirect: "manual", headers: { "User-Agent": "ERA-SEO-Audit/1.0" }, signal: AbortSignal.timeout(12000), cache: "no-store" });
+      httpStatus = res.status;
+      headers = Object.fromEntries(res.headers.entries());
+      if (res.status >= 300 && res.status < 400) {
+        const loc = res.headers.get("location");
+        if (!loc) break;
+        chain.push(current);
+        current = loc.startsWith("http") ? loc : new URL(loc, current).href;
+      } else {
+        if (res.ok) html = await res.text();
+        break;
+      }
+    } catch { break; }
+  }
+  return { html, httpStatus, chain, finalUrl: current, headers };
+}
+
+function analyzeSecurityHeaders(headers: Record<string, string>): SecurityHeaders {
+  const hsts = headers["strict-transport-security"] ?? null;
+  const csp = headers["content-security-policy"] ?? null;
+  const xFrameOptions = headers["x-frame-options"] ?? null;
+  const xContentTypeOptions = headers["x-content-type-options"] ?? null;
+  const referrerPolicy = headers["referrer-policy"] ?? null;
+  let score = 0;
+  if (hsts) score += 25;
+  if (csp) score += 25;
+  if (xFrameOptions) score += 20;
+  if (xContentTypeOptions) score += 15;
+  if (referrerPolicy) score += 15;
+  return { hsts, csp, xFrameOptions, xContentTypeOptions, referrerPolicy, score };
+}
+
+async function getSitemapPaths(site: string): Promise<string[]> {
+  try {
+    const res = await fetch(`${site}/sitemap.xml`, { cache: "no-store", signal: AbortSignal.timeout(10000) });
+    if (!res.ok) return [];
+    const xml = await res.text();
+    const re = /<loc>([\s\S]*?)<\/loc>/gi;
+    const paths: string[] = [];
+    let m;
+    while ((m = re.exec(xml)) !== null) {
+      const u = m[1].trim();
+      if (u.endsWith(".xml")) continue;
+      try { paths.push(new URL(u).pathname.replace(/\/$/, "") || "/"); } catch { /* skip */ }
+    }
+    return [...new Set(paths)];
+  } catch { return []; }
+}
+
+const DUP_STOPWORDS = new Set(["le","la","les","de","du","des","un","une","et","en","au","aux","par","pour","sur","dans","avec","son","ses","notre","nos","qui","que","est","sont","pas","plus","cette","ces","nous","vous","ils","elles","tout","tous"]);
+
+function textToFreq(text: string): Map<string, number> {
+  const freq = new Map<string, number>();
+  for (const w of (text.toLowerCase().match(/\b[a-zàâäéèêëîïôùûüç]{3,}\b/g) ?? [])) {
+    if (!DUP_STOPWORDS.has(w)) freq.set(w, (freq.get(w) ?? 0) + 1);
+  }
+  return freq;
+}
+
+function cosineSim(a: Map<string, number>, b: Map<string, number>): number {
+  let dot = 0, na = 0, nb = 0;
+  for (const [w, va] of a) { const vb = b.get(w) ?? 0; dot += va * vb; na += va * va; }
+  for (const vb of b.values()) nb += vb * vb;
+  const d = Math.sqrt(na) * Math.sqrt(nb);
+  return d === 0 ? 0 : dot / d;
+}
+
+function detectBodyDuplicates(pages: { path: string; text: string }[]): DuplicateGroup[] {
+  const vecs = pages.map((p) => ({ path: p.path, vec: textToFreq(p.text) }));
+  const groups: DuplicateGroup[] = [];
+  const seen = new Set<string>();
+  for (let i = 0; i < vecs.length; i++) {
+    if (seen.has(vecs[i].path) || vecs[i].vec.size < 30) continue;
+    const group: string[] = [vecs[i].path];
+    let maxSim = 0;
+    for (let j = i + 1; j < vecs.length; j++) {
+      if (seen.has(vecs[j].path) || vecs[j].vec.size < 30) continue;
+      const sim = cosineSim(vecs[i].vec, vecs[j].vec);
+      if (sim >= 0.80) { group.push(vecs[j].path); seen.add(vecs[j].path); maxSim = Math.max(maxSim, sim); }
+    }
+    if (group.length > 1) { groups.push({ similarity: Math.round(maxSim * 100) / 100, paths: group }); seen.add(vecs[i].path); }
+  }
+  return groups;
+}
+
+function buildCrawlGraph(results: PageResult[], depths: Record<string, number>, orphans: string[]): CrawlGraphNode[] {
+  const orphanSet = new Set(orphans);
+  const inbound = new Map<string, string[]>();
+  for (const page of results) {
+    for (const lp of page.internalLinkPaths) {
+      const clean = lp.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
+      const arr = inbound.get(clean) ?? [];
+      if (!arr.includes(page.path)) arr.push(page.path);
+      inbound.set(clean, arr);
+    }
+  }
+  return results.map((page) => ({
+    path: page.path,
+    outbound: [...new Set(page.internalLinkPaths.map((lp) => lp.split("?")[0].split("#")[0].replace(/\/$/, "") || "/"))],
+    inbound: inbound.get(page.path) ?? [],
+    depth: depths[page.path] ?? -1,
+    isOrphan: orphanSet.has(page.path),
+  }));
 }
 
 // ── Scoring ────────────────────────────────────────────────────
@@ -508,21 +683,9 @@ function crossPageCorrections(
 
 async function analyzePage(path: string, pageType: PageType): Promise<PageResult> {
   const url = `${SITE}${path}`;
-  let html = "";
-  let httpStatus = 200;
   const start = Date.now();
 
-  try {
-    const res = await fetch(url, {
-      headers: { "User-Agent": "ERA-SEO-Audit/1.0" },
-      signal: AbortSignal.timeout(12000),
-      cache: "no-store",
-    });
-    httpStatus = res.status;
-    if (res.ok) html = await res.text();
-  } catch {
-    httpStatus = 0;
-  }
+  const { html, httpStatus, chain: redirectChain } = await fetchWithRedirects(url);
 
   const responseTimeMs = Date.now() - start;
 
@@ -544,6 +707,9 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
   const htmlLang = getHtmlLang(html);
   const pageSizeKb = Math.round(html.length / 1024);
   const textHtmlRatio = getTextHtmlRatio(html);
+  const tw = getTwitterCard(html);
+  const schemaIssues = validateSchemaRequired(html);
+  const bodyText = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 8000);
 
   const partial: Omit<PageResult, "issues" | "score"> = {
     path, url, pageType, httpStatus,
@@ -559,6 +725,9 @@ async function analyzePage(path: string, pageType: PageType): Promise<PageResult
     wordCount, internalLinks: links.internal, externalLinks: links.external, internalLinkPaths: links.internalPaths,
     viewport, htmlLang,
     responseTimeMs, pageSizeKb, textHtmlRatio,
+    twitterCard: tw.card, twitterTitle: tw.title, twitterImage: tw.image,
+    twitterImageWidth: tw.imageWidth, twitterImageHeight: tw.imageHeight,
+    schemaIssues, redirectChain, bodyText,
   };
 
   const { issues, score: pageScore } = score(partial);
@@ -765,6 +934,41 @@ export async function POST(req: NextRequest) {
         // Phase 5 — broken internal links
         const brokenLinks = await detectBrokenLinks(allResults, SITE);
         if (brokenLinks.length > 0) send({ type: "broken_links", links: brokenLinks });
+
+        // Phase 6 — redirect chains
+        const redirectChains: RedirectChain[] = allResults
+          .filter((p) => p.redirectChain.length > 0)
+          .map((p) => ({ path: p.path, chain: p.redirectChain, finalUrl: p.url, chainLength: p.redirectChain.length }));
+        if (redirectChains.length > 0) send({ type: "redirect_chains", chains: redirectChains });
+
+        // Phase 7 — security headers (from homepage)
+        const homepageFetch = await fetchWithRedirects(`${SITE}/`);
+        const secHeaders = analyzeSecurityHeaders(homepageFetch.headers);
+        send({ type: "security_headers", headers: secHeaders });
+
+        // Phase 8 — sitemap coverage diff
+        const sitemapPaths = await getSitemapPaths(SITE);
+        if (sitemapPaths.length > 0) {
+          const crawledSet = new Set(allResults.map((p) => p.path));
+          const sitemapSet = new Set(sitemapPaths);
+          const coverageDiff: CoverageInfo = {
+            sitemapPaths,
+            crawledPaths: allResults.map((p) => p.path),
+            onlyInSitemap: sitemapPaths.filter((p) => !crawledSet.has(p)),
+            onlyInCrawl: allResults.map((p) => p.path).filter((p) => !sitemapSet.has(p)),
+            inBoth: sitemapPaths.filter((p) => crawledSet.has(p)).length,
+          };
+          send({ type: "coverage_diff", diff: coverageDiff });
+        }
+
+        // Phase 9 — body duplicate detection (cosine sim)
+        const textData = allResults.map((p) => ({ path: p.path, text: p.bodyText }));
+        const dupGroups = detectBodyDuplicates(textData);
+        if (dupGroups.length > 0) send({ type: "duplicate_groups", groups: dupGroups });
+
+        // Phase 10 — crawl graph
+        const crawlGraph = buildCrawlGraph(allResults, depths, orphans);
+        send({ type: "crawl_graph", nodes: crawlGraph });
 
         // PageSpeed for top 5 pages
         if (PSI_KEY || process.env.PSI_ALLOW_NO_KEY) {

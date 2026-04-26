@@ -242,13 +242,10 @@ function scoreReadability(content: string): SeoItem {
   let bestKw = "";
   let bestCount = 0;
   for (const kw of LOCAL_KEYWORDS) {
-    // Count non-overlapping occurrences
-    let count = 0;
-    let pos = 0;
-    while ((pos = lower.indexOf(kw, pos)) !== -1) {
-      count++;
-      pos += kw.length;
-    }
+    // Use word-boundary regex to avoid partial matches (e.g. "mas" inside "Thomas")
+    const escaped = kw.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&");
+    const re = new RegExp(`(?<![a-zàâäéèêëîïôùûüç])${escaped}(?![a-zàâäéèêëîïôùûüç])`, "gi");
+    const count = (lower.match(re) ?? []).length;
     if (count > bestCount) {
       bestCount = count;
       bestKw = kw;

@@ -23,6 +23,12 @@ interface Issue {
 
 interface CannibalizationPair { pathA: string; pathB: string; shared: string[]; overlap: number; }
 interface BrokenLink { path: string; httpStatus: number; sources: string[] }
+interface SchemaIssue { type: string; missingProp: string; }
+interface DuplicateGroup { similarity: number; paths: string[]; }
+interface RedirectChainItem { path: string; chain: string[]; finalUrl: string; chainLength: number; }
+interface SecurityHeaders { hsts: string | null; csp: string | null; xFrameOptions: string | null; xContentTypeOptions: string | null; referrerPolicy: string | null; score: number; }
+interface CoverageInfo { sitemapPaths: string[]; crawledPaths: string[]; onlyInSitemap: string[]; onlyInCrawl: string[]; inBoth: number; }
+interface CrawlGraphNode { path: string; outbound: string[]; inbound: string[]; depth: number; isOrphan: boolean; }
 
 interface PageResult {
   path: string;
@@ -56,6 +62,13 @@ interface PageResult {
   responseTimeMs: number;
   pageSizeKb: number;
   textHtmlRatio: number;
+  twitterCard: string | null;
+  twitterTitle: string | null;
+  twitterImage: string | null;
+  twitterImageWidth: string | null;
+  twitterImageHeight: string | null;
+  schemaIssues: SchemaIssue[];
+  redirectChain: string[];
   issues: Issue[];
   score: number;
   psi?: { performance: number; seo: number; accessibility: number; lcp: number | null; cls: number | null };
@@ -160,6 +173,11 @@ export default function SeoReport() {
   const [orphans, setOrphans] = useState<string[]>([]);
   const [brokenLinks, setBrokenLinks] = useState<BrokenLink[]>([]);
   const [depths, setDepths] = useState<Record<string, number>>({});
+  const [redirectChains, setRedirectChains] = useState<RedirectChainItem[]>([]);
+  const [securityHeaders, setSecurityHeaders] = useState<SecurityHeaders | null>(null);
+  const [coverageDiff, setCoverageDiff] = useState<CoverageInfo | null>(null);
+  const [duplicateGroups, setDuplicateGroups] = useState<DuplicateGroup[]>([]);
+  const [crawlGraph, setCrawlGraph] = useState<CrawlGraphNode[]>([]);
   const abortRef = useRef<AbortController | null>(null);
 
   function handleEvent(event: Record<string, unknown>) {
@@ -189,6 +207,16 @@ export default function SeoReport() {
       setBrokenLinks(event.links as BrokenLink[]);
     } else if (type === "depths") {
       setDepths(event.depths as Record<string, number>);
+    } else if (type === "redirect_chains") {
+      setRedirectChains(event.chains as RedirectChainItem[]);
+    } else if (type === "security_headers") {
+      setSecurityHeaders(event.headers as SecurityHeaders);
+    } else if (type === "coverage_diff") {
+      setCoverageDiff(event.diff as CoverageInfo);
+    } else if (type === "duplicate_groups") {
+      setDuplicateGroups(event.groups as DuplicateGroup[]);
+    } else if (type === "crawl_graph") {
+      setCrawlGraph(event.nodes as CrawlGraphNode[]);
     } else if (type === "done") {
       setRunStatus("done");
     } else if (type === "error") {
@@ -211,6 +239,11 @@ export default function SeoReport() {
     setOrphans([]);
     setBrokenLinks([]);
     setDepths({});
+    setRedirectChains([]);
+    setSecurityHeaders(null);
+    setCoverageDiff(null);
+    setDuplicateGroups([]);
+    setCrawlGraph([]);
 
     try {
       const res = await fetch("/api/seo-report", {
@@ -657,6 +690,135 @@ export default function SeoReport() {
             </div>
           )}
 
+          {/* Redirect chains */}
+          {redirectChains.length > 0 && (
+            <div className="bg-white rounded-2xl border border-orange-200 shadow-sm p-6">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-4 flex items-center gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 text-orange-500" />
+                Chaînes de redirections ({redirectChains.length} pages)
+              </p>
+              <div className="space-y-2">
+                {redirectChains.map((r, i) => (
+                  <div key={i} className="flex items-start gap-3 py-2 border-b border-gray-50 last:border-0 text-xs">
+                    <span className="shrink-0 px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 font-bold">{r.chainLength} saut{r.chainLength > 1 ? "s" : ""}</span>
+                    <div className="flex-1 min-w-0">
+                      <span className="font-mono text-gray-700">{r.path}</span>
+                      <span className="text-gray-400 mx-1.5">→</span>
+                      <span className="font-mono text-gray-500 text-[11px]">{r.finalUrl}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Security headers */}
+          {securityHeaders && (
+            <div className={`bg-white rounded-2xl border shadow-sm p-6 ${securityHeaders.score < 50 ? "border-red-200" : securityHeaders.score < 80 ? "border-yellow-200" : "border-emerald-200"}`}>
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-[var(--color-rhone)]" />
+                  Headers de sécurité HTTP
+                </p>
+                <span className={`text-lg font-bold ${securityHeaders.score >= 80 ? "text-emerald-600" : securityHeaders.score >= 50 ? "text-yellow-600" : "text-red-600"}`}>
+                  {securityHeaders.score}/100
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                {[
+                  { label: "HSTS (Strict-Transport-Security)", value: securityHeaders.hsts, pts: 25 },
+                  { label: "Content-Security-Policy", value: securityHeaders.csp, pts: 25 },
+                  { label: "X-Frame-Options", value: securityHeaders.xFrameOptions, pts: 20 },
+                  { label: "X-Content-Type-Options", value: securityHeaders.xContentTypeOptions, pts: 15 },
+                  { label: "Referrer-Policy", value: securityHeaders.referrerPolicy, pts: 15 },
+                ].map(({ label, value, pts }) => (
+                  <div key={label} className="flex items-start gap-2 py-1.5 border-b border-gray-50">
+                    {value ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 mt-0.5 shrink-0" /> : <XCircle className="w-3.5 h-3.5 text-red-400 mt-0.5 shrink-0" />}
+                    <div className="flex-1 min-w-0">
+                      <span className={value ? "text-gray-700" : "text-gray-400"}>{label}</span>
+                      {value && <p className="font-mono text-[10px] text-gray-400 truncate mt-0.5">{value.slice(0, 60)}{value.length > 60 ? "…" : ""}</p>}
+                    </div>
+                    <span className={`shrink-0 text-[10px] font-semibold ${value ? "text-emerald-600" : "text-gray-300"}`}>+{pts}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Coverage diff */}
+          {coverageDiff && (coverageDiff.onlyInSitemap.length > 0 || coverageDiff.onlyInCrawl.length > 0) && (
+            <div className="bg-white rounded-2xl border border-blue-200 shadow-sm p-6">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-4 flex items-center gap-1.5">
+                <BarChart2 className="w-3.5 h-3.5 text-blue-500" />
+                Couverture — Sitemap vs Crawl ({coverageDiff.inBoth} pages en commun)
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {coverageDiff.onlyInSitemap.length > 0 && (
+                  <div>
+                    <p className="text-[10px] text-orange-500 font-semibold mb-1.5">Dans le sitemap mais non crawlées ({coverageDiff.onlyInSitemap.length})</p>
+                    <div className="space-y-1 max-h-32 overflow-y-auto">
+                      {coverageDiff.onlyInSitemap.map((p) => <p key={p} className="text-[11px] font-mono text-gray-500">{p}</p>)}
+                    </div>
+                  </div>
+                )}
+                {coverageDiff.onlyInCrawl.length > 0 && (
+                  <div>
+                    <p className="text-[10px] text-purple-500 font-semibold mb-1.5">Crawlées mais absentes du sitemap ({coverageDiff.onlyInCrawl.length})</p>
+                    <div className="space-y-1 max-h-32 overflow-y-auto">
+                      {coverageDiff.onlyInCrawl.map((p) => <p key={p} className="text-[11px] font-mono text-gray-500">{p}</p>)}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Duplicate content */}
+          {duplicateGroups.length > 0 && (
+            <div className="bg-white rounded-2xl border border-red-200 shadow-sm p-6">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-4 flex items-center gap-1.5">
+                <AlertCircle className="w-3.5 h-3.5 text-red-500" />
+                Contenu dupliqué — similarité cosinus ≥ 80% ({duplicateGroups.length} groupe{duplicateGroups.length > 1 ? "s" : ""})
+              </p>
+              <div className="space-y-2">
+                {duplicateGroups.map((g, i) => (
+                  <div key={i} className="flex items-start gap-3 py-2 border-b border-gray-50 last:border-0 text-xs">
+                    <span className="shrink-0 px-1.5 py-0.5 rounded bg-red-100 text-red-700 font-bold">{Math.round(g.similarity * 100)}%</span>
+                    <div className="flex-1 flex flex-wrap gap-x-2 gap-y-0.5">
+                      {g.paths.map((p) => <span key={p} className="font-mono text-gray-600">{p}</span>)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Crawl graph */}
+          {crawlGraph.length > 0 && (
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-4 flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5 text-violet-500" />
+                Graphe de crawl — {crawlGraph.length} pages
+              </p>
+              <div className="space-y-1 max-h-64 overflow-y-auto">
+                {[...crawlGraph].sort((a, b) => a.depth - b.depth).map((node) => (
+                  <div key={node.path} className="flex items-center gap-2 text-xs py-1 border-b border-gray-50 last:border-0">
+                    <span style={{ marginLeft: `${Math.min(node.depth, 5) * 12}px` }} className={`font-mono text-[11px] ${node.isOrphan ? "text-amber-600 font-semibold" : "text-gray-600"}`}>
+                      {node.isOrphan ? "⚠ " : ""}{node.path}
+                    </span>
+                    <span className="ml-auto shrink-0 text-gray-300 tabular-nums">
+                      <span className="text-blue-400">↑{node.inbound.length}</span>
+                      {" / "}
+                      <span className="text-gray-400">↓{node.outbound.length}</span>
+                      {" · d="}
+                      <span className={node.depth > 5 ? "text-red-500 font-semibold" : "text-gray-400"}>{node.depth}</span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Per-page table */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
@@ -854,6 +1016,31 @@ export default function SeoReport() {
                                     <span className="text-gray-400">Canonical : </span>
                                     <span className="font-mono text-[10px] text-gray-600">{page.canonical}</span>
                                   </p>
+                                )}
+                                {/* Twitter Card */}
+                                <div className="pt-1 mt-1 border-t border-gray-100">
+                                  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Twitter Card</p>
+                                  <div className="flex gap-4 flex-wrap">
+                                    <p><span className="text-gray-400">card: </span>{page.twitterCard ? <span className="text-emerald-600 font-medium">{page.twitterCard}</span> : <span className="text-red-500">absent</span>}</p>
+                                    <p><span className="text-gray-400">title: </span>{page.twitterTitle ? <span className="text-gray-700">{page.twitterTitle.slice(0,40)}</span> : <span className="text-red-400">absent</span>}</p>
+                                    <p><span className="text-gray-400">image: </span>{page.twitterImage ? <span className="text-emerald-600">✓{page.twitterImageWidth ? ` ${page.twitterImageWidth}×${page.twitterImageHeight}` : ""}</span> : <span className="text-red-400">absent</span>}</p>
+                                  </div>
+                                </div>
+                                {/* Schema issues */}
+                                {page.schemaIssues?.length > 0 && (
+                                  <div className="pt-1 mt-1 border-t border-gray-100">
+                                    <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Schema — propriétés manquantes</p>
+                                    {page.schemaIssues.map((si, idx) => (
+                                      <p key={idx} className="text-amber-700"><span className="font-semibold">{si.type}</span> → <span className="font-mono">{si.missingProp}</span></p>
+                                    ))}
+                                  </div>
+                                )}
+                                {/* Redirect chain */}
+                                {page.redirectChain?.length > 0 && (
+                                  <div className="pt-1 mt-1 border-t border-gray-100">
+                                    <p className="text-[10px] font-semibold text-orange-400 uppercase tracking-wide mb-1">Chaîne de redirect ({page.redirectChain.length} saut{page.redirectChain.length > 1 ? "s" : ""})</p>
+                                    <p className="font-mono text-[10px] text-gray-500 break-all">{page.redirectChain.join(" → ")}</p>
+                                  </div>
                                 )}
                                 <div className="pt-1 mt-1 border-t border-gray-100 grid grid-cols-2 gap-x-4 gap-y-1">
                                   <p>
