@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Check, Lock, Eye, EyeOff, FileText, Sparkles, Rocket,
   CheckCircle, AlertCircle, ExternalLink, RefreshCw,
   LayoutList, Pencil, Trash2, X, Loader2, BarChart2,
-  Calendar, Clock,
+  Calendar, Clock, LogOut,
 } from "lucide-react";
 import BlogForm, { type FormValues } from "./BlogForm";
 import SeoPanel from "./SeoPanel";
@@ -13,9 +14,7 @@ import PromptGenerator from "./PromptGenerator";
 import SeoReport from "./SeoReport";
 import { computeSeoScore } from "./seoScorer";
 import type { BlogPost } from "@/lib/data";
-import { checkAdminPassword } from "./actions";
-
-const SESSION_KEY = "era_admin_auth";
+import { checkAdminPassword, signOutAdmin } from "./actions";
 
 function today() {
   return new Date().toISOString().slice(0, 10);
@@ -44,7 +43,6 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
     const ok = await checkAdminPassword(pwd);
     setLoading(false);
     if (ok) {
-      sessionStorage.setItem(SESSION_KEY, "1");
       onSuccess();
     } else {
       setErr(true);
@@ -215,11 +213,13 @@ type Mode = "create" | "edit";
 
 interface Props {
   initialPosts: BlogPost[];
+  isAuthenticated: boolean;
 }
 
 // ── Main component ─────────────────────────────────────────────
-export default function AdminBlogClient({ initialPosts }: Props) {
-  const [authed, setAuthed] = useState(false);
+export default function AdminBlogClient({ initialPosts, isAuthenticated }: Props) {
+  const router = useRouter();
+  const [authed, setAuthed] = useState(isAuthenticated);
   const [values, setValues] = useState<FormValues>(EMPTY);
   const [tab, setTab] = useState<Tab>("form");
   const [mode, setMode] = useState<Mode>("create");
@@ -232,9 +232,11 @@ export default function AdminBlogClient({ initialPosts }: Props) {
   const [manageMsg, setManageMsg] = useState("");
   const [loadingEdit, setLoadingEdit] = useState(false);
 
-  useEffect(() => {
-    if (sessionStorage.getItem(SESSION_KEY) === "1") setAuthed(true);
-  }, []);
+  async function handleSignOut() {
+    await signOutAdmin();
+    setAuthed(false);
+    router.refresh();
+  }
 
   const seoResult = useMemo(() => computeSeoScore({
     title: values.title,
@@ -345,16 +347,25 @@ export default function AdminBlogClient({ initialPosts }: Props) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="font-serif text-3xl font-bold text-gray-900">
-            {mode === "edit" ? "Modifier l'article" : "Créer un article de blog"}
-          </h1>
-          <p className="mt-1 text-sm text-gray-500">
-            {mode === "edit"
-              ? <>Mode édition — <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">/blog/{values.slug}</code></>
-              : <>Le compteur SEO se met à jour en temps réel — visez le grade <strong>A</strong> ou <strong>S</strong>.</>
-            }
-          </p>
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="font-serif text-3xl font-bold text-gray-900">
+              {mode === "edit" ? "Modifier l'article" : "Créer un article de blog"}
+            </h1>
+            <p className="mt-1 text-sm text-gray-500">
+              {mode === "edit"
+                ? <>Mode édition — <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">/blog/{values.slug}</code></>
+                : <>Le compteur SEO se met à jour en temps réel — visez le grade <strong>A</strong> ou <strong>S</strong>.</>
+              }
+            </p>
+          </div>
+          <button
+            onClick={handleSignOut}
+            className="flex items-center gap-2 px-4 py-2 rounded-full text-sm text-gray-500 border border-gray-200 hover:border-red-300 hover:text-red-600 transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            Déconnexion
+          </button>
         </div>
 
         {/* Tabs */}
