@@ -217,16 +217,20 @@ export default function EstimerForm() {
                 a: "Non — c'est une fourchette indicative basée sur le marché actuel. Les revenus réels dépendent de la qualité du bien, de son état, de ses équipements et de la stratégie de tarification. Nous nous engageons sur des objectifs révisés après inspection physique du bien.",
               },
               {
-                q: "Quelle est la commission d'ERA sur les revenus ?",
-                a: "Notre commission est de 20 à 25% des revenus locatifs générés, tout compris : gestion des annonces, accueil voyageurs, ménage professionnel, linge hôtelier et tarification dynamique. Pas de frais fixes ni d'engagement minimum de durée.",
+                q: "Quelles sont vos formules et commissions ?",
+                a: "Nous proposons 3 formules : Essentiel à 18% HT (gestion des annonces, check-in autonome, coordination ménage — engagement 6 mois), Premium à 22% HT (full service : ménage inclus, check-in en présentiel, tarification dynamique IA PriceLabs — la formule choisie par 70% de nos propriétaires), et Prestige à 28% HT (gestionnaire dédié, panier de bienvenue, réservations restaurants, traduction EN+NL — pour les villas et bastides haut de gamme 8+ couchages). La commission est calculée sur vos revenus nets après déduction des frais de plateforme.",
+              },
+              {
+                q: "Quels sont les frais d'entrée ?",
+                a: "En formule Premium et Prestige, l'onboarding (photos professionnelles, création des annonces, paramétrage) est offert. En formule Essentiel, des frais d'onboarding de 150 € HT s'appliquent une seule fois. Les photos professionnelles sont également disponibles en option à 250 € HT pour l'Essentiel.",
               },
               {
                 q: "Mon bien n'est pas à Saint-Rémy ou Eygalières — puis-je quand même utiliser le simulateur ?",
                 a: "Oui, sélectionnez \"Autre commune\" et nous vous contacterons avec une estimation adaptée à votre localisation précise. Nous couvrons 20 communes entre le Rhône et les Alpilles.",
               },
               {
-                q: "À partir de quel type de bien travaillez-vous ?",
-                a: "Nous gérons des mas, villas, bastides, gîtes, maisons de village et appartements dès lors qu'ils répondent à nos critères de qualité. Pas de seuil de surface minimum, mais un standing minimum Confort.",
+                q: "Quelle formule correspond à mon bien ?",
+                a: "L'Essentiel convient aux studios, T2 et maisons de village jusqu'à 4 couchages pour un propriétaire qui souhaite rester impliqué. Le Premium s'adresse aux mas, villas et gîtes de 4 à 8 couchages en délégation totale. Le Prestige est conçu pour les villas de luxe, bastides et domaines de 8 couchages et plus, avec une clientèle internationale.",
               },
             ].map(({ q, a }) => (
               <div key={q} className="border-b border-gray-200 pb-6">
