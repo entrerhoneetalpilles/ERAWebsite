@@ -1,62 +1,169 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg version="1.2" baseProfile="tiny-ps"
      xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 500 500">
+     viewBox="0 0 500 560">
   <title>Entre Rhône et Alpilles</title>
+  <defs>
 
-  <!-- Fond blanc -->
-  <rect width="500" height="500" fill="#ffffff"/>
+    <!-- Lavage aquarelle intérieur cercle -->
+    <radialGradient id="wash" cx="52%" cy="48%" r="50%">
+      <stop offset="0%"   stop-color="#deefc2" stop-opacity="0.55"/>
+      <stop offset="55%"  stop-color="#cce4a8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#ffffff"  stop-opacity="0"/>
+    </radialGradient>
 
-  <!-- Cercle doré -->
-  <circle cx="250" cy="205" r="162" fill="none" stroke="#c9a84c" stroke-width="4"/>
+    <!-- Gradient or cercle -->
+    <linearGradient id="goldRing" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%"   stop-color="#f0d878"/>
+      <stop offset="40%"  stop-color="#c9a84c"/>
+      <stop offset="100%" stop-color="#9e7e2a"/>
+    </linearGradient>
 
-  <!-- Tige principale -->
-  <path d="M 254 368 C 250 330 246 295 248 258 C 250 220 254 188 260 162 C 263 148 267 134 272 120"
-        fill="none" stroke="#8b6914" stroke-width="4.5" stroke-linecap="round"/>
+    <!-- Gradient feuille (clair → foncé) -->
+    <linearGradient id="lgLeafA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#92c050"/>
+      <stop offset="100%" stop-color="#3e6418"/>
+    </linearGradient>
+    <linearGradient id="lgLeafB" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#7aaa3c"/>
+      <stop offset="100%" stop-color="#4a7225"/>
+    </linearGradient>
 
-  <!-- Feuilles gauches -->
-  <ellipse cx="222" cy="310" rx="38" ry="12" fill="#6b8c3a" transform="rotate(-52 222 310)"/>
-  <ellipse cx="218" cy="272" rx="40" ry="12" fill="#5c7a2e" transform="rotate(-50 218 272)"/>
-  <ellipse cx="220" cy="234" rx="38" ry="12" fill="#6b8c3a" transform="rotate(-46 220 234)"/>
-  <ellipse cx="225" cy="196" rx="36" ry="11" fill="#5c7a2e" transform="rotate(-42 225 196)"/>
-  <ellipse cx="233" cy="163" rx="33" ry="10" fill="#6b8c3a" transform="rotate(-36 233 163)"/>
-  <ellipse cx="244" cy="138" rx="28" ry="9"  fill="#5c7a2e" transform="rotate(-28 244 138)"/>
+    <!-- Gradient olive sphérique -->
+    <radialGradient id="oliveGrad" cx="34%" cy="30%" r="62%">
+      <stop offset="0%"   stop-color="#6aaa2a"/>
+      <stop offset="45%"  stop-color="#3a7010"/>
+      <stop offset="100%" stop-color="#1a3a08"/>
+    </radialGradient>
 
-  <!-- Feuilles droites -->
-  <ellipse cx="278" cy="298" rx="36" ry="12" fill="#7a9f45" transform="rotate(24 278 298)"/>
-  <ellipse cx="280" cy="260" rx="38" ry="12" fill="#6b8c3a" transform="rotate(20 280 260)"/>
-  <ellipse cx="279" cy="220" rx="38" ry="12" fill="#7a9f45" transform="rotate(28 279 220)"/>
-  <ellipse cx="277" cy="182" rx="36" ry="11" fill="#6b8c3a" transform="rotate(32 277 182)"/>
-  <ellipse cx="273" cy="150" rx="32" ry="10" fill="#7a9f45" transform="rotate(28 273 150)"/>
-  <ellipse cx="267" cy="126" rx="27" ry="9"  fill="#6b8c3a" transform="rotate(22 267 126)"/>
+  </defs>
 
-  <!-- Olives -->
-  <ellipse cx="274" cy="225" rx="14" ry="16" fill="#3d6b22"/>
-  <ellipse cx="270" cy="183" rx="13" ry="15" fill="#2e5518"/>
-  <ellipse cx="258" cy="155" rx="12" ry="14" fill="#3d6b22"/>
-  <ellipse cx="270" cy="219" rx="5" ry="6" fill="#6aaa3a" opacity="0.5"/>
-  <ellipse cx="266" cy="177" rx="4" ry="5" fill="#6aaa3a" opacity="0.5"/>
-  <ellipse cx="254" cy="150" rx="4" ry="5" fill="#6aaa3a" opacity="0.5"/>
+  <!-- ═══════════════════════════════════ FOND ═════════════════════════════════ -->
+  <rect width="500" height="560" fill="#ffffff"/>
 
-  <!-- ENTRE RHONE -->
-  <text x="250" y="406"
+  <!-- ═══════════════════════════════════ CERCLE ══════════════════════════════ -->
+
+  <!-- Lavage intérieur -->
+  <circle cx="250" cy="210" r="174" fill="url(#wash)"/>
+
+  <!-- Cercle extérieur or (épais) -->
+  <circle cx="250" cy="210" r="174" fill="none"
+          stroke="url(#goldRing)" stroke-width="3.5"/>
+  <!-- Cercle intérieur or (fin — double anneau) -->
+  <circle cx="250" cy="210" r="167" fill="none"
+          stroke="#c9a84c" stroke-width="0.9" opacity="0.55"/>
+
+  <!-- ═══════════════════════════════════ BRANCHE D'OLIVIER ════════════════════ -->
+
+  <!-- Tige principale courbée -->
+  <path d="M 252 375
+           C 250 345 250 310 254 275
+           C 258 240 266 206 278 178
+           C 284 163 292 148 302 132"
+        fill="none" stroke="#7a5c1e" stroke-width="4.2"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- —— Feuilles gauches (6 paires) —— -->
+  <ellipse cx="224" cy="336" rx="41" ry="11.5"
+           fill="url(#lgLeafA)" transform="rotate(-52 224 336)"/>
+  <ellipse cx="220" cy="296" rx="43" ry="12"
+           fill="url(#lgLeafB)" transform="rotate(-49 220 296)"/>
+  <ellipse cx="222" cy="256" rx="41" ry="11.5"
+           fill="url(#lgLeafA)" transform="rotate(-45 222 256)"/>
+  <ellipse cx="228" cy="218" rx="39" ry="11"
+           fill="url(#lgLeafB)" transform="rotate(-40 228 218)"/>
+  <ellipse cx="238" cy="184" rx="36" ry="10.5"
+           fill="url(#lgLeafA)" transform="rotate(-34 238 184)"/>
+  <ellipse cx="252" cy="156" rx="30" ry="9.5"
+           fill="url(#lgLeafB)" transform="rotate(-26 252 156)"/>
+
+  <!-- —— Feuilles droites (6 paires) —— -->
+  <ellipse cx="284" cy="320" rx="39" ry="11.5"
+           fill="url(#lgLeafB)" transform="rotate(22 284 320)"/>
+  <ellipse cx="288" cy="281" rx="41" ry="12"
+           fill="url(#lgLeafA)" transform="rotate(27 288 281)"/>
+  <ellipse cx="289" cy="241" rx="41" ry="11.5"
+           fill="url(#lgLeafB)" transform="rotate(31 289 241)"/>
+  <ellipse cx="286" cy="201" rx="39" ry="11"
+           fill="url(#lgLeafA)" transform="rotate(35 286 201)"/>
+  <ellipse cx="281" cy="167" rx="36" ry="10.5"
+           fill="url(#lgLeafB)" transform="rotate(31 281 167)"/>
+  <ellipse cx="274" cy="140" rx="30" ry="9.5"
+           fill="url(#lgLeafA)" transform="rotate(25 274 140)"/>
+
+  <!-- Nervures centrales feuilles gauches -->
+  <line x1="208" y1="327" x2="240" y2="345"
+        stroke="#2e5010" stroke-width="0.8" opacity="0.4"
+        transform="rotate(-52 224 336)"/>
+  <line x1="204" y1="288" x2="236" y2="304"
+        stroke="#2e5010" stroke-width="0.8" opacity="0.4"
+        transform="rotate(-49 220 296)"/>
+
+  <!-- —— Olives (3) —— -->
+  <!-- Olive 1 (basse) -->
+  <ellipse cx="289" cy="248" rx="14.5" ry="18"
+           fill="url(#oliveGrad)"/>
+  <ellipse cx="284" cy="241" rx="5" ry="6.5"
+           fill="#8ad448" opacity="0.38"/>
+  <ellipse cx="286" cy="240" rx="2" ry="2.5"
+           fill="#ccff88" opacity="0.28"/>
+
+  <!-- Olive 2 (milieu) -->
+  <ellipse cx="285" cy="204" rx="13.5" ry="17"
+           fill="url(#oliveGrad)"/>
+  <ellipse cx="280" cy="197" rx="4.5" ry="6"
+           fill="#8ad448" opacity="0.38"/>
+  <ellipse cx="282" cy="196" rx="2" ry="2.5"
+           fill="#ccff88" opacity="0.28"/>
+
+  <!-- Olive 3 (haute) -->
+  <ellipse cx="275" cy="168" rx="12.5" ry="15.5"
+           fill="url(#oliveGrad)"/>
+  <ellipse cx="270" cy="162" rx="4" ry="5.5"
+           fill="#8ad448" opacity="0.38"/>
+  <ellipse cx="272" cy="161" rx="1.8" ry="2.2"
+           fill="#ccff88" opacity="0.28"/>
+
+  <!-- ═══════════════════════════════════ TYPOGRAPHIE ══════════════════════════ -->
+
+  <!-- ENTRE RHÔNE -->
+  <text x="250" y="435"
         font-family="Georgia, 'Times New Roman', serif"
-        font-size="40" font-weight="bold"
-        fill="#4a6b2a" text-anchor="middle" letter-spacing="4">ENTRE RH&#xD4;NE</text>
+        font-size="36" font-weight="bold"
+        fill="#2e4e14"
+        text-anchor="middle"
+        letter-spacing="6">ENTRE RH&#xD4;NE</text>
 
-  <!-- Decorations dorees -->
-  <line x1="90" y1="428" x2="148" y2="428" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
-  <polygon points="153,424 163,428 153,432" fill="#c9a84c"/>
-  <path d="M 108 422 C 100 418 96 428 108 428" fill="#c9a84c"/>
-  <path d="M 108 434 C 100 438 96 428 108 428" fill="#c9a84c"/>
-  <line x1="352" y1="428" x2="410" y2="428" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
-  <polygon points="347,424 337,428 347,432" fill="#c9a84c"/>
-  <path d="M 392 422 C 400 418 404 428 392 428" fill="#c9a84c"/>
-  <path d="M 392 434 C 400 438 404 428 392 428" fill="#c9a84c"/>
+  <!-- Ligne décorative gauche + flèche -->
+  <line x1="62"  y1="455" x2="130" y2="455"
+        stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round"/>
+  <polygon points="135,451 145,455 135,459" fill="#c9a84c"/>
+  <!-- Feuille ornementale gauche -->
+  <ellipse cx="76"  cy="451" rx="10" ry="4"
+           fill="#c9a84c" transform="rotate(-30 76 451)"/>
+  <ellipse cx="76"  cy="459" rx="10" ry="4"
+           fill="#c9a84c" transform="rotate(30 76 459)"/>
+
+  <!-- Ligne décorative droite + flèche -->
+  <line x1="370" y1="455" x2="438" y2="455"
+        stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round"/>
+  <polygon points="365,451 355,455 365,459" fill="#c9a84c"/>
+  <!-- Feuille ornementale droite -->
+  <ellipse cx="424" cy="451" rx="10" ry="4"
+           fill="#c9a84c" transform="rotate(30 424 451)"/>
+  <ellipse cx="424" cy="459" rx="10" ry="4"
+           fill="#c9a84c" transform="rotate(-30 424 459)"/>
 
   <!-- ET ALPILLES -->
-  <text x="250" y="460"
+  <text x="250" y="488"
         font-family="Georgia, 'Times New Roman', serif"
-        font-size="40" font-weight="bold"
-        fill="#4a6b2a" text-anchor="middle" letter-spacing="4">ET ALPILLES</text>
+        font-size="36" font-weight="bold"
+        fill="#2e4e14"
+        text-anchor="middle"
+        letter-spacing="6">ET ALPILLES</text>
+
+  <!-- Filet or sous le texte -->
+  <line x1="148" y1="500" x2="352" y2="500"
+        stroke="#c9a84c" stroke-width="1" opacity="0.6"/>
+
 </svg>
