@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.2" baseProfile="tiny-ps"
+     xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 500 500">
+  <title>Entre Rhône et Alpilles</title>
+
+  <!-- Background blanc -->
+  <rect width="500" height="500" fill="white"/>
+
+  <!-- Cercle doré -->
+  <circle cx="250" cy="200" r="158" fill="none" stroke="#c9a84c" stroke-width="4"/>
+
+  <!-- Tige de la branche d'olivier -->
+  <path d="M 248 340 Q 240 290 242 240 Q 244 195 252 155 Q 256 135 262 118"
+        fill="none" stroke="#8b7355" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Feuilles gauche -->
+  <ellipse cx="210" cy="280" rx="34" ry="11" fill="#7a9a58" transform="rotate(-48 210 280)"/>
+  <ellipse cx="208" cy="242" rx="36" ry="11" fill="#6a8a48" transform="rotate(-52 208 242)"/>
+  <ellipse cx="215" cy="200" rx="33" ry="10" fill="#7a9a58" transform="rotate(-42 215 200)"/>
+  <ellipse cx="222" cy="165" rx="30" ry="10" fill="#6a8a48" transform="rotate(-38 222 165)"/>
+  <ellipse cx="232" cy="140" rx="26" ry="9"  fill="#7a9a58" transform="rotate(-30 232 140)"/>
+
+  <!-- Feuilles droite -->
+  <ellipse cx="272" cy="268" rx="32" ry="11" fill="#8aaa68" transform="rotate(22 272 268)"/>
+  <ellipse cx="275" cy="228" rx="34" ry="11" fill="#7a9a58" transform="rotate(18 275 228)"/>
+  <ellipse cx="272" cy="188" rx="34" ry="11" fill="#6a8a48" transform="rotate(28 272 188)"/>
+  <ellipse cx="270" cy="152" rx="32" ry="10" fill="#8aaa68" transform="rotate(32 270 152)"/>
+  <ellipse cx="263" cy="128" rx="28" ry="9"  fill="#7a9a58" transform="rotate(25 263 128)"/>
+
+  <!-- Olives -->
+  <circle cx="267" cy="195" r="14" fill="#4e7a38"/>
+  <circle cx="262" cy="158" r="12" fill="#3e6a28"/>
+  <circle cx="246" cy="248" r="13" fill="#4e7a38"/>
+  <!-- Reflet sur les olives -->
+  <circle cx="263" cy="191" r="5" fill="#78b050" opacity="0.55"/>
+  <circle cx="258" cy="154" r="4" fill="#78b050" opacity="0.55"/>
+  <circle cx="242" cy="244" r="4" fill="#78b050" opacity="0.55"/>
+
+  <!-- Texte ENTRE RHÔNE -->
+  <text x="250" y="400"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="44"
+        font-weight="bold"
+        fill="#4a6b3a"
+        text-anchor="middle"
+        letter-spacing="5">ENTRE RH&#xD5;NE</text>
+
+  <!-- Décoration dorée gauche -->
+  <path d="M 100 426 L 148 426" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 152 422 L 160 426 L 152 430" fill="#c9a84c"/>
+  <!-- Décoration dorée droite -->
+  <path d="M 352 422 L 360 426 L 352 430" fill="#c9a84c" transform="scale(-1,1) translate(-500,0)"/>
+  <path d="M 352 426 L 400 426" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Texte ET ALPILLES -->
+  <text x="250" y="462"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="44"
+        font-weight="bold"
+        fill="#4a6b3a"
+        text-anchor="middle"
+        letter-spacing="5">ET ALPILLES</text>
+</svg>
