@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
   title: "Kit Média — Conciergerie Provence",
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
     description:
       "Données audience, services et opportunités de partenariat pour la conciergerie de référence en Provence.",
     url: "https://entre-rhone-alpilles.fr/kit-media",
+    images: OG_IMG,
   },
 };
 

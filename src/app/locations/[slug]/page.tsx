@@ -55,10 +55,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const at = activityTags.find((t) => t.slug === slug);
   if (at) {
+    const hasProv = at.name.toLowerCase().includes("provence");
     return {
-      title: `Hébergements ${at.name} — Provence`,
-      description: `Hébergements idéaux pour ${at.name.toLowerCase()} en Provence. ${at.description}. Sélectionnés par notre conciergerie locale.`,
+      title: `Hébergements ${at.name}${hasProv ? "" : " — Provence"}`,
+      description: `Hébergements idéaux pour ${at.name.toLowerCase()}${hasProv ? "" : " en Provence"}. ${at.description}. Sélectionnés par notre conciergerie locale.`,
       alternates: { canonical: `https://entre-rhone-alpilles.fr/locations/${at.slug}` },
+      openGraph: {
+        title: `Hébergements ${at.name}${hasProv ? "" : " — Provence"}`,
+        description: `${at.description}. Sélection ERA, conciergerie Provence.`,
+        images: OG_IMG,
+      },
     };
   }
 
@@ -474,20 +480,37 @@ export default async function LocationsSlugPage({ params, searchParams }: Props)
   const at = activityTags.find((t) => t.slug === slug);
   if (at) {
     const properties = mockProperties(at.slug, at.name);
+    const hasProv = at.name.toLowerCase().includes("provence");
+    const h1 = `Hébergements ${at.name}${hasProv ? "" : " en Provence"}`;
 
     const faqItems = [
-      { question: `Quels hébergements pour ${at.name.toLowerCase()} en Provence ?`, answer: `Nous sélectionnons des biens idéalement situés pour ${at.name.toLowerCase()}. ${at.description}.` },
+      { question: `Quels hébergements pour ${at.name.toLowerCase()}${hasProv ? "" : " en Provence"} ?`, answer: `Nous sélectionnons des biens idéalement situés pour ${at.name.toLowerCase()}. ${at.description}. Chaque hébergement est inspecté et géré par notre équipe de conciergerie locale.` },
       { question: `Quelle est la meilleure période pour ${at.name.toLowerCase()} ?`, answer: `Le printemps (avril-juin) et l'automne (septembre-octobre) sont les meilleures périodes. L'été est plus chargé mais offre plus de disponibilités d'activités.` },
     ];
 
+    const atSchema = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: h1,
+      description: `${at.description} — hébergements sélectionnés par Entre Rhône et Alpilles`,
+      url: `https://entre-rhone-alpilles.fr/locations/${at.slug}`,
+      numberOfItems: properties.length,
+      itemListElement: properties.map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: { "@type": "LodgingBusiness", name: p.title, address: { "@type": "PostalAddress", addressLocality: "Provence", addressCountry: "FR" } },
+      })),
+    };
+
     return (
       <div className="pt-20">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(atSchema) }} />
         <div className="bg-[var(--color-cream)] py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Breadcrumb items={[{ label: "Locations", href: "/locations" }, { label: at.name }]} />
             <div className="mt-8 max-w-3xl">
               <h1 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-                Hébergements {at.name} en Provence
+                {h1}
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed">{at.description}.</p>
             </div>
@@ -511,10 +534,31 @@ export default async function LocationsSlugPage({ params, searchParams }: Props)
           </div>
         </section>
 
+        <section className="py-16 bg-[var(--color-cream)]">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">
+              Bien choisir son hébergement pour {at.name.toLowerCase()}
+            </h2>
+            <div className="space-y-4 text-gray-600 leading-relaxed">
+              <p>
+                {at.description}. Nos hébergements sont sélectionnés pour leur situation privilégiée,
+                leur confort et la qualité des équipements — idéals pour organiser un séjour centré
+                sur votre activité favorite en Provence.
+              </p>
+              <p>
+                Notre équipe de conciergerie locale connaît parfaitement le territoire entre le Rhône
+                et les Alpilles. À votre arrivée, nous vous remettons un guide personnalisé avec les
+                meilleures adresses, itinéraires et prestataires locaux. Assistance disponible 7j/7
+                pendant toute la durée de votre séjour.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section className="py-16 bg-white">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="font-serif text-2xl font-bold text-gray-900 mb-8">
-              FAQ — {at.name} en Provence
+              FAQ — {at.name}{hasProv ? "" : " en Provence"}
             </h2>
             <FAQAccordion items={faqItems} />
           </div>

@@ -7,6 +7,7 @@ const footerLinks = {
     { href: "/conciergerie/comment-ca-marche", label: "Comment ça marche" },
     { href: "/conciergerie/tarifs", label: "Tarifs" },
     { href: "/conciergerie/estimer-mes-revenus", label: "Estimer mes revenus" },
+    { href: "/conciergerie/gestion-locative-courte-duree", label: "Gestion locative courte durée" },
   ],
   voyageurs: [
     { href: "/locations", label: "Tous les hébergements" },

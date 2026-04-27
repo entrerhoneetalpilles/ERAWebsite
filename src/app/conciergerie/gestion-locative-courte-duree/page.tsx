@@ -5,9 +5,9 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { OG_IMG } from "@/lib/og";
 
 export const metadata: Metadata = {
-  title: "Gestion Locative Courte Durée en Provence — Alpilles",
+  title: "Gestion Locative Courte Durée — Alpilles",
   description:
-    "Déléguez la gestion locative courte durée de votre bien en Provence. Cadre légal, déclarations, tarification dynamique, maximisation des revenus. Devis gratuit sous 24h.",
+    "Déléguez la gestion locative courte durée en Provence. Déclarations, tarification dynamique, maximisation des revenus. Devis gratuit sous 24h.",
   alternates: {
     canonical: "https://entre-rhone-alpilles.fr/conciergerie/gestion-locative-courte-duree",
   },
@@ -204,19 +204,6 @@ const schemaOrg = {
         name: item.question,
         acceptedAnswer: { "@type": "Answer", text: item.answer },
       })),
-    },
-    {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Accueil", item: "https://entre-rhone-alpilles.fr" },
-        { "@type": "ListItem", position: 2, name: "Conciergerie", item: "https://entre-rhone-alpilles.fr/conciergerie" },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: "Gestion locative courte durée",
-          item: "https://entre-rhone-alpilles.fr/conciergerie/gestion-locative-courte-duree",
-        },
-      ],
     },
   ],
 };

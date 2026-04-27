@@ -120,7 +120,7 @@ function getPages(mode: "quick" | "full"): Array<{ path: string; pageType: PageT
   // Activity tag pages (/locations/randonnee-alpilles, /locations/golf, …)
   const activityTagPages: Array<{ path: string; pageType: PageType }> = activityTags.map((at) => ({
     path: `/locations/${at.slug}`,
-    pageType: "location" as PageType,
+    pageType: "static" as PageType,
   }));
 
   return [...statics, ...blogs, ...communePages, ...typeAggregatorPages, ...activityTagPages, ...sousTypePages, ...avecPiscinePages];
