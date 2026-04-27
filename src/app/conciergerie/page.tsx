@@ -205,12 +205,13 @@ export default function ConciergerieHubPage() {
 
       <section className="py-16 bg-[var(--color-cream)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             {[
               { href: "/conciergerie/comment-ca-marche", label: "Comment ça marche", desc: "Notre processus en détail" },
               { href: "/conciergerie/nos-services", label: "Nos services", desc: "Tout ce que nous gérons" },
               { href: "/conciergerie/tarifs", label: "Tarifs", desc: "Transparents et sans surprise" },
               { href: "/conciergerie/estimer-mes-revenus", label: "Estimer mes revenus", desc: "Simulateur gratuit" },
+              { href: "/conciergerie/gestion-locative-courte-duree", label: "Gestion courte durée", desc: "Cadre légal & délégation complète" },
             ].map((l) => (
               <Link key={l.href} href={l.href} className="group p-5 rounded-xl border border-gray-100 hover:border-[var(--color-rhone)] hover:shadow-sm transition-all" title={l.label}>
                 <p className="font-semibold text-gray-900 group-hover:text-[var(--color-rhone)] transition-colors mb-1">{l.label}</p>
