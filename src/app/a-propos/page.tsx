@@ -145,6 +145,13 @@ export default function AProposPage() {
               Nous contacter
             </Link>
           </div>
+          <p className="text-sm text-gray-500 mt-6">
+            Presse et partenaires :{" "}
+            <Link href="/kit-media" className="underline underline-offset-2 hover:text-gray-700 transition-colors">
+              consultez notre Kit Média
+            </Link>
+            .
+          </p>
         </div>
       </section>
     </div>
