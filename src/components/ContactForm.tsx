@@ -161,6 +161,42 @@ export default function ContactForm() {
           </div>
         </div>
       </section>
+
+      {/* Contenu SEO */}
+      <section className="py-16 bg-[var(--color-cream)]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="font-serif text-2xl font-bold text-gray-900 mb-10">Questions fréquentes</h2>
+          <div className="space-y-6">
+            {[
+              {
+                q: "Quel est le délai de réponse habituel ?",
+                a: "Nous répondons aux emails sous 24 heures ouvrées. Par téléphone, notre équipe est disponible du lundi au samedi de 9h à 19h. Pour les urgences voyageurs en cours de séjour, une ligne est disponible 24h/24.",
+              },
+              {
+                q: "Je suis propriétaire, que dois-je préparer avant de vous contacter ?",
+                a: "Aucune préparation nécessaire — un simple échange suffit. Si possible, pensez à indiquer la commune, le type de bien (mas, villa, appartement…) et votre situation actuelle (bien vide, déjà sur Airbnb, premier essai). Nous adaptons chaque proposition à votre cas.",
+              },
+              {
+                q: "Je cherche une location pour mes vacances — comment vous contacter ?",
+                a: "Précisez vos dates, le nombre de voyageurs, le type de bien souhaité (mas avec piscine, appartement en centre-ville, etc.) et votre budget indicatif. Nous vous proposons une sélection personnalisée dans notre portfolio sous 24h.",
+              },
+              {
+                q: "Puis-je visiter un bien avant de réserver ?",
+                a: "Oui, pour les séjours longue durée ou les biens haut de gamme, une visite virtuelle ou physique peut être organisée selon les disponibilités. Mentionnez-le dans votre message.",
+              },
+              {
+                q: "Proposez-vous des devis pour la gestion locative ?",
+                a: "Oui, le devis est entièrement gratuit et sans engagement. Nous estimons votre potentiel locatif (basé sur les données AirDNA et notre connaissance locale), vous expliquons notre mode de fonctionnement et notre commission, puis c'est vous qui décidez.",
+              },
+            ].map(({ q, a }) => (
+              <div key={q} className="border-b border-gray-200 pb-6">
+                <h3 className="font-semibold text-gray-900 mb-2">{q}</h3>
+                <p className="text-gray-600 leading-relaxed text-sm">{a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

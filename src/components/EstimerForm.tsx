@@ -181,6 +181,62 @@ export default function EstimerForm() {
           </div>
         </div>
       </section>
+
+      {/* Méthodologie SEO */}
+      <section className="py-16 bg-[var(--color-cream)]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">
+            Comment est calculée l&apos;estimation ?
+          </h2>
+          <div className="space-y-4 text-gray-600 leading-relaxed mb-10">
+            <p>
+              Notre simulateur croise <strong>trois sources de données</strong> : les données AirDNA (tarifs et taux
+              d&apos;occupation en temps réel sur Airbnb, Booking.com et VRBO), notre propre observatoire du marché
+              basé sur le portefeuille de biens que nous gérons en Provence, et les spécificités de chaque commune
+              (saisonnalité, profil voyageur, types de biens dominants).
+            </p>
+            <p>
+              L&apos;estimation fournie est une <strong>fourchette annuelle réaliste</strong>, ajustée selon le type de bien,
+              le nombre de chambres et le standing. Elle suppose une gestion active avec tarification dynamique —
+              ce que nous mettons en place dès le premier mois de mandat. Sans optimisation, les revenus sont
+              généralement 20 à 35% inférieurs à ce potentiel.
+            </p>
+            <p>
+              Cette estimation ne tient pas compte de votre calendrier personnel de blocage (si vous souhaitez
+              garder des semaines pour votre usage propre). Pour une estimation sur mesure incluant ces contraintes,
+              utilisez le formulaire de contact.
+            </p>
+          </div>
+          <h2 className="font-serif text-2xl font-bold text-gray-900 mb-8">
+            Questions sur le simulateur
+          </h2>
+          <div className="space-y-6">
+            {[
+              {
+                q: "L'estimation est-elle garantie ?",
+                a: "Non — c'est une fourchette indicative basée sur le marché actuel. Les revenus réels dépendent de la qualité du bien, de son état, de ses équipements et de la stratégie de tarification. Nous nous engageons sur des objectifs révisés après inspection physique du bien.",
+              },
+              {
+                q: "Quelle est la commission d'ERA sur les revenus ?",
+                a: "Notre commission est de 20 à 25% des revenus locatifs générés, tout compris : gestion des annonces, accueil voyageurs, ménage professionnel, linge hôtelier et tarification dynamique. Pas de frais fixes ni d'engagement minimum de durée.",
+              },
+              {
+                q: "Mon bien n'est pas à Saint-Rémy ou Eygalières — puis-je quand même utiliser le simulateur ?",
+                a: "Oui, sélectionnez \"Autre commune\" et nous vous contacterons avec une estimation adaptée à votre localisation précise. Nous couvrons 20 communes entre le Rhône et les Alpilles.",
+              },
+              {
+                q: "À partir de quel type de bien travaillez-vous ?",
+                a: "Nous gérons des mas, villas, bastides, gîtes, maisons de village et appartements dès lors qu'ils répondent à nos critères de qualité. Pas de seuil de surface minimum, mais un standing minimum Confort.",
+              },
+            ].map(({ q, a }) => (
+              <div key={q} className="border-b border-gray-200 pb-6">
+                <h3 className="font-semibold text-gray-900 mb-2">{q}</h3>
+                <p className="text-gray-600 leading-relaxed text-sm">{a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

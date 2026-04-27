@@ -88,12 +88,16 @@ export default function AvecPiscinePage() {
       {/* Biens avec piscine */}
       <section className="py-20 bg-white" aria-labelledby="piscine-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-2">
             <h2 id="piscine-heading" className="font-serif text-2xl font-bold text-gray-900">
-              Nos hébergements avec piscine
+              Portfolio — biens avec piscine privée
             </h2>
             <span className="text-sm text-gray-500">Piscine privée · Sélection ERA</span>
           </div>
+          <p className="text-sm text-[var(--texte-discret)] mb-8 italic">
+            Exemples de biens avec piscine gérés par ERA. Disponibilités sur demande —{" "}
+            <a href="/contact" className="underline underline-offset-2 hover:text-gray-600 transition-colors">contactez-nous</a>.
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {featuredWithPiscine.map((p) => (
               <PropertyCard key={p.slug} {...p} />

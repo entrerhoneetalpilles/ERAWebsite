@@ -173,8 +173,11 @@ export default async function ConciergerieVillePage({ params }: Props) {
                   <span className="font-bold text-[var(--color-rhone)] text-right max-w-[150px]">{commune.profilVoyageur}</span>
                 </div>
               </div>
+              <p className="text-xs text-gray-400 mt-4">
+                Estimations AirDNA & observatoire ERA 2024. Fourchettes selon le type de bien et sa capacité.
+              </p>
               <Link href="/contact"
-                className="block mt-6 text-center px-6 py-3 border-2 border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-xl hover:bg-[var(--color-rhone)]/5 transition-colors">
+                className="block mt-4 text-center px-6 py-3 border-2 border-[var(--color-rhone)] text-[var(--color-rhone)] font-semibold rounded-xl hover:bg-[var(--color-rhone)]/5 transition-colors">
                 Prendre rendez-vous
               </Link>
             </div>

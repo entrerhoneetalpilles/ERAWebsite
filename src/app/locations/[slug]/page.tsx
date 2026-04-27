@@ -254,7 +254,6 @@ export default async function LocationsSlugPage({ params, searchParams }: Props)
           name: p.title,
           address: { "@type": "PostalAddress", addressLocality: commune.name, addressCountry: "FR" },
           geo: { "@type": "GeoCoordinates", latitude: commune.lat, longitude: commune.lng },
-          aggregateRating: { "@type": "AggregateRating", ratingValue: p.rating, reviewCount: p.reviewCount },
         },
       })),
     };
@@ -292,12 +291,16 @@ export default async function LocationsSlugPage({ params, searchParams }: Props)
 
         <section className="py-20 bg-white" aria-labelledby="properties-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
               <h2 id="properties-heading" className="font-serif text-2xl font-bold text-gray-900">
-                Hébergements à {commune.name}
+                Portfolio — biens gérés à {commune.name}
               </h2>
-              <span className="text-sm text-gray-500">{properties.length} bien{properties.length > 1 ? "s" : ""} disponible{properties.length > 1 ? "s" : ""}</span>
+              <span className="text-sm text-gray-500">{properties.length} exemples de notre sélection</span>
             </div>
+            <p className="text-sm text-[var(--texte-discret)] mb-8 italic">
+              Illustrations de notre portfolio. Disponibilités actuelles sur demande —{" "}
+              <a href="/contact" className="underline underline-offset-2 hover:text-gray-600 transition-colors">contactez-nous</a>.
+            </p>
             <Suspense fallback={null}>
               <PropertyTypeFilter types={filterTypes} />
             </Suspense>
@@ -410,9 +413,13 @@ export default async function LocationsSlugPage({ params, searchParams }: Props)
 
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-serif text-2xl font-bold text-gray-900 mb-8">
-              Nos {pt.plural.toLowerCase()} disponibles
+            <h2 className="font-serif text-2xl font-bold text-gray-900 mb-2">
+              Portfolio — exemples de {pt.plural.toLowerCase()}
             </h2>
+            <p className="text-sm text-[var(--texte-discret)] mb-8 italic">
+              Illustrations de notre sélection. Disponibilités sur demande —{" "}
+              <a href="/contact" className="underline underline-offset-2 hover:text-gray-600 transition-colors">contactez-nous</a>.
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {properties.map((p) => <PropertyCard key={p.slug} {...p} href={`/locations/${slug}`} />)}
             </div>
@@ -519,9 +526,13 @@ export default async function LocationsSlugPage({ params, searchParams }: Props)
 
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-serif text-2xl font-bold text-gray-900 mb-8">
-              Hébergements sélectionnés pour {at.name.toLowerCase()}
+            <h2 className="font-serif text-2xl font-bold text-gray-900 mb-2">
+              Portfolio — hébergements pour {at.name.toLowerCase()}
             </h2>
+            <p className="text-sm text-[var(--texte-discret)] mb-8 italic">
+              Exemples de biens adaptés à ce séjour. Disponibilités sur demande —{" "}
+              <a href="/contact" className="underline underline-offset-2 hover:text-gray-600 transition-colors">contactez-nous</a>.
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {properties.map((p) => <PropertyCard key={p.slug} {...p} href="/locations" />)}
             </div>
