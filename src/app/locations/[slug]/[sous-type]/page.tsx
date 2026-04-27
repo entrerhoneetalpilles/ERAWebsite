@@ -118,8 +118,10 @@ export default async function LocationsVilleTypePage({ params }: Props) {
           </h2>
           <div className="space-y-4 text-gray-600 leading-relaxed">
             <p>
-              {pt.description}. À {commune.name}, ce type d&apos;hébergement s&apos;intègre
-              parfaitement dans le paysage provençal : {commune.description.charAt(0).toLowerCase()}{commune.description.slice(1)}
+              {pt.description}. À {commune.name}, nos {pt.plural.toLowerCase()} bénéficient
+              d&apos;une situation privilégiée au cœur de la Provence : accès direct aux marchés
+              provençaux, sentiers de randonnée, vignobles et tables gastronomiques étoilées.
+              Chaque bien est retenu pour son caractère, ses équipements et son entretien irréprochable.
             </p>
             <p>
               Notre équipe locale sélectionne chaque {pt.name.toLowerCase()} pour son authenticité

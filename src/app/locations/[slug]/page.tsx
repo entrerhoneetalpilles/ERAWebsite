@@ -271,8 +271,14 @@ export default async function LocationsSlugPage({ params, searchParams }: Props)
                 Location vacances à {commune.name}
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed mb-4">{commune.description}</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 mb-3">
                 <strong>Profil voyageur :</strong> {commune.profilVoyageur}
+              </p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Toutes nos locations à {commune.name} incluent le linge de maison, un accueil en
+                personne et une assistance disponible pendant votre séjour. Réservation en ligne,
+                disponibilités en temps réel, tarifs dégressifs à la semaine. Chaque bien est inspecté
+                et géré par notre équipe de conciergerie locale.
               </p>
             </div>
           </div>

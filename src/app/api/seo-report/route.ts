@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { blogPosts, communes, propertyTypes } from "@/lib/data";
+import { blogPosts, communes, propertyTypes, activityTags } from "@/lib/data";
 
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://entre-rhone-alpilles.fr").replace(/\/$/, "");
 const PSI_KEY = process.env.GOOGLE_PAGESPEED_API_KEY ?? "";
@@ -80,10 +80,12 @@ function getPages(mode: "quick" | "full"): Array<{ path: string; pageType: PageT
     { path: "/conciergerie/comment-ca-marche", pageType: "static" },
     { path: "/conciergerie/tarifs", pageType: "static" },
     { path: "/conciergerie/estimer-mes-revenus", pageType: "static" },
+    { path: "/conciergerie/gestion-locative-courte-duree", pageType: "static" },
     { path: "/contact", pageType: "static" },
     { path: "/faq", pageType: "static" },
     { path: "/a-propos", pageType: "static" },
     { path: "/avis", pageType: "static" },
+    { path: "/kit-media", pageType: "static" },
   ];
 
   const blogs: Array<{ path: string; pageType: PageType }> = blogPosts.map((p) => ({
@@ -115,7 +117,13 @@ function getPages(mode: "quick" | "full"): Array<{ path: string; pageType: PageT
     pageType: "location" as PageType,
   }));
 
-  return [...statics, ...blogs, ...communePages, ...typeAggregatorPages, ...sousTypePages, ...avecPiscinePages];
+  // Activity tag pages (/locations/randonnee-alpilles, /locations/golf, …)
+  const activityTagPages: Array<{ path: string; pageType: PageType }> = activityTags.map((at) => ({
+    path: `/locations/${at.slug}`,
+    pageType: "location" as PageType,
+  }));
+
+  return [...statics, ...blogs, ...communePages, ...typeAggregatorPages, ...activityTagPages, ...sousTypePages, ...avecPiscinePages];
 }
 
 // ── HTML helpers ───────────────────────────────────────────────

@@ -181,6 +181,12 @@ export default async function DestinationVillePage({ params }: Props) {
               <span className="text-[var(--color-rhone)] text-3xl">Guide complet</span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">{commune.description}</p>
+            <p className="text-gray-600 leading-relaxed mt-3">
+              Ce guide du voyageur rassemble les sites incontournables à visiter, les événements
+              locaux, les meilleures périodes selon vos envies et notre sélection d&apos;hébergements
+              de charme — mas, villas et bastides authentiques sélectionnés par notre conciergerie
+              implantée à {commune.name}.
+            </p>
           </div>
         </div>
       </div>
