@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, MapPin, Calendar } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
-import PropertyCard from "@/components/PropertyCard";
 import { communes, getCommuneBySlug } from "@/lib/data";
 import { OG_IMG } from "@/lib/og";
 
@@ -146,12 +145,6 @@ export default async function DestinationVillePage({ params }: Props) {
 
   const localInfo = getLocalInfo(ville);
 
-  const mockProperties = [
-    { title: `Mas de charme — ${commune.name}`, location: commune.name, type: "Mas", guests: 8, price: 280, rating: 4.9, reviewCount: 32, hasPiscine: true, slug: `mas-charme-${ville}` },
-    { title: `Villa avec piscine — ${commune.name}`, location: commune.name, type: "Villa", guests: 6, price: 220, rating: 4.8, reviewCount: 18, hasPiscine: true, slug: `villa-piscine-${ville}` },
-    { title: `Gîte authentique — ${commune.name}`, location: commune.name, type: "Gîte", guests: 4, price: 130, rating: 4.7, reviewCount: 24, hasPiscine: false, slug: `gite-authentique-${ville}` },
-  ];
-
   const schemaOrg = {
     "@context": "https://schema.org",
     "@type": "TouristDestination",
@@ -162,7 +155,7 @@ export default async function DestinationVillePage({ params }: Props) {
     touristType: commune.profilVoyageur,
   };
 
-  const toc = ["Pourquoi séjourner", "Incontournables", "Quand venir", "Événements", "Où dormir", "Nos hébergements"];
+  const toc = ["Pourquoi séjourner", "Incontournables", "Quand venir", "Événements", "Où dormir"];
 
   return (
     <div className="pt-20">
@@ -217,16 +210,26 @@ export default async function DestinationVillePage({ params }: Props) {
             <section id="pourquoi-séjourner" className="mb-12">
               <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">Pourquoi séjourner à {commune.name} ?</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                {commune.name} séduit les voyageurs en quête d&apos;authenticité provençale et de dépaysement total.
-                Niché entre le Rhône et les Alpilles, le village offre un cadre d&apos;exception : lumière du Sud,
-                architecture centenaire, gastronomie et nature préservée à portée de main.
+                {commune.description}
+              </p>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                La clientèle que nous accueillons à {commune.name} est principalement composée
+                de {commune.profilVoyageur.toLowerCase()}. Chaque profil y trouve son compte :
+                les familles apprécient l&apos;espace et la sécurité des mas avec piscine privée,
+                les couples recherchent l&apos;intimité des bastides et le calme des garrigues,
+                tandis que les groupes d&apos;amis privilégient les grandes propriétés avec terrasse
+                et vue panoramique sur les Alpilles.
               </p>
               <p className="text-gray-600 leading-relaxed mb-6">
-                Que vous soyez en famille, en couple ou entre amis, {commune.name} répond à toutes les envies.
-                {commune.profilVoyageur ? ` C'est la destination idéale pour ${commune.profilVoyageur.toLowerCase()}.` : ""}
+                La Provence entre Rhône et Alpilles bénéficie de plus de 300 jours de soleil par an.
+                La saison s&apos;étend d&apos;avril à octobre, avec des pics en juillet-août.
+                Le printemps (avril-mai) et l&apos;automne (septembre-octobre) sont souvent préférés
+                des voyageurs connaisseurs : températures idéales, marchés animés, paysages colorés
+                et fréquentation plus sereine.
               </p>
-              <div className="mt-4 p-4 bg-[var(--color-cream)] rounded-xl">
-                <p className="text-sm font-semibold text-gray-700">Point fort : <span className="font-normal">{commune.atout}</span></p>
+              <div className="p-5 bg-white border border-[var(--color-or)]/30 rounded-xl">
+                <p className="text-sm font-bold text-gray-800 mb-1">Point fort de {commune.name}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{commune.atout}</p>
               </div>
             </section>
 
@@ -264,19 +267,36 @@ export default async function DestinationVillePage({ params }: Props) {
 
             <section id="où-dormir" className="mb-12">
               <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">Où dormir à {commune.name} ?</h2>
-              <p className="text-gray-600 leading-relaxed mb-6">
-                Entre mas provençaux avec piscine, villas contemporaines et bastides historiques, l&apos;offre
-                d&apos;hébergement à {commune.name} est vaste. Notre conciergerie locale sélectionne
-                uniquement des biens de caractère, vérifiés et gérés avec soin.
+              <p className="text-gray-600 leading-relaxed mb-4">
+                Entre mas provençaux avec piscine privée, villas contemporaines et bastides historiques,
+                l&apos;offre d&apos;hébergement à {commune.name} est variée. Notre conciergerie locale
+                sélectionne uniquement des biens de caractère — vérifiés, photographiés et gérés avec soin
+                par notre équipe implantée sur place.
               </p>
-              <h3 className="font-serif text-lg font-semibold text-gray-900 mb-3">
-                Nos meilleures locations à {commune.name}
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 not-prose mb-6">
-                {mockProperties.map((p) => (
-                  <PropertyCard key={p.slug} {...p} href={`/locations/${commune.slug}`} />
-                ))}
+              <p className="text-gray-600 leading-relaxed mb-6">
+                Les types de biens les plus demandés à {commune.name} sont
+                les {commune.propertyTypes.slice(0, 3).join(", ").toLowerCase()}. Notre portfolio évolue
+                au fil des mandats : contactez-nous pour les disponibilités actuelles et une sélection
+                personnalisée selon vos dates, votre groupe et vos critères.
+              </p>
+
+              <div className="not-prose bg-[var(--color-cream)] rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 mb-6">
+                <div>
+                  <p className="font-semibold text-gray-900 mb-1">Hébergements à {commune.name}</p>
+                  <p className="text-sm text-gray-600">Mas, villas et bastides sélectionnés par notre conciergerie locale — disponibilités sur demande.</p>
+                </div>
+                <div className="flex flex-col gap-2 flex-shrink-0">
+                  <Link href={`/locations/${commune.slug}`}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-rhone)] text-white text-sm font-semibold rounded-xl hover:bg-[var(--color-rhone-dark)] transition-colors whitespace-nowrap">
+                    Voir les hébergements <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </Link>
+                  <Link href={`/locations/avec-piscine/${commune.slug}`}
+                    className="text-center text-sm text-[var(--color-rhone)] font-medium hover:underline underline-offset-2">
+                    Avec piscine à {commune.name}
+                  </Link>
+                </div>
               </div>
+
               <h3 className="font-serif text-lg font-semibold text-gray-900 mb-3">
                 Quand réserver votre séjour à {commune.name} ?
               </h3>
@@ -285,11 +305,6 @@ export default async function DestinationVillePage({ params }: Props) {
                 Le printemps (avril-juin) et l&apos;automne (septembre-octobre) offrent un excellent rapport
                 qualité/prix avec moins de monde et des températures idéales pour découvrir la région.
               </p>
-              <Link href={`/locations/${commune.slug}`}
-                className="inline-flex items-center gap-2 mt-2 text-[var(--color-rhone)] font-semibold hover:text-[var(--color-rhone-light)] transition-colors">
-                Voir tous les hébergements à {commune.name}
-                <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </Link>
             </section>
           </article>
         </div>
