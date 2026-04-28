@@ -372,7 +372,7 @@ export const activityTags: ActivityTag[] = [
   {
     slug: "golf",
     name: "Golf",
-    description: "Golf de Servanes, Golf des Baux",
+    description: "Golf de Servanes, Golf des Baux-de-Provence à 15 min",
     icon: "⛳",
   },
   {

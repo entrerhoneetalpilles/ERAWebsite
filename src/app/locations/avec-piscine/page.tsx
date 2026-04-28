@@ -128,23 +128,68 @@ export default function AvecPiscinePage() {
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">
-            Louer une villa ou un mas avec piscine en Provence
+            Louer un mas ou une villa avec piscine privée en Provence
           </h2>
-          <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-4">
+          <div className="space-y-4 text-gray-600 leading-relaxed mb-10">
             <p>
-              Entre le Rhône et les Alpilles, la Provence offre un cadre exceptionnel pour des vacances sous le soleil.
-              Nos <strong>locations avec piscine privée</strong> vous permettent de profiter d'un espace bain de soleil exclusif,
-              sans partager votre piscine avec d'autres vacanciers.
+              Entre le Rhône et les Alpilles, la Provence bénéficie de plus de 300 jours de soleil par an.
+              La saison piscine s&apos;étend de mi-avril à mi-octobre, avec les mois de juin à septembre
+              les plus ensoleillés. En juillet-août, l&apos;eau de piscine atteint naturellement 27 à 30°C
+              sans chauffage supplémentaire. Nos <strong>locations avec piscine privée</strong> vous permettent
+              de profiter d&apos;un espace bain de soleil exclusif, sans partager votre piscine avec
+              d&apos;autres vacanciers.
             </p>
             <p>
-              De <strong>Saint-Rémy-de-Provence</strong> à <strong>Eygalières</strong>, en passant par <strong>Maussane-les-Alpilles</strong>,
-              notre sélection comprend des mas authentiques, des villas contemporaines et des bastides historiques,
-              tous dotés d'une piscine privée. Certains biens proposent également un jacuzzi, un pool house ou un couloir de nage.
+              De <strong>Saint-Rémy-de-Provence</strong> à <strong>Eygalières</strong>, en passant par
+              <strong> Maussane-les-Alpilles</strong> et <strong>Fontvieille</strong>, notre sélection comprend
+              des mas authentiques avec piscine en garrigue, des villas contemporaines avec piscine à débordement
+              et des bastides historiques avec bassin en pierre — tous dotés d&apos;une piscine privée et exclusive.
+              Certains biens proposent également un jacuzzi, un pool house, une plage de nage ou un couloir de nage
+              pour les amateurs de natation en eau calme.
             </p>
             <p>
-              Notre service de conciergerie local assure la mise en eau et l'entretien de la piscine avant chaque arrivée.
-              Le traitement est confié à des professionnels partenaires pour garantir une eau cristalline tout au long de votre séjour.
+              Notre équipe de conciergerie locale assure la mise en eau et l&apos;entretien professionnel de la
+              piscine avant chaque arrivée. Le traitement de l&apos;eau est confié à des partenaires professionnels
+              pour garantir une eau cristalline tout au long de votre séjour. Toutes nos piscines sont conformes
+              aux normes de sécurité françaises en vigueur : alarme de bassin, barrière sécurisée ou couverture
+              rigide, selon les biens. Les consignes de sécurité sont transmises à chaque voyageur dans le livret
+              d&apos;accueil.
             </p>
+            <p>
+              Le printemps (mai-juin) et le début de l&apos;automne (septembre) offrent un excellent compromis :
+              soleil, chaleur douce, piscine accessible et tarifs sensiblement inférieurs à la haute saison
+              de juillet-août. Ces périodes sont particulièrement appréciées des familles avec enfants en
+              bas âge, des couples qui recherchent la tranquillité et des voyageurs souhaitant explorer la
+              Provence sans la foule. Contactez-nous pour une sélection selon vos dates et vos préférences.
+            </p>
+          </div>
+
+          <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">
+            Types de locations avec piscine disponibles
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+            {[
+              { type: "Mas provençaux", desc: "Le type de bien le plus demandé en Provence. Architecture en pierre calcaire, volets en bois, terrasse sous les platanes. Les mas avec piscine offrent un jardin généreux et une intimité totale, typiquement pour 6 à 12 personnes." },
+              { type: "Villas contemporaines", desc: "Architecture plus moderne, souvent avec piscine à débordement ou bassin géométrique, vue panoramique sur les Alpilles ou le Rhône. Idéales pour les groupes d'amis ou les familles cherchant confort et design." },
+              { type: "Bastides & domaines", desc: "Les propriétés les plus prestige de notre portfolio. Vastes domaines avec piscine de grand bassin, pool house, jacuzzi, terrain paysager. Pour les séjours haut de gamme et les événements privés." },
+            ].map((item) => (
+              <div key={item.type} className="bg-[var(--color-cream)] rounded-xl p-5">
+                <Waves className="w-5 h-5 text-blue-400 mb-3" aria-hidden="true" />
+                <p className="font-semibold text-gray-900 text-sm mb-2">{item.type}</p>
+                <p className="text-xs text-gray-600 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-blue-50 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+            <div>
+              <p className="font-semibold text-gray-900 mb-1">Recherche personnalisée</p>
+              <p className="text-sm text-gray-600">Précisez vos critères (taille de piscine, chauffage, jacuzzi, capacité, commune) et nous vous proposons une sélection sur mesure depuis notre portfolio actuel.</p>
+            </div>
+            <Link href="/contact"
+              className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-rhone)] text-white text-sm font-semibold rounded-xl hover:bg-[var(--color-rhone-dark)] transition-colors whitespace-nowrap">
+              Demander une sélection <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>
@@ -156,6 +201,16 @@ export default function AvecPiscinePage() {
             Questions sur nos locations avec piscine
           </h2>
           <FAQAccordion items={faqItems} />
+          <div className="mt-10 flex flex-wrap gap-4">
+            <Link href="/locations"
+              className="inline-flex items-center gap-1.5 text-[var(--color-rhone)] font-semibold hover:opacity-80 transition-opacity">
+              ← Toutes les locations en Provence
+            </Link>
+            <Link href="/destinations"
+              className="inline-flex items-center gap-1.5 text-[var(--color-alpilles)] font-semibold hover:opacity-80 transition-opacity">
+              Nos destinations <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>
