@@ -26,9 +26,11 @@ const CSS = `
   @page { size: A4 portrait; margin: 0; }
 
   @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     body { background: white; }
     .no-print { display: none !important; }
-    .page { margin: 0 !important; box-shadow: none !important; }
+    .page { margin: 0 !important; box-shadow: none !important; width: 100% !important; }
+    .formulas-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; }
     a { page-break-inside: avoid; }
   }
 
