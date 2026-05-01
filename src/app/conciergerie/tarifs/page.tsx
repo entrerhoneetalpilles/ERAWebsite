@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle, X, Info } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import FAQAccordion from "@/components/FAQAccordion";
 import { OG_IMG } from "@/lib/og";
+import PrintButton from "@/components/PrintButton";
 
 export const metadata: Metadata = {
   title: "Tarifs Conciergerie Provence — 3 Formules",
@@ -187,10 +188,40 @@ const schemaOrg = {
 
 export default function TarifsPage() {
   return (
-    <div className="pt-20">
+    <div className="pt-20 print:pt-0">
+      {/* ── Styles spécifiques à l'impression ── */}
+      <style>{`
+        @media print {
+          @page { size: A4 landscape; margin: 12mm 18mm; }
+          * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+          header, footer { display: none !important; }
+          .print-show-cell { display: table-cell !important; }
+          .era-formula-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 10px !important;
+          }
+        }
+      `}</style>
+
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
 
-      <div className="bg-[var(--color-cream)] py-12">
+      {/* ── En-tête visible uniquement à l'impression ── */}
+      <div className="hidden print:block px-8 pb-4 border-b border-gray-200 mb-6">
+        <div className="flex items-end justify-between">
+          <div>
+            <p className="font-serif text-2xl font-bold text-gray-900">Entre Rhône et Alpilles</p>
+            <p className="text-sm text-gray-500 mt-0.5">Conciergerie de locations saisonnières en Provence</p>
+          </div>
+          <div className="text-right text-xs text-gray-400 leading-relaxed">
+            <p>entre-rhone-alpilles.fr</p>
+            <p>contact@entre-rhone-alpilles.fr</p>
+          </div>
+        </div>
+        <h1 className="text-xl font-bold text-gray-800 mt-4">Nos formules de conciergerie — Tarifs</h1>
+      </div>
+
+      <div className="bg-[var(--color-cream)] py-12 print:hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[{ label: "Conciergerie", href: "/conciergerie" }, { label: "Tarifs" }]} />
           <div className="mt-8 max-w-3xl">
@@ -218,9 +249,9 @@ export default function TarifsPage() {
       </div>
 
       {/* Les 3 formules */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
+      <section className="py-20 print:py-0 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 print:px-0">
+          <div className="grid grid-cols-1 lg:grid-cols-3 era-formula-grid gap-6 mb-16 print:mb-6">
             {formulas.map((f) => (
               <div key={f.id}
                 className={`rounded-2xl border-2 p-8 relative flex flex-col ${f.highlighted ? "border-[var(--color-rhone)] shadow-lg" : "border-gray-200"}`}>
@@ -308,7 +339,7 @@ export default function TarifsPage() {
       </section>
 
       {/* Options à la carte */}
-      <section className="py-16 bg-[var(--color-cream)]">
+      <section className="py-16 print:py-4 bg-[var(--color-cream)] print:bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-serif text-2xl font-bold text-gray-900 mb-2">Options à la carte</h2>
           <p className="text-gray-600 mb-8">Ces services peuvent être ajoutés à n'importe quelle formule selon vos besoins.</p>
@@ -318,7 +349,7 @@ export default function TarifsPage() {
                 <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
                   <th className="text-left px-6 py-4 font-semibold">Option</th>
                   <th className="text-right px-6 py-4 font-semibold">Tarif</th>
-                  <th className="text-right px-6 py-4 font-semibold hidden md:table-cell">Disponible pour</th>
+                  <th className="text-right px-6 py-4 font-semibold hidden md:table-cell print-show-cell">Disponible pour</th>
                 </tr>
               </thead>
               <tbody>
@@ -328,7 +359,7 @@ export default function TarifsPage() {
                     <td className="px-6 py-4 text-right font-semibold text-gray-900 whitespace-nowrap">
                       {o.price} <span className="text-xs font-normal text-gray-400">{o.note}</span>
                     </td>
-                    <td className="px-6 py-4 text-right text-gray-500 hidden md:table-cell">{o.for}</td>
+                    <td className="px-6 py-4 text-right text-gray-500 hidden md:table-cell print-show-cell">{o.for}</td>
                   </tr>
                 ))}
               </tbody>
@@ -337,8 +368,8 @@ export default function TarifsPage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16 bg-white">
+      {/* FAQ — masquée à l'impression */}
+      <section className="py-16 bg-white print:hidden">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-serif text-2xl font-bold text-gray-900 mb-8">Questions sur nos tarifs</h2>
           <FAQAccordion items={faqItems} schema={false} />
@@ -350,6 +381,15 @@ export default function TarifsPage() {
           </div>
         </div>
       </section>
+
+      {/* Pied de page visible uniquement à l'impression */}
+      <div className="hidden print:block px-8 pt-6 mt-4 border-t border-gray-200 text-center text-xs text-gray-400 leading-relaxed">
+        <p className="font-semibold text-gray-600">Entre Rhône et Alpilles — Conciergerie de locations saisonnières</p>
+        <p>entre-rhone-alpilles.fr · contact@entre-rhone-alpilles.fr</p>
+        <p className="mt-1">Tarifs exprimés HT — TVA 20 % applicable · Document non contractuel, susceptible d&apos;évoluer</p>
+      </div>
+
+      <PrintButton />
     </div>
   );
 }
